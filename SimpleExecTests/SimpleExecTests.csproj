@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
     <OutputType>exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
