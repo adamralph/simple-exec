@@ -1,4 +1,7 @@
 version: '{build}'
+image:
+- Visual Studio 2017
+- Ubuntu
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -7,8 +10,9 @@ branches:
 environment:
   BUILD_NUMBER: $(APPVEYOR_BUILD_NUMBER)
 build_script:
-- cmd: build.cmd
+- cmd: ./build.cmd
+- sh: ./build.sh
 test: off
 artifacts:
-- path: SimpleExec/**/*.nupkg
+- path: ./SimpleExec/**/*.nupkg
 deploy: off
