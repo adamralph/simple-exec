@@ -34,13 +34,14 @@ namespace SimpleExec
                     Arguments = string.Join(" ", this.Args),
                     UseShellExecute = false,
                     WorkingDirectory = this.Dir,
+                    RedirectStandardError = true,
                 };
 
                 process.Start();
                 process.WaitForExit();
                 if (process.ExitCode != 0)
                 {
-                    throw new InvalidOperationException($"The command exited with code {process.ExitCode}.");
+                    throw new InvalidOperationException($"The command exited with code {process.ExitCode}: {process.StandardError.ReadToEnd()}");
                 }
             }
         }
