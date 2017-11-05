@@ -8,7 +8,7 @@ dotnet restore || goto :error
 
 echo Testing...
 pushd SimpleExecTests
-dotnet xunit || goto :error
+dotnet xunit -configuration Release || goto :error
 popd
 
 :: exit
