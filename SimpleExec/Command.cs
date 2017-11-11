@@ -2,48 +2,81 @@ namespace SimpleExec
 {
     using System;
     using System.Diagnostics;
-    using System.Linq;
+    using System.Threading.Tasks;
 
-    public class Command
+    public static class Command
     {
-        private readonly string[] args;
+        public static void Run(string name, string args) => Run(name, args, "");
 
-        private Command(string name, params string[] args)
-        {
-            this.Name = name;
-            this.args = args.ToArray();
-        }
+        public static Task RunAsync(string name, string args) => RunAsync(name, args, "");
 
-        public string Name { get; }
-
-        public string[] Args => this.args;
-
-        public string Dir { get; set; }
-
-        public static void Run(string name, params string[] args) => new Command(name, args).Run();
-
-        public static void RunIn(string dir, string name, params string[] args) => new Command(name, args) { Dir = dir }.Run();
-
-        private void Run()
+        public static void Run(string name, string args, string workingDirectory)
         {
             using (var process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo
-                {
-                    FileName = $"\"{this.Name}\"",
-                    Arguments = string.Join(" ", this.Args),
-                    UseShellExecute = false,
-                    WorkingDirectory = this.Dir,
-                    RedirectStandardError = true,
-                };
+                process.StartInfo = CreateProcessInfo(name, args, workingDirectory);
+                process.Run();
 
-                process.Start();
-                process.WaitForExit();
                 if (process.ExitCode != 0)
                 {
-                    throw new InvalidOperationException($"The command exited with code {process.ExitCode}: {process.StandardError.ReadToEnd()}");
+                    process.Throw();
                 }
             }
         }
+
+        public static async Task RunAsync(string name, string args, string workingDirectory)
+        {
+            using (var process = new Process())
+            {
+                process.StartInfo = CreateProcessInfo(name, args, workingDirectory);
+                await process.RunAsync();
+
+                if (process.ExitCode != 0)
+                {
+                    await process.ThrowAsync();
+                }
+            }
+        }
+
+        private static ProcessStartInfo CreateProcessInfo(string name, string args, string workingDirectory) =>
+            new ProcessStartInfo
+            {
+                FileName = name,
+                Arguments = args,
+                WorkingDirectory = workingDirectory,
+                UseShellExecute = false,
+                RedirectStandardError = true,
+            };
+
+        private static void Run(this Process process)
+        {
+            process.EchoAndStart();
+            process.WaitForExit();
+        }
+
+        private static async Task RunAsync(this Process process)
+        {
+            process.EnableRaisingEvents = true;
+            var tcs = new TaskCompletionSource<object>();
+            process.Exited += (s, e) => tcs.SetResult(null);
+            process.EchoAndStart();
+            await tcs.Task.ConfigureAwait(false);
+        }
+
+        private static void EchoAndStart(this Process process)
+        {
+            var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{process.StartInfo.FileName} {process.StartInfo.Arguments}";
+            Console.Out.WriteLine(message);
+            process.Start();
+        }
+
+        private static void Throw(this Process process) =>
+            process.Throw(process.StandardError.ReadToEnd());
+
+        private static async Task ThrowAsync(this Process process) =>
+            process.Throw(await process.StandardError.ReadToEndAsync());
+
+        private static void Throw(this Process process, string stdErr) =>
+            throw new Exception($"The process exited with code {process.ExitCode}: {stdErr.Trim()}");
     }
 }
