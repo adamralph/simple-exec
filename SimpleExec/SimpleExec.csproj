@@ -4,6 +4,7 @@
     <Description>Runs external commands.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
+    <PackageIconUrl>https://raw.githubusercontent.com/adamralph/simple-exec/master/assets/simple-exec.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/adamralph/simple-exec/releases</PackageReleaseNotes>
     <TargetFramework>netstandard1.3</TargetFramework>
