@@ -20,6 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleExecTester", "SimpleExecTester\SimpleExecTester.csproj", "{65DE7849-D516-4FB5-865D-A6E6B2E5BA3D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{B1122BDF-5F83-4039-ADF1-364477B15E8A}"
+	ProjectSection(SolutionItems) = preProject
+		assets\simple-exec.png = assets\simple-exec.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

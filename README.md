@@ -1,4 +1,9 @@
+<img src="assets/simple-exec.png" width="100" />
+
 # SimpleExec
+
+[![NuGet version](https://img.shields.io/nuget/v/SimpleExec.svg?style=flat)](https://www.nuget.org/packages/SimpleExec) [![Build status](https://ci.appveyor.com/api/projects/status/sagnyx3o2x0bidm1/branch/master?svg=true)](https://ci.appveyor.com/project/adamralph/simple-exec/branch/master)
+
 
 SimpleExec is a [.NET package](https://www.nuget.org/packages/SimpleExec) that runs external commands. It wraps [`System.Diagnostics.Process`](https://apisof.net/catalog/System.Diagnostics.Process) to make things easier.
 
@@ -31,3 +36,7 @@ If the command has a non-zero exit code, an exception is thrown with a message i
 ```C#
 $"The process exited with code {process.ExitCode}: {stdErr.Trim()}"
 ```
+
+---
+
+<sub>[Run](https://thenounproject.com/term/target/975371) by [Gregor Cresnar](https://thenounproject.com/grega.cresnar/) from [the Noun Project](https://thenounproject.com/).</sub>
