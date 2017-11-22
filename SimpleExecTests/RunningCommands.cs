@@ -2,24 +2,18 @@ namespace SimpleExecTests
 {
     using System;
     using SimpleExec;
+    using SimpleExecTests.Infra;
     using Xbehave;
     using Xunit;
 
     public class RunningCommands
     {
-        public static readonly string executable =
-#if DEBUG
-            $"../../../../SimpleExecTester/bin/Debug/netcoreapp2.0/SimpleExecTester.dll";
-#else
-            $"../../../../SimpleExecTester/bin/Release/netcoreapp2.0/SimpleExecTester.dll";
-#endif
-
         [Scenario]
         public void RunningASucceedingCommand(Exception exception)
         {
             "When I run a succeeding command"
                 .x(() => exception = Record.Exception(
-                    () => Command.Run("dotnet", $"exec {executable} hello world")));
+                    () => Command.Run("dotnet", $"exec {Tester.Path} hello world")));
 
             "Then no exception is thrown"
                 .x(() => Assert.Null(exception));
@@ -30,7 +24,7 @@ namespace SimpleExecTests
         {
             "When I run a failing command"
                 .x(() => exception = Record.Exception(
-                    () => Command.Run("dotnet", $"exec {executable} error hello world")));
+                    () => Command.Run("dotnet", $"exec {Tester.Path} error hello world")));
 
             "Then an exception is thrown"
                 .x(() => Assert.NotNull(exception));
@@ -47,7 +41,7 @@ namespace SimpleExecTests
         {
             "When I run a succeeding command async"
                 .x(async () => exception = await Record.ExceptionAsync(
-                    () => Command.RunAsync("dotnet", $"exec {executable} hello world")));
+                    () => Command.RunAsync("dotnet", $"exec {Tester.Path} hello world")));
 
             "Then no exception is thrown"
                 .x(() => Assert.Null(exception));
@@ -58,7 +52,7 @@ namespace SimpleExecTests
         {
             "When I run a failing command async"
                 .x(async () => exception = await Record.ExceptionAsync(
-                    () => Command.RunAsync("dotnet", $"exec {executable} error hello world")));
+                    () => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world")));
 
             "Then an exception is thrown"
                 .x(() => Assert.NotNull(exception));
