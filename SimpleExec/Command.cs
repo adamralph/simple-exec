@@ -14,7 +14,7 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = CreateProcessInfo(name, args, workingDirectory);
+                process.StartInfo = CreateProcessInfo(name, args, workingDirectory, false);
                 process.Run();
 
                 if (process.ExitCode != 0)
@@ -28,7 +28,7 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = CreateProcessInfo(name, args, workingDirectory);
+                process.StartInfo = CreateProcessInfo(name, args, workingDirectory, false);
                 await process.RunAsync();
 
                 if (process.ExitCode != 0)
@@ -74,7 +74,7 @@ namespace SimpleExec
             }
         }
 
-        private static ProcessStartInfo CreateProcessInfo(string name, string args, string workingDirectory, bool captureOutput = false) =>
+        private static ProcessStartInfo CreateProcessInfo(string name, string args, string workingDirectory, bool captureOutput) =>
             new ProcessStartInfo
             {
                 FileName = name,
@@ -84,7 +84,6 @@ namespace SimpleExec
                 RedirectStandardError = true,
                 RedirectStandardOutput = captureOutput
             };
-
 
         private static void Run(this Process process)
         {
