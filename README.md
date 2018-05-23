@@ -25,11 +25,31 @@ using static SimpleExec.Command;
 
 ```C#
 Run("foo.exe", "arg1 arg2");
+```
+
+## API
+
+### Run
+
+```C#
+Run("foo.exe", "arg1 arg2");
 Run("foo.exe", "arg1 arg2", "working-directory");
 
 await RunAsync("bar.exe", "arg1 arg2");
 await RunAsync("foo.exe", "arg1 arg2", "working-directory");
 ```
+
+### Read
+
+```C#
+var output1 = Read("foo.exe", "arg1 arg2");
+var output2 = Read("foo.exe", "arg1 arg2", "working-directory");
+
+var output3 = await ReadAsync("foo.exe", "arg1 arg2");
+var output4 = await ReadAsync("foo.exe", "arg1 arg2", "working-directory");
+```
+
+### Exceptions
 
 If the command has a non-zero exit code, an exception is thrown with a message in the form of:
 
