@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-set -e
-set -o pipefail
-set -x
+set -euo pipefail
 
 echo Restoring packages...
 dotnet restore
