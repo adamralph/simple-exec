@@ -9,7 +9,8 @@
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/adamralph/simple-exec/releases</PackageReleaseNotes>
     <TargetFramework>netstandard1.3</TargetFramework>
-    <Version>2.1.0</Version>
+    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionSuffix>$(VERSION_SUFFIX)</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>
