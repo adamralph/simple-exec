@@ -1,17 +1,14 @@
-:: options
 @echo Off
 cd %~dp0
-setlocal
 
-echo Restoring packages...
+echo %~nx0: Restoring...
 dotnet restore || goto :error
 
-echo Testing...
+echo %~nx0: Building and testing...
 pushd SimpleExecTests
 dotnet xunit -configuration Release || goto :error
 popd
 
-:: exit
 goto :EOF
 :error
 exit /b %errorlevel%
