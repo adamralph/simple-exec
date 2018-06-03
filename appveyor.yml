@@ -7,12 +7,10 @@ pull_requests:
 branches:
   only:
   - master
-environment:
-  BUILD_NUMBER: $(APPVEYOR_BUILD_NUMBER)
 build_script:
 - cmd: ./build.cmd
 - sh: ./build.sh
 test: off
 artifacts:
-- path: ./SimpleExec/**/*.nupkg
+- path: ./**/*.nupkg
 deploy: off
