@@ -5,9 +5,7 @@ echo %~nx0: Restoring...
 dotnet restore || goto :error
 
 echo %~nx0: Building and testing...
-pushd SimpleExecTests
-dotnet xunit -configuration Release || goto :error
-popd
+dotnet test ./SimpleExecTests/SimpleExecTests.csproj --configuration Release || goto :error
 
 goto :EOF
 :error

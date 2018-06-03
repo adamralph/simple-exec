@@ -5,6 +5,4 @@ echo "${0##*/}": Restoring...
 dotnet restore
 
 echo "${0##*/}": Building and testing...
-cd SimpleExecTests
-dotnet xunit -configuration Release
-cd ..
+dotnet test ./SimpleExecTests/SimpleExecTests.csproj --configuration Release
