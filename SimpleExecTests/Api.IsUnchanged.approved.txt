@@ -1,0 +1,15 @@
+﻿[assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETStandard,Version=v2.0", FrameworkDisplayName="")]
+namespace SimpleExec
+{
+    public class static Command
+    {
+        public static string Read(string name, string args) { }
+        public static string Read(string name, string args, string workingDirectory) { }
+        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args) { }
+        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args, string workingDirectory) { }
+        public static void Run(string name, string args) { }
+        public static void Run(string name, string args, string workingDirectory) { }
+        public static System.Threading.Tasks.Task RunAsync(string name, string args) { }
+        public static System.Threading.Tasks.Task RunAsync(string name, string args, string workingDirectory) { }
+    }
+}
