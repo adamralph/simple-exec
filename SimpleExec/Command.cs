@@ -13,7 +13,7 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = CreateProcessInfo(name, args, workingDirectory, false);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false);
                 process.Run();
 
                 if (process.ExitCode != 0)
@@ -27,7 +27,7 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = CreateProcessInfo(name, args, workingDirectory, false);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false);
                 await process.RunAsync();
 
                 if (process.ExitCode != 0)
@@ -45,7 +45,7 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = CreateProcessInfo(name, args, workingDirectory, true);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
                 process.Run();
 
                 if (process.ExitCode != 0)
@@ -61,7 +61,7 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = CreateProcessInfo(name, args, workingDirectory, true);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
                 await process.RunAsync();
 
                 if (process.ExitCode != 0)
@@ -72,16 +72,5 @@ namespace SimpleExec
                 return await process.StandardOutput.ReadToEndAsync();
             }
         }
-
-        private static ProcessStartInfo CreateProcessInfo(string name, string args, string workingDirectory, bool captureOutput) =>
-            new ProcessStartInfo
-            {
-                FileName = name,
-                Arguments = args,
-                WorkingDirectory = workingDirectory,
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = captureOutput
-            };
     }
 }
