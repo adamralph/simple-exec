@@ -4,6 +4,11 @@ namespace SimpleExec
     using System.Diagnostics;
     using System.Threading.Tasks;
 
+    public static class Config
+    {
+        public static bool PrintCommand = true;
+    }
+
     public static class Command
     {
         public static void Run(string name, string args) => Run(name, args, "");
@@ -102,8 +107,11 @@ namespace SimpleExec
 
         private static void EchoAndStart(this Process process)
         {
-            var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{process.StartInfo.FileName} {process.StartInfo.Arguments}";
-            Console.Out.WriteLine(message);
+            if (Config.PrintCommand)
+            {
+                var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{process.StartInfo.FileName} {process.StartInfo.Arguments}";
+                Console.Out.WriteLine(message);
+            }
             process.Start();
         }
 
