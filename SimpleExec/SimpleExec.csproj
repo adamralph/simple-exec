@@ -7,7 +7,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/adamralph/simple-exec/master/assets/simple-exec.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/adamralph/simple-exec/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/adamralph/simple-exec/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/adamralph/simple-exec/milestones?state=closed</PackageReleaseNotes>
     <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
     <VersionPrefix>2.3.0</VersionPrefix>
     <VersionSuffix>$(VERSION_SUFFIX)</VersionSuffix>
