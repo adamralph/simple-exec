@@ -5,12 +5,12 @@ namespace SimpleExec
 
     public static partial class Command
     {
-        public static void Run(string name, string args, string workingDirectory)
+        public static void Run(string name, string args, string workingDirectory, bool noEcho)
         {
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false);
-                process.Run();
+                process.Run(noEcho);
 
                 if (process.ExitCode != 0)
                 {
@@ -19,12 +19,12 @@ namespace SimpleExec
             }
         }
 
-        public static async Task RunAsync(string name, string args, string workingDirectory)
+        public static async Task RunAsync(string name, string args, string workingDirectory, bool noEcho)
         {
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false);
-                await process.RunAsync();
+                await process.RunAsync(noEcho);
 
                 if (process.ExitCode != 0)
                 {
@@ -33,12 +33,12 @@ namespace SimpleExec
             }
         }
 
-        public static string Read(string name, string args, string workingDirectory)
+        public static string Read(string name, string args, string workingDirectory, bool noEcho)
         {
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                process.Run();
+                process.Run(noEcho);
 
                 if (process.ExitCode != 0)
                 {
@@ -49,12 +49,12 @@ namespace SimpleExec
             }
         }
 
-        public static async Task<string> ReadAsync(string name, string args, string workingDirectory)
+        public static async Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho)
         {
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                await process.RunAsync();
+                await process.RunAsync(noEcho);
 
                 if (process.ExitCode != 0)
                 {
