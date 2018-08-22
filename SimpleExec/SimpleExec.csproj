@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <Description>Runs external commands.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
@@ -9,11 +10,15 @@
     <PackageLicenseUrl>https://github.com/adamralph/simple-exec/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/adamralph/simple-exec/milestones?state=closed</PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
     <VersionPrefix>2.3.0</VersionPrefix>
     <VersionSuffix>$(VERSION_SUFFIX)</VersionSuffix>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
   </ItemGroup>
