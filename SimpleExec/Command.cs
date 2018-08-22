@@ -24,11 +24,11 @@ namespace SimpleExec
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false);
-                await process.RunAsync(noEcho);
+                await process.RunAsync(noEcho).ConfigureAwait(false);
 
                 if (process.ExitCode != 0)
                 {
-                    await process.ThrowAsync();
+                    await process.ThrowAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -54,14 +54,14 @@ namespace SimpleExec
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                await process.RunAsync(noEcho);
+                await process.RunAsync(noEcho).ConfigureAwait(false);
 
                 if (process.ExitCode != 0)
                 {
-                    await process.ThrowAsync();
+                    await process.ThrowAsync().ConfigureAwait(false);
                 }
 
-                return await process.StandardOutput.ReadToEndAsync();
+                return await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
             }
         }
     }
