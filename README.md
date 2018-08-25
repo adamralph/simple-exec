@@ -57,6 +57,10 @@ If the command has a non-zero exit code, an exception is thrown with a message i
 $"The process exited with code {process.ExitCode}: {stdErr.Trim()}"
 ```
 
+### Echo suppression
+
+Call the overloads of `Run*()` and `Read*()` with the `bool noEcho` parameter.
+
 ---
 
 <sub>[Run](https://thenounproject.com/term/target/975371) by [Gregor Cresnar](https://thenounproject.com/grega.cresnar/) from [the Noun Project](https://thenounproject.com/).</sub>
