@@ -10,7 +10,7 @@ namespace SimpleExec
                 Arguments = args,
                 WorkingDirectory = workingDirectory,
                 UseShellExecute = false,
-                RedirectStandardError = true,
+                RedirectStandardError = false,
                 RedirectStandardOutput = captureOutput
             };
     }

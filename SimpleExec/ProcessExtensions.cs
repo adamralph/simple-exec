@@ -33,12 +33,6 @@ namespace SimpleExec
         }
 
         public static void Throw(this Process process) =>
-            process.Throw(process.StandardError.ReadToEnd());
-
-        public static async Task ThrowAsync(this Process process) =>
-            process.Throw(await process.StandardError.ReadToEndAsync().ConfigureAwait(false));
-
-        private static void Throw(this Process process, string stdErr) =>
-            throw new Exception($"The process exited with code {process.ExitCode}: {stdErr.Trim()}");
+            throw new Exception($"The process exited with code {process.ExitCode}.");
     }
 }
