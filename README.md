@@ -54,7 +54,7 @@ var output4 = await ReadAsync("foo.exe", "arg1 arg2", "working-directory");
 If the command has a non-zero exit code, an exception is thrown with a message in the form of:
 
 ```C#
-$"The process exited with code {process.ExitCode}: {stdErr.Trim()}"
+$"The process exited with code {process.ExitCode}."
 ```
 
 ### Echo suppression

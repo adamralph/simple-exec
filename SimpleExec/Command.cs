@@ -28,7 +28,7 @@ namespace SimpleExec
 
                 if (process.ExitCode != 0)
                 {
-                    await process.ThrowAsync().ConfigureAwait(false);
+                    process.Throw();
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace SimpleExec
 
                 if (process.ExitCode != 0)
                 {
-                    await process.ThrowAsync().ConfigureAwait(false);
+                    process.Throw();
                 }
 
                 return await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);

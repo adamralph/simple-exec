@@ -31,9 +31,6 @@ namespace SimpleExecTests
 
             "And the exception message contains the exit code"
                 .x(() => Assert.Contains("code 1", exception.Message));
-
-            "And the exception message contains the contents of stderr"
-                .x(() => Assert.Contains($"error hello world", exception.Message));
         }
 
         [Scenario]
@@ -59,9 +56,6 @@ namespace SimpleExecTests
 
             "And the exception message contains the exit code"
                 .x(() => Assert.Contains("code 1", exception.Message));
-
-            "And the exception message contains the contents of stderr"
-                .x(() => Assert.Contains($"error hello world", exception.Message));
         }
     }
 }
