@@ -33,7 +33,7 @@ namespace SimpleExecTests
 
         class WindowsFactStackTraceParser : XUnitStackTraceParser
         {
-            protected override string GetAttributeType() => "SimpleExecTests.Api+WindowsFactAttribute";
+            public override string GetAttributeType() => "SimpleExecTests.Api+WindowsFactAttribute";
         }
     }
 }
