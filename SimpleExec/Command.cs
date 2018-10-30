@@ -1,6 +1,7 @@
 namespace SimpleExec
 {
     using System.Diagnostics;
+    using System.Threading;
     using System.Threading.Tasks;
 
     public static partial class Command
@@ -19,14 +20,14 @@ namespace SimpleExec
             }
         }
 
-        public static async Task RunAsync(string name, string args, string workingDirectory, bool noEcho)
+        public static async Task RunAsync(string name, string args, string workingDirectory, bool noEcho, CancellationToken cancellationToken)
         {
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false);
-                await process.RunAsync(noEcho).ConfigureAwait(false);
+                await process.RunAsync(noEcho, cancellationToken).ConfigureAwait(false);
 
-                if (process.ExitCode != 0)
+                if (process.ExitCode != 0 && !cancellationToken.IsCancellationRequested)
                 {
                     process.Throw();
                 }
@@ -49,14 +50,14 @@ namespace SimpleExec
             }
         }
 
-        public static async Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho)
+        public static async Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho, CancellationToken cancellationToken)
         {
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                await process.RunAsync(noEcho).ConfigureAwait(false);
+                await process.RunAsync(noEcho, cancellationToken).ConfigureAwait(false);
 
-                if (process.ExitCode != 0)
+                if (process.ExitCode != 0 && !cancellationToken.IsCancellationRequested)
                 {
                     process.Throw();
                 }

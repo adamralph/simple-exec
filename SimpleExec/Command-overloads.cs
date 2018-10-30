@@ -16,6 +16,9 @@ namespace SimpleExec
 
         public static Task RunAsync(string name, string args, string workingDirectory) => RunAsync(name, args, workingDirectory, false);
 
+        public static Task RunAsync(string name, string args, string workingDirectory, bool noEcho) =>
+            RunAsync(name, args, workingDirectory, noEcho, default);
+
         public static string Read(string name, string args) => Read(name, args, "", false);
 
         public static string Read(string name, string args, bool noEcho) => Read(name, args, "", noEcho);
@@ -27,5 +30,8 @@ namespace SimpleExec
         public static Task<string> ReadAsync(string name, string args, bool noEcho) => ReadAsync(name, args, "", noEcho);
 
         public static Task<string> ReadAsync(string name, string args, string workingDirectory) => ReadAsync(name, args, workingDirectory, false);
+
+        public static Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho) =>
+            ReadAsync(name, args, workingDirectory, noEcho, default);
     }
 }
