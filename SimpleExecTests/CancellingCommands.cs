@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using SimpleExec;
-using SimpleExecTests.Infra;
-using Xunit;
-
 namespace SimpleExecTests
 {
+    using System;
+    using System.Diagnostics;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using SimpleExec;
+    using SimpleExecTests.Infra;
+    using Xunit;
+
     public class CancellingCommands
     {
         [Fact]
