@@ -29,7 +29,6 @@ namespace SimpleExecTests
             using (var cancellationTokenSource = new CancellationTokenSource(50))
             {
                 var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} 1000", "", false, cancellationTokenSource.Token);
-                Assert.Equal("", result);
             }
             watch.Stop();
             Assert.True(watch.Elapsed < TimeSpan.FromMilliseconds(1000), $"Command finished outside window in {watch.Elapsed}");
