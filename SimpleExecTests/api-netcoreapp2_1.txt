@@ -1,4 +1,4 @@
-﻿[assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETStandard,Version=v2.0", FrameworkDisplayName="")]
+[assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETStandard,Version=v2.0", FrameworkDisplayName="")]
 namespace SimpleExec
 {
     public class static Command
@@ -11,6 +11,7 @@ namespace SimpleExec
         public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args, bool noEcho) { }
         public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args, string workingDirectory) { }
         public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho) { }
+        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho, System.Threading.CancellationToken cancellationToken) { }
         public static void Run(string name, string args) { }
         public static void Run(string name, string args, bool noEcho) { }
         public static void Run(string name, string args, string workingDirectory) { }
@@ -19,5 +20,6 @@ namespace SimpleExec
         public static System.Threading.Tasks.Task RunAsync(string name, string args, bool noEcho) { }
         public static System.Threading.Tasks.Task RunAsync(string name, string args, string workingDirectory) { }
         public static System.Threading.Tasks.Task RunAsync(string name, string args, string workingDirectory, bool noEcho) { }
+        public static System.Threading.Tasks.Task RunAsync(string name, string args, string workingDirectory, bool noEcho, System.Threading.CancellationToken cancellationToken) { }
     }
 }
