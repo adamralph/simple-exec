@@ -1,6 +1,7 @@
 namespace SimpleExec
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
@@ -33,7 +34,14 @@ namespace SimpleExec
                     var currentProcess = (Process)state;
                     if (!currentProcess.HasExited)
                     {
-                        currentProcess.Kill();
+                        try
+                        {
+                            currentProcess.Kill();
+                        }
+
+                        // Eat the exception, because the process has already exited.
+                        catch (Win32Exception) { }
+                        catch (InvalidOperationException) { }
                     }
                 },
                 process
