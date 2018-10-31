@@ -28,7 +28,7 @@ namespace SimpleExec
 
         static CancellationTokenRegistration KillProcessOnCancellation(Process process, CancellationToken cancellationToken)
         {
-            return cancellationToken.Register(
+            var registration = cancellationToken.Register(
                 state =>
                 {
                     var currentProcess = (Process)state;
@@ -46,6 +46,11 @@ namespace SimpleExec
                 },
                 process
             );
+
+            // Attempt to dispose of the registration before the token is canceled
+            // to help prevent unnecessary exception handling.
+            process.Exited += (_, __) => registration.Dispose();
+            return registration;
         }
 
         private static void EchoAndStart(this Process process, bool noEcho)
