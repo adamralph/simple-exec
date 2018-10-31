@@ -15,9 +15,9 @@ namespace SimpleExecTester
                 Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");
                 return 1;
             }
-            else if (args.Length > 0 && int.TryParse(args[0], out var sleepInMilliseconds))
+            else if (args.Contains("sleep"))
             {
-                Thread.Sleep(sleepInMilliseconds);
+                Thread.Sleep(Timeout.Infinite);
                 return 0;
             }
 

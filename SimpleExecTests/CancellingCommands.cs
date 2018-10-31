@@ -16,7 +16,7 @@ namespace SimpleExecTests
             var watch = Stopwatch.StartNew();
             using (var cancellationTokenSource = new CancellationTokenSource(50))
             {
-                await Command.RunAsync("dotnet", $"exec {Tester.Path} 1000", "", false, cancellationTokenSource.Token);
+                await Command.RunAsync("dotnet", $"exec {Tester.Path} sleep", "", false, cancellationTokenSource.Token);
             }
             watch.Stop();
             Assert.True(watch.Elapsed < TimeSpan.FromMilliseconds(1000), $"Command finished outside window in {watch.Elapsed}");
@@ -28,7 +28,7 @@ namespace SimpleExecTests
             var watch = Stopwatch.StartNew();
             using (var cancellationTokenSource = new CancellationTokenSource(50))
             {
-                var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} 1000", "", false, cancellationTokenSource.Token);
+                var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} sleep", "", false, cancellationTokenSource.Token);
             }
             watch.Stop();
             Assert.True(watch.Elapsed < TimeSpan.FromMilliseconds(1000), $"Command finished outside window in {watch.Elapsed}");
