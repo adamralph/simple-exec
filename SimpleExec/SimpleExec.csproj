@@ -5,7 +5,7 @@
     <Description>Runs external commands.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
-    <MinVerMinimumMajorMinor>4.0</MinVerMinimumMajorMinor>
+    <MinVerMajorMinor>4.0</MinVerMajorMinor>
     <NoWarn>$(NoWarn);NU5105</NoWarn>
     <PackageIconUrl>https://raw.githubusercontent.com/adamralph/simple-exec/master/assets/simple-exec.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/adamralph/simple-exec/blob/master/LICENSE</PackageLicenseUrl>
@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.6.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
-    <PackageReference Include="MinVer" Version="1.0.0-alpha.12" PrivateAssets="all" />
+    <PackageReference Include="MinVer" Version="1.0.0-alpha.13" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
