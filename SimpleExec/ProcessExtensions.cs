@@ -26,7 +26,7 @@ namespace SimpleExec
             if (!noEcho)
             {
                 var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{process.StartInfo.FileName} {process.StartInfo.Arguments}";
-                Console.Out.WriteLine(message);
+                Console.Error.WriteLine(message);
             }
 
             process.Start();
