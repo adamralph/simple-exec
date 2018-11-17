@@ -5,7 +5,7 @@ namespace SimpleExec
 
     public static partial class Command
     {
-        public static void Run(string name, string args, string workingDirectory, bool noEcho)
+        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = false)
         {
             using (var process = new Process())
             {
@@ -19,7 +19,7 @@ namespace SimpleExec
             }
         }
 
-        public static async Task RunAsync(string name, string args, string workingDirectory, bool noEcho)
+        public static async Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false)
         {
             using (var process = new Process())
             {
@@ -33,7 +33,7 @@ namespace SimpleExec
             }
         }
 
-        public static string Read(string name, string args, string workingDirectory, bool noEcho)
+        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = false)
         {
             using (var process = new Process())
             {
@@ -49,7 +49,7 @@ namespace SimpleExec
             }
         }
 
-        public static async Task<string> ReadAsync(string name, string args, string workingDirectory, bool noEcho)
+        public static async Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false)
         {
             using (var process = new Process())
             {
