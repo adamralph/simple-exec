@@ -16,7 +16,7 @@ namespace SimpleExecTests
                 .x(() => Console.SetOut(Capture.Out));
 
             "When a command is run"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", false));
+                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: false));
 
             "Then the command is echoed"
                 .x(c => Assert.Contains(c.Step.Scenario.DisplayName, Capture.Out.ToString()));
@@ -29,7 +29,7 @@ namespace SimpleExecTests
                 .x(() => Console.SetOut(Capture.Out));
 
             "When a command is run with echo suppressed"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", true));
+                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: true));
 
             "Then the command is not echoed"
                 .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, Capture.Out.ToString()));

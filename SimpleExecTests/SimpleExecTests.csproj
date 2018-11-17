@@ -20,4 +20,10 @@
     <ProjectReference Include="..\SimpleExecTester\SimpleExecTester.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="hello-world.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
