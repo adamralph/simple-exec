@@ -25,32 +25,29 @@ Run("foo.exe", "arg1 arg2");
 
 ## API
 
+Each method has:
+
+- One mandatory parameter: `string name`.
+- Three optional parameters: `string args`, `string workingDirectory`, and `bool noEcho`.
+
 ### Run
 
 ```C#
 Run("foo.exe");
-Run("foo.exe", "arg1 arg2");
-Run("foo.exe", "arg1 arg2", "working-directory");
-Run("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
+Run("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 
 await RunAsync("foo.exe");
-await RunAsync("foo.exe", "arg1 arg2");
-await RunAsync("foo.exe", "arg1 arg2", "working-directory");
-await RunAsync("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
+await RunAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 ```
 
 ### Read
 
 ```C#
 var output1 = Read("foo.exe");
-var output2 = Read("foo.exe", "arg1 arg2");
-var output3 = Read("foo.exe", "arg1 arg2", "working-directory");
-var output4 = Read("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
+var output2 = Read("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 
-var output5 = ReadAsync("foo.exe");
-var output6 = ReadAsync("foo.exe", "arg1 arg2");
-var output7 = ReadAsync("foo.exe", "arg1 arg2", "working-directory");
-var output8 = ReadAsync("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
+var output3 = ReadAsync("foo.exe");
+var output4 = ReadAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 ```
 
 ### Exceptions
