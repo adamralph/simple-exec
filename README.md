@@ -9,7 +9,7 @@ SimpleExec is a [.NET package](https://www.nuget.org/packages/SimpleExec) that r
 
 The SimpleExec package intentionally does not invoke the system shell.
 
-The command is echoed in the console (stdout) for visibility.
+The command is echoed to standard error (stderr) for visibility.
 
 Platform support: [.NET Standard 1.3 and upwards](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
@@ -28,21 +28,29 @@ Run("foo.exe", "arg1 arg2");
 ### Run
 
 ```C#
+Run("foo.exe");
 Run("foo.exe", "arg1 arg2");
 Run("foo.exe", "arg1 arg2", "working-directory");
+Run("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
 
-await RunAsync("bar.exe", "arg1 arg2");
+await RunAsync("foo.exe");
+await RunAsync("foo.exe", "arg1 arg2");
 await RunAsync("foo.exe", "arg1 arg2", "working-directory");
+await RunAsync("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
 ```
 
 ### Read
 
 ```C#
-var output1 = Read("foo.exe", "arg1 arg2");
-var output2 = Read("foo.exe", "arg1 arg2", "working-directory");
+var output1 = Read("foo.exe");
+var output2 = Read("foo.exe", "arg1 arg2");
+var output3 = Read("foo.exe", "arg1 arg2", "working-directory");
+var output4 = Read("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
 
-var output3 = await ReadAsync("foo.exe", "arg1 arg2");
-var output4 = await ReadAsync("foo.exe", "arg1 arg2", "working-directory");
+var output5 = ReadAsync("foo.exe");
+var output6 = ReadAsync("foo.exe", "arg1 arg2");
+var output7 = ReadAsync("foo.exe", "arg1 arg2", "working-directory");
+var output8 = ReadAsync("foo.exe", "arg1 arg2", "working-directory", noEcho: true);
 ```
 
 ### Exceptions
@@ -52,10 +60,6 @@ If the command has a non-zero exit code, an exception is thrown with a message i
 ```C#
 $"The process exited with code {process.ExitCode}."
 ```
-
-### Echo suppression
-
-Call the overloads of `Run*()` and `Read*()` with the `bool noEcho` parameter.
 
 ---
 
