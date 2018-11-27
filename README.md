@@ -15,10 +15,6 @@ Platform support: [.NET Standard 1.3 and upwards](https://docs.microsoft.com/en-
 
 ## Quick start
 
-```PowerShell
-Install-Package SimpleExec
-```
-
 ```C#
 using static SimpleExec.Command;
 ```
