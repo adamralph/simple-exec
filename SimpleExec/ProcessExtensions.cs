@@ -33,6 +33,6 @@ namespace SimpleExec
         }
 
         public static void Throw(this Process process) =>
-            throw new Exception($"The process exited with code {process.ExitCode}.");
+            throw new CommandException($"The process exited with code {process.ExitCode}.");
     }
 }

@@ -52,7 +52,7 @@ var output4 = ReadAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 
 ### Exceptions
 
-If the command has a non-zero exit code, an exception is thrown with a message in the form of:
+If the command has a non-zero exit code, a `CommandException` is thrown with a message in the form of:
 
 ```C#
 $"The process exited with code {process.ExitCode}."

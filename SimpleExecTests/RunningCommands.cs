@@ -39,8 +39,8 @@ namespace SimpleExecTests
                 .x(() => exception = Record.Exception(
                     () => Command.Run("dotnet", $"exec {Tester.Path} error hello world")));
 
-            "Then an exception is thrown"
-                .x(() => Assert.NotNull(exception));
+            "Then a command exception is thrown"
+                .x(() => Assert.IsType<CommandException>(exception));
 
             "And the exception message contains the exit code"
                 .x(() => Assert.Contains("code 1", exception.Message));
@@ -63,8 +63,8 @@ namespace SimpleExecTests
                 .x(async () => exception = await Record.ExceptionAsync(
                     () => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world")));
 
-            "Then an exception is thrown"
-                .x(() => Assert.NotNull(exception));
+            "Then a command exception is thrown"
+                .x(() => Assert.IsType<CommandException>(exception));
 
             "And the exception message contains the exit code"
                 .x(() => Assert.Contains("code 1", exception.Message));

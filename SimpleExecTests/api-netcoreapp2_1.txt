@@ -8,4 +8,10 @@ namespace SimpleExec
         public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
         public static System.Threading.Tasks.Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
     }
+    public class CommandException : System.Exception
+    {
+        public CommandException() { }
+        public CommandException(string message) { }
+        public CommandException(string message, System.Exception innerException) { }
+    }
 }
