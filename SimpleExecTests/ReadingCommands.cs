@@ -1,6 +1,5 @@
 namespace SimpleExecTests
 {
-    using System;
     using SimpleExec;
     using SimpleExecTests.Infra;
     using Xbehave;
@@ -9,7 +8,7 @@ namespace SimpleExecTests
     public class ReadingCommands
     {
         [Scenario]
-        public void ReadingACommand(Exception exception, string output)
+        public void ReadingACommand(string output)
         {
             "When I read a succeeding command"
                 .x(() => output = Command.Read("dotnet", $"exec {Tester.Path} hello world"));
@@ -19,7 +18,7 @@ namespace SimpleExecTests
         }
 
         [Scenario]
-        public void ReadingACommandAsync(Exception exception, string output)
+        public void ReadingACommandAsync(string output)
         {
             "When I read a succeeding command"
                 .x(async () => output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world"));
