@@ -8,7 +8,7 @@
     <MinVerMajorMinor>4.0</MinVerMajorMinor>
     <NoWarn>$(NoWarn);NU5105</NoWarn>
     <PackageIconUrl>https://raw.githubusercontent.com/adamralph/simple-exec/master/assets/simple-exec.png</PackageIconUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageLicenseUrl>https://github.com/adamralph/simple-exec/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/adamralph/simple-exec/milestones?state=closed</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
