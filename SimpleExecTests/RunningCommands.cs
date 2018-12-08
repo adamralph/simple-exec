@@ -40,10 +40,10 @@ namespace SimpleExecTests
                     () => Command.Run("dotnet", $"exec {Tester.Path} error hello world")));
 
             "Then a command exception is thrown"
-                .x(() => Assert.IsType<CommandException>(exception));
+                .x(() => Assert.IsType<NonZeroExitCodeException>(exception));
 
-            "And the exception message contains the exit code"
-                .x(() => Assert.Contains("code 1", exception.Message));
+            "And the exception contains the exit code"
+                .x(() => Assert.Equal(1, ((NonZeroExitCodeException)exception).ExitCode));
         }
 
         [Scenario]
@@ -64,10 +64,10 @@ namespace SimpleExecTests
                     () => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world")));
 
             "Then a command exception is thrown"
-                .x(() => Assert.IsType<CommandException>(exception));
+                .x(() => Assert.IsType<NonZeroExitCodeException>(exception));
 
-            "And the exception message contains the exit code"
-                .x(() => Assert.Contains("code 1", exception.Message));
+            "And the exception contains the exit code"
+                .x(() => Assert.Equal(1, ((NonZeroExitCodeException)exception).ExitCode));
         }
     }
 }

@@ -8,10 +8,16 @@ namespace SimpleExec
         public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
         public static System.Threading.Tasks.Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
     }
+    [System.ObsoleteAttribute("Use NonZeroExitCodeException instead. This type will be removed in 5.0.0.")]
     public class CommandException : System.Exception
     {
         public CommandException() { }
         public CommandException(string message) { }
         public CommandException(string message, System.Exception innerException) { }
+    }
+    public class NonZeroExitCodeException : SimpleExec.CommandException
+    {
+        public NonZeroExitCodeException(int exitCode) { }
+        public int ExitCode { get; }
     }
 }
