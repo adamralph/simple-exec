@@ -1,7 +1,6 @@
 version: '{build}'
 image:
 - Visual Studio 2017
-- Ubuntu
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -13,10 +12,8 @@ environment:
   MINVERBUILDMETADATA: build.%APPVEYOR_BUILD_NUMBER%
 init:
 - cmd: dotnet --info
-- sh: dotnet --info
 build_script:
 - cmd: ./build.cmd
-- sh: ./build.sh
 test: off
 artifacts:
 - path: ./**/*.nupkg
