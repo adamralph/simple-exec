@@ -1,18 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="PublicApiGenerator" Version="8.0.1" />
     <PackageReference Include="Xbehave" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
-    <PackageReference Include="PublicApiGenerator" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
