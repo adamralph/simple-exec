@@ -4,7 +4,6 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <Description>Runs external commands.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IsTestProject>false</IsTestProject>
     <LangVersion>latest</LangVersion>
     <MinVerMinimumMajorMinor>4.0</MinVerMinimumMajorMinor>
     <NoWarn>$(NoWarn);NU5105</NoWarn>
