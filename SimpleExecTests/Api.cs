@@ -1,4 +1,3 @@
-#if NETCOREAPP2_1
 namespace SimpleExecTests
 {
     using System;
@@ -12,8 +11,9 @@ namespace SimpleExecTests
         [Fact]
         public void IsUnchanged() =>
             AssertFile.Contains(
-                "../../../api-netcoreapp2_1.txt",
+#if NETCOREAPP2_2
+                "../../../api-netcoreapp2_2.txt",
+#endif
                 ApiGenerator.GeneratePublicApi(typeof(Command).Assembly).Replace(Environment.NewLine, "\r\n"));
     }
 }
-#endif

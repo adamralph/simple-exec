@@ -4,9 +4,9 @@ namespace SimpleExecTests.Infra
     {
         public static string Path =>
 #if DEBUG
-            $"../../../../SimpleExecTester/bin/Debug/netcoreapp2.1/SimpleExecTester.dll";
+            $"../../../../SimpleExecTester/bin/Debug/netcoreapp2.2/SimpleExecTester.dll";
 #else
-            $"../../../../SimpleExecTester/bin/Release/netcoreapp2.1/SimpleExecTester.dll";
+            $"../../../../SimpleExecTester/bin/Release/netcoreapp2.2/SimpleExecTester.dll";
 #endif
     }
 }
