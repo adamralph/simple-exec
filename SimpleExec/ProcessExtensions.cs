@@ -21,7 +21,7 @@ namespace SimpleExec
             await tcs.Task.ConfigureAwait(false);
         }
 
-        private static void EchoAndStart(this Process process, bool noEcho)
+        public static void EchoAndStart(this Process process, bool noEcho)
         {
             if (!noEcho)
             {

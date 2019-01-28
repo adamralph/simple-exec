@@ -82,14 +82,19 @@ namespace SimpleExec
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                process.Run(noEcho);
+                process.EchoAndStart(noEcho);
+
+                var processWaiter = Task.Factory.StartNew(() => process.WaitForExit());
+                var outputReader = Task.Factory.StartNew(() => process.StandardOutput.ReadToEnd());
+
+                Task.WaitAll(processWaiter, outputReader);
 
                 if (process.ExitCode != 0)
                 {
                     process.Throw();
                 }
 
-                return process.StandardOutput.ReadToEnd();
+                return outputReader.Result;
             }
         }
 
@@ -115,14 +120,19 @@ namespace SimpleExec
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                await process.RunAsync(noEcho).ConfigureAwait(false);
+
+                var processWaiter = process.RunAsync(noEcho);
+
+                var outputReader = Task.Factory.StartNew(() => process.StandardOutput.ReadToEnd());
+
+                await processWaiter.ConfigureAwait(false);
 
                 if (process.ExitCode != 0)
                 {
                     process.Throw();
                 }
 
-                return await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+                return await outputReader.ConfigureAwait(false);
             }
         }
     }
