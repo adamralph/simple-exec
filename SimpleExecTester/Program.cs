@@ -9,6 +9,11 @@ namespace SimpleExecTester
         {
             Console.Out.WriteLine($"SimpleExecTester (stdout): {string.Join(" ", args)}");
 
+            if (args.Contains("large"))
+            {
+                Console.WriteLine(new string('x', (int)Math.Pow(2, 12)));
+            }
+
             if (args.Contains("error"))
             {
                 Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");

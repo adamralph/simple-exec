@@ -82,14 +82,18 @@ namespace SimpleExec
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                process.Run(noEcho);
+
+                var runProcess = process.RunAsync(noEcho);
+                var readOutput = process.StandardOutput.ReadToEndAsync();
+
+                Task.WaitAll(runProcess, readOutput);
 
                 if (process.ExitCode != 0)
                 {
                     process.Throw();
                 }
 
-                return process.StandardOutput.ReadToEnd();
+                return readOutput.Result;
             }
         }
 
@@ -115,14 +119,18 @@ namespace SimpleExec
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true);
-                await process.RunAsync(noEcho).ConfigureAwait(false);
+
+                var runProcess = process.RunAsync(noEcho);
+                var readOutput = process.StandardOutput.ReadToEndAsync();
+
+                await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
 
                 if (process.ExitCode != 0)
                 {
                     process.Throw();
                 }
 
-                return await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+                return readOutput.Result;
             }
         }
     }
