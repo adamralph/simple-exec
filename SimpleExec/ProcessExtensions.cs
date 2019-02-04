@@ -12,13 +12,13 @@ namespace SimpleExec
             process.WaitForExit();
         }
 
-        public static async Task RunAsync(this Process process, bool noEcho)
+        public static Task RunAsync(this Process process, bool noEcho)
         {
-            process.EnableRaisingEvents = true;
             var tcs = new TaskCompletionSource<object>();
             process.Exited += (s, e) => tcs.SetResult(null);
+            process.EnableRaisingEvents = true;
             process.EchoAndStart(noEcho);
-            await tcs.Task.ConfigureAwait(false);
+            return tcs.Task;
         }
 
         private static void EchoAndStart(this Process process, bool noEcho)
