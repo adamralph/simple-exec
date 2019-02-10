@@ -10,7 +10,7 @@ namespace SimpleExec
                 ? new System.Diagnostics.ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = $"/c \"{name}\" {args}",
+                    Arguments = $"/c \"\"{name}\" {args}\"",
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardError = false,
