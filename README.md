@@ -46,8 +46,8 @@ await RunAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 var output1 = Read("foo.exe");
 var output2 = Read("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 
-var output3 = ReadAsync("foo.exe");
-var output4 = ReadAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
+var output3 = await ReadAsync("foo.exe");
+var output4 = await ReadAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
 ```
 
 ### Exceptions
