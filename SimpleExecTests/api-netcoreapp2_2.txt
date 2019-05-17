@@ -3,10 +3,10 @@ namespace SimpleExec
 {
     public class static Command
     {
-        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
-        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
-        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
-        public static System.Threading.Tasks.Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False) { }
+        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, bool windowsPassthrough = False) { }
+        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, bool windowsPassthrough = False) { }
+        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, bool windowsPassthrough = False) { }
+        public static System.Threading.Tasks.Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, bool windowsPassthrough = False) { }
     }
     public class NonZeroExitCodeException : System.Exception
     {
