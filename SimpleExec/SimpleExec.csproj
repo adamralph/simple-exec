@@ -5,7 +5,7 @@
     <Description>Runs external commands.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
-    <MinVerMinimumMajorMinor>4.0</MinVerMinimumMajorMinor>
+    <MinVerMinimumMajorMinor>6.0</MinVerMinimumMajorMinor>
     <PackageIconUrl>https://raw.githubusercontent.com/adamralph/simple-exec/master/assets/simple-exec.png</PackageIconUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
