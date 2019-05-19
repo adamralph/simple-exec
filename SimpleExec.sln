@@ -7,23 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleExec", "SimpleExec\Si
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleExecTests", "SimpleExecTests\SimpleExecTests.csproj", "{6FB1F0CF-FA6C-4868-846E-9481F4692A68}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA9F0E3A-20FD-4363-9B08-B52D3DC128D0}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
-		build.cmd = build.cmd
-		LICENSE = LICENSE
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleExecTester", "SimpleExecTester\SimpleExecTester.csproj", "{65DE7849-D516-4FB5-865D-A6E6B2E5BA3D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{B1122BDF-5F83-4039-ADF1-364477B15E8A}"
-	ProjectSection(SolutionItems) = preProject
-		assets\simple-exec.png = assets\simple-exec.png
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
