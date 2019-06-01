@@ -5,12 +5,12 @@ namespace SimpleExec
     internal static class ProcessStartInfo
     {
         public static System.Diagnostics.ProcessStartInfo Create(
-            string name, string args, string workingDirectory, bool captureOutput) =>
+            string name, string args, string workingDirectory, bool captureOutput, string windowsName, string windowsArgs) =>
             (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 ? new System.Diagnostics.ProcessStartInfo
                 {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c \"\"{name}\" {args}\"",
+                    FileName = windowsName ?? name,
+                    Arguments = windowsArgs ?? args,
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardError = false,
