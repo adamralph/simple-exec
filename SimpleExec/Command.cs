@@ -1,5 +1,6 @@
 namespace SimpleExec
 {
+    using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
 
@@ -23,12 +24,12 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null)
+        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, Action<string> outputDataReceived = null, Action<string> errorDataReceived = null)
         {
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs);
-                process.Run(noEcho);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, outputDataReceived!=null, errorDataReceived != null, windowsName, windowsArgs);
+                process.Run(noEcho, outputDataReceived, errorDataReceived);
 
                 if (process.ExitCode != 0)
                 {
@@ -53,12 +54,12 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static async Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null)
+        public static async Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, Action<string> outputDataReceived = null, Action<string> errorDataReceived = null)
         {
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs);
-                await process.RunAsync(noEcho).ConfigureAwait(false);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, outputDataReceived != null, errorDataReceived != null, windowsName, windowsArgs);
+                await process.RunAsync(noEcho, outputDataReceived, errorDataReceived).ConfigureAwait(false);
 
                 if (process.ExitCode != 0)
                 {
@@ -87,9 +88,9 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, false, windowsName, windowsArgs);
 
-                var runProcess = process.RunAsync(noEcho);
+                var runProcess = process.RunAsync(noEcho, null, null);
                 var readOutput = process.StandardOutput.ReadToEndAsync();
 
                 Task.WaitAll(runProcess, readOutput);
@@ -126,9 +127,9 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, false, windowsName, windowsArgs);
 
-                var runProcess = process.RunAsync(noEcho);
+                var runProcess = process.RunAsync(noEcho, null, null);
                 var readOutput = process.StandardOutput.ReadToEndAsync();
 
                 await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);

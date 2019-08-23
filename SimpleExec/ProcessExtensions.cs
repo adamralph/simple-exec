@@ -6,18 +6,62 @@ namespace SimpleExec
 
     internal static class ProcessExtensions
     {
-        public static void Run(this Process process, bool noEcho)
+        public static void Run(this Process process, bool noEcho, Action<string> outputDataReceived, Action<string> errorDataReceived)
         {
+            if (outputDataReceived != null)
+            {
+                process.OutputDataReceived += (o, e) => outputDataReceived(e.Data);
+                process.EnableRaisingEvents = true;
+            }
+
+            if (errorDataReceived != null)
+            {
+                process.ErrorDataReceived += (o, e) => errorDataReceived(e.Data);
+                process.EnableRaisingEvents = true;
+            }
+
             process.EchoAndStart(noEcho);
+
+            if (outputDataReceived != null)
+            {
+                process.BeginOutputReadLine();
+            }
+
+            if (errorDataReceived != null)
+            {
+                process.BeginErrorReadLine();
+            }
+
             process.WaitForExit();
         }
 
-        public static Task RunAsync(this Process process, bool noEcho)
+        public static Task RunAsync(this Process process, bool noEcho, Action<string> outputDataReceived, Action<string> errorDataReceived)
         {
+            if (outputDataReceived != null)
+            {
+                process.OutputDataReceived += (o, e) => outputDataReceived(e.Data);
+            }
+
+            if (errorDataReceived != null)
+            {
+                process.ErrorDataReceived += (o, e) => errorDataReceived(e.Data);
+            }
+
             var tcs = new TaskCompletionSource<object>();
             process.Exited += (s, e) => tcs.SetResult(null);
             process.EnableRaisingEvents = true;
             process.EchoAndStart(noEcho);
+
+            if (outputDataReceived != null)
+            {
+                process.BeginOutputReadLine();
+            }
+
+            if (errorDataReceived != null)
+            {
+                process.BeginErrorReadLine();
+            }
+
             return tcs.Task;
         }
 
