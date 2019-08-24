@@ -18,7 +18,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <exception cref="CommandException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -48,7 +48,7 @@ namespace SimpleExec
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
-        /// <exception cref="CommandException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -78,7 +78,7 @@ namespace SimpleExec
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <returns>A <see cref="string"/> representing the contents of standard output (stdout).</returns>
-        /// <exception cref="CommandException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -114,10 +114,10 @@ namespace SimpleExec
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <returns>
-        /// A <see cref="Task{string}"/> representing the asynchronous running of the command and reading of standard output (stdout).
-        /// The task result contains the contents of standard output (stdout).
+        /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
+        /// The task result is a <see cref="string"/> representing the contents of standard output (stdout)
         /// </returns>
-        /// <exception cref="CommandException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
