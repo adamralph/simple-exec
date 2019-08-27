@@ -6,26 +6,26 @@ namespace SimpleExec
 
     internal static class ProcessExtensions
     {
-        public static void Run(this Process process, bool noEcho)
+        public static void Run(this Process process, bool noEcho, string echoPrefix)
         {
-            process.EchoAndStart(noEcho);
+            process.EchoAndStart(noEcho, echoPrefix);
             process.WaitForExit();
         }
 
-        public static Task RunAsync(this Process process, bool noEcho)
+        public static Task RunAsync(this Process process, bool noEcho, string echoPrefix)
         {
             var tcs = new TaskCompletionSource<object>();
             process.Exited += (s, e) => tcs.SetResult(null);
             process.EnableRaisingEvents = true;
-            process.EchoAndStart(noEcho);
+            process.EchoAndStart(noEcho, echoPrefix);
             return tcs.Task;
         }
 
-        private static void EchoAndStart(this Process process, bool noEcho)
+        private static void EchoAndStart(this Process process, bool noEcho, string echoPrefix)
         {
             if (!noEcho)
             {
-                var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{process.StartInfo.FileName} {process.StartInfo.Arguments}";
+                var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
                 Console.Error.WriteLine(message);
             }
 
