@@ -1,7 +1,6 @@
 namespace SimpleExecTests
 {
     using System;
-    using System.IO;
     using SimpleExec;
     using SimpleExecTests.Infra;
     using Xbehave;
@@ -10,7 +9,7 @@ namespace SimpleExecTests
     public class EchoingCommands
     {
         [Scenario]
-        public void EchoingACommand(TextWriter originalOutput, TextWriter output)
+        public void EchoingACommand()
         {
             "Given console output is being captured"
                 .x(() => Console.SetError(Capture.Error));
