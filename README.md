@@ -3,8 +3,7 @@
 # SimpleExec
 
 _[![NuGet version](https://img.shields.io/nuget/v/SimpleExec.svg?style=flat)](https://www.nuget.org/packages/SimpleExec)_
-_[![Appveyor build status](https://ci.appveyor.com/api/projects/status/sagnyx3o2x0bidm1/branch/master?svg=true)](https://ci.appveyor.com/project/adamralph/simple-exec/branch/master)_
-_[![Travis CI build status](https://img.shields.io/travis/adamralph/simple-exec/master.svg?logo=travis)](https://travis-ci.org/adamralph/simple-exec/branches)_
+_[![Build status](https://github.com/adamralph/simple-exec/workflows/.github/workflows/ci.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions)_
 
 SimpleExec is a [.NET library](https://www.nuget.org/packages/SimpleExec) that runs external commands. It wraps [`System.Diagnostics.Process`](https://apisof.net/catalog/System.Diagnostics.Process) to make things easier.
 
