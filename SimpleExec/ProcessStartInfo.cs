@@ -6,7 +6,7 @@ namespace SimpleExec
     {
         public static System.Diagnostics.ProcessStartInfo Create(
             string name, string args, string workingDirectory, bool captureOutput, string windowsName, string windowsArgs) =>
-            (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? new System.Diagnostics.ProcessStartInfo
                 {
                     FileName = windowsName ?? name,
