@@ -15,7 +15,7 @@ namespace SimpleExecTests
                 .x(() => Console.SetError(Capture.Error));
 
             "When a command is run"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: false));
+                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}"));
 
             "Then the command is echoed"
                 .x(c => Assert.Contains(c.Step.Scenario.DisplayName, Capture.Error.ToString()));

@@ -8,6 +8,6 @@ namespace SimpleExec
         {
         }
 
-        public static string Value = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
+        public static readonly string Value = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
     }
 }
