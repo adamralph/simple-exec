@@ -15,7 +15,7 @@ namespace SimpleExec
         public static Task RunAsync(this Process process, bool noEcho, string echoPrefix)
         {
             var tcs = new TaskCompletionSource<object>();
-            process.Exited += (s, e) => tcs.SetResult(null);
+            process.Exited += (s, e) => tcs.SetResult(default);
             process.EnableRaisingEvents = true;
             process.EchoAndStart(noEcho, echoPrefix);
             return tcs.Task;
