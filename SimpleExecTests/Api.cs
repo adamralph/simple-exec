@@ -11,9 +11,7 @@ namespace SimpleExecTests
         [Fact]
         public void IsUnchanged() =>
             AssertFile.Contains(
-#if NETCOREAPP2_2
-                "../../../api-netcoreapp2_2.txt",
-#endif
+                "../../../api.txt",
                 ApiGenerator.GeneratePublicApi(typeof(Command).Assembly).Replace(Environment.NewLine, "\r\n"));
     }
 }
