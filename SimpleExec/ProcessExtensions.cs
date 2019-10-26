@@ -25,7 +25,7 @@ namespace SimpleExec
         {
             if (!noEcho)
             {
-                var message = $"{(process.StartInfo.WorkingDirectory == "" ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
+                var message = $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
                 Console.Error.WriteLine(message);
             }
 
