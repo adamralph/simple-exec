@@ -2,6 +2,7 @@ namespace SimpleExecTests.Infra
 {
     using System;
     using System.IO;
+    using System.Text;
 
     public static class AssertFile
     {
@@ -16,7 +17,7 @@ namespace SimpleExecTests.Infra
                 Path.GetDirectoryName(expectedPath),
                 Path.GetFileNameWithoutExtension(expectedPath) + "-actual" + Path.GetExtension(expectedPath));
 
-            File.WriteAllText(actualPath, actual);
+            File.WriteAllText(actualPath, actual, Encoding.UTF8);
 
             throw new Exception($"{actualPath} does not contain the contents of {expectedPath}.");
         }
