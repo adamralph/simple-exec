@@ -5,7 +5,7 @@
     <Description>Runs external commands.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>https://raw.githubusercontent.com/adamralph/simple-exec/master/assets/simple-exec.png</PackageIconUrl>
+    <PackageIcon>simple-exec.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/adamralph/simple-exec/milestones?state=closed</PackageReleaseNotes>
@@ -17,6 +17,10 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19367-01" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6" PrivateAssets="All" />
     <PackageReference Include="MinVer" Version="2.0.0-rc.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../assets/simple-exec.png" Pack="true" PackagePath="/"/>
   </ItemGroup>
 
 </Project>
