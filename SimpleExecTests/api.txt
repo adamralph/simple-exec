@@ -3,10 +3,10 @@ namespace SimpleExec
 {
     public class static Command
     {
-        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null) { }
-        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null) { }
-        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null) { }
-        public static System.Threading.Tasks.Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null) { }
+        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) { }
+        public static System.Threading.Tasks.Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) { }
+        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) { }
+        public static System.Threading.Tasks.Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = False, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) { }
     }
     public class NonZeroExitCodeException : System.Exception
     {
