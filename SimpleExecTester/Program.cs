@@ -20,6 +20,8 @@ namespace SimpleExecTester
                 return 1;
             }
 
+            Console.WriteLine($"foo={Environment.GetEnvironmentVariable("foo")}");
+
             return 0;
         }
     }
