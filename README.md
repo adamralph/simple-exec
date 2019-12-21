@@ -25,11 +25,6 @@ Run("foo.exe", "arg1 arg2");
 
 ## API
 
-Each method has:
-
-- One mandatory parameter: `string name`.
-- Three optional parameters: `string args`, `string workingDirectory`, and `bool noEcho`.
-
 ### Run
 
 ```C#
