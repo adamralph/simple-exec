@@ -12,6 +12,6 @@ namespace SimpleExecTests
         public void IsUnchanged() =>
             AssertFile.Contains(
                 "../../../api.txt",
-                ApiGenerator.GeneratePublicApi(typeof(Command).Assembly).Replace(Environment.NewLine, "\r\n"));
+                typeof(Command).Assembly.GeneratePublicApi().Replace(Environment.NewLine, "\r\n"));
     }
 }
