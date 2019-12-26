@@ -8,7 +8,7 @@
     <PackageIcon>simple-exec.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/adamralph/simple-exec/milestones?state=closed</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/adamralph/simple-exec/blob/master/CHANGELOG.md</PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
