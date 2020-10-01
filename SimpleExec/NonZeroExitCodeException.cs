@@ -16,7 +16,7 @@ namespace SimpleExec
         public NonZeroExitCodeException(int exitCode) : base($"The command exited with code {exitCode}.") => this.ExitCode = exitCode;
 
         /// <summary>
-        /// The exit code of the command.
+        /// Gets the exit code of the command.
         /// </summary>
         public int ExitCode { get; }
     }

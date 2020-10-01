@@ -1,9 +1,9 @@
 namespace SimpleExecTests
 {
     using System;
+    using PublicApiGenerator;
     using SimpleExec;
     using SimpleExecTests.Infra;
-    using PublicApiGenerator;
     using Xunit;
 
     public class Api

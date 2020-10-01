@@ -25,7 +25,7 @@ namespace SimpleExecTests
         public void ReadingACommandAsync(bool largeOutput, string output)
         {
             ("When I read a succeeding command" + (largeOutput ? " with large output" : ""))
-                .x(async () => output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world"+ (largeOutput ? " large" : "")));
+                .x(async () => output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : "")));
 
             "Then I see the command output"
                 .x(() => Assert.Contains("hello world", output));
