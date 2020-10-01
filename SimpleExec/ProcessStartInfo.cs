@@ -17,7 +17,7 @@ namespace SimpleExec
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardError = false,
-                    RedirectStandardOutput = captureOutput
+                    RedirectStandardOutput = captureOutput,
                 }
                 : new System.Diagnostics.ProcessStartInfo
                 {
@@ -26,7 +26,7 @@ namespace SimpleExec
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardError = false,
-                    RedirectStandardOutput = captureOutput
+                    RedirectStandardOutput = captureOutput,
                 };
 
             configureEnvironment?.Invoke(startInfo.Environment);

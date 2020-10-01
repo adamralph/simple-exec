@@ -125,7 +125,7 @@ namespace SimpleExec
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
-        /// The task result is a <see cref="string"/> representing the contents of standard output (stdout)
+        /// The task result is a <see cref="string"/> representing the contents of standard output (stdout).
         /// </returns>
         /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
