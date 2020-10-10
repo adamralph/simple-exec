@@ -4,7 +4,7 @@
 
 ### Enhancements
 
-- [#174: Support passing environment vars to processes](https://github.com/adamralph/simple-exec/issues/174)
+- [#174: Support passing environment variables to processes](https://github.com/adamralph/simple-exec/issues/174)
 
 ## 6.1.0
 
@@ -30,7 +30,7 @@
 
 ### Enhancements
 
-- [#98: upgrade sourcelink to 1.0.0-beta2-18618-05](https://github.com/adamralph/simple-exec/pull/98)
+- [#98: upgrade Source Link to 1.0.0-beta2-18618-05](https://github.com/adamralph/simple-exec/pull/98)
 - [#100: **[BREAKING]** Use cmd.exe on Windows](https://github.com/adamralph/simple-exec/issues/100)
 - [#111: Handle large output when reading](https://github.com/adamralph/simple-exec/pull/111)
 
@@ -79,7 +79,7 @@
 
 ### Enhancements
 
-- [#31: add netstandard2.0 target](https://github.com/adamralph/simple-exec/pull/31)
+- [#31: add .NET Standard 2.0 target](https://github.com/adamralph/simple-exec/pull/31)
 
 ## 2.1.0
 
@@ -102,4 +102,3 @@
 ### Enhancements
 
 - [#1: Run commands with args and optional working directory](https://github.com/adamralph/simple-exec/issues/1)
-
