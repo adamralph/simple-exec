@@ -1,0 +1,8 @@
+SimpleExec.Command
+SimpleExec.NonZeroExitCodeException
+SimpleExec.NonZeroExitCodeException.ExitCode.get -> int
+SimpleExec.NonZeroExitCodeException.NonZeroExitCodeException(int exitCode) -> void
+static SimpleExec.Command.Read(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) -> string
+static SimpleExec.Command.ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) -> System.Threading.Tasks.Task<string>
+static SimpleExec.Command.Run(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) -> void
+static SimpleExec.Command.RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null) -> System.Threading.Tasks.Task
