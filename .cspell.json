@@ -1,0 +1,66 @@
+{
+  "version": "0.1",
+  "language": "en-GB",
+  "languageSettings": [
+    {
+      "languageId": "bash",
+      "words": [
+        "adamralph",
+        "nologo",
+        "nupkg",
+        "pipefail"
+      ]
+    },
+    {
+      "languageId": "csharp",
+      "words": [
+        "Xbehave",
+        "Xunit"
+      ]
+    },
+    {
+      "languageId": "cmd",
+      "words": [
+        "errorlevel",
+        "nologo"
+      ]
+    },
+    {
+      "languageId": "csproj",
+      "words": [
+        "netcoreapp",
+        "netstandard",
+        "visualstudio",
+        "Xbehave",
+        "xunit"
+      ]
+    }
+  ],
+  "overrides": [
+    {
+      "filename": "{*.cmd,*.cs,*.csproj,*.sh}",
+      "language": "en-US"
+    },
+    {
+      "filename": "*.cmd",
+      "languageId": "cmd"
+    },
+    {
+      "filename": "*.csproj",
+      "languageId": "csproj"
+    },
+    {
+      "filename": "{.cspell.json,PublicAPI.*.txt}",
+      "enabled": false
+    },
+    {
+      "filename": "*.sh",
+      "languageId": "bash"
+    }
+  ],
+  "words": [
+    "Cresnar",
+    "MyGet",
+    "NuGet"
+  ]
+}
