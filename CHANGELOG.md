@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.3.0
+
+### Enhancements
+
+- [#183: upgrade to SourceLink 1.0.0](https://github.com/adamralph/simple-exec/pull/183)
+- [#222: Add support for the CreateNoWindow option](https://github.com/adamralph/simple-exec/issues/222)
+
 ## 6.2.0
 
 ### Enhancements
