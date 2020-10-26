@@ -7,7 +7,7 @@ namespace SimpleExec
     internal static class ProcessStartInfo
     {
         public static System.Diagnostics.ProcessStartInfo Create(
-            string name, string args, string workingDirectory, bool captureOutput, string windowsName, string windowsArgs, Action<IDictionary<string, string>> configureEnvironment)
+            string name, string args, string workingDirectory, bool captureOutput, string windowsName, string windowsArgs, Action<IDictionary<string, string>> configureEnvironment, bool createNoWindow)
         {
             var startInfo = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? new System.Diagnostics.ProcessStartInfo
@@ -18,6 +18,7 @@ namespace SimpleExec
                     UseShellExecute = false,
                     RedirectStandardError = false,
                     RedirectStandardOutput = captureOutput,
+                    CreateNoWindow = createNoWindow,
                 }
                 : new System.Diagnostics.ProcessStartInfo
                 {
@@ -27,6 +28,7 @@ namespace SimpleExec
                     UseShellExecute = false,
                     RedirectStandardError = false,
                     RedirectStandardOutput = captureOutput,
+                    CreateNoWindow = createNoWindow,
                 };
 
             configureEnvironment?.Invoke(startInfo.Environment);
