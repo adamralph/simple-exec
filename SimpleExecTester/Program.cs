@@ -2,6 +2,7 @@ namespace SimpleExecTester
 {
     using System;
     using System.Linq;
+    using System.Threading;
 
     internal class Program
     {
@@ -18,6 +19,12 @@ namespace SimpleExecTester
             {
                 Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");
                 return 1;
+            }
+
+            if (args.Contains("sleep"))
+            {
+                Thread.Sleep(Timeout.Infinite);
+                return 0;
             }
 
             Console.WriteLine($"foo={Environment.GetEnvironmentVariable("foo")}");
