@@ -54,7 +54,7 @@ namespace SimpleExec
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-        /// /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
         /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
