@@ -1,16 +1,54 @@
 namespace SimpleExec
 {
     using System;
+    using System.Text;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
 
     internal static class ProcessExtensions
     {
-        public static void Run(this Process process, bool noEcho, string echoPrefix)
+        public static string Run(this Process process, bool noEcho, string echoPrefix, bool readStandardOutput, CancellationToken cancellationToken)
         {
-            process.EchoAndStart(noEcho, echoPrefix);
-            process.WaitForExit();
+            using (var resetEvent = new ManualResetEventSlim(false))
+            {
+                StringBuilder stringBuilder = null;
+                process.Exited += (s, e) => resetEvent.SafeSet();
+                if(readStandardOutput)
+                {
+                    stringBuilder = new StringBuilder();
+                    process.OutputDataReceived += (s, e) => stringBuilder.AppendLine(e.Data);
+                }
+                process.EnableRaisingEvents = true;
+                process.EchoAndStart(noEcho, echoPrefix);
+                if (readStandardOutput)
+                {
+                    process.BeginOutputReadLine();
+                }
+
+                try
+                {
+                    resetEvent.Wait(cancellationToken);
+                    return stringBuilder?.ToString();
+                }
+                catch (OperationCanceledException)
+                {
+                    // best effort only, since exceptions may be thrown for all kinds of reasons
+                    // and the _same exception_ may be thrown for all kinds of reasons
+                    // System.Diagnostics.Process is "fine"
+                    try
+                    {
+                        process.Kill();
+                    }
+#pragma warning disable CA1031 // Do not catch general exception types
+                    catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                    {
+                    }
+
+                    throw;
+                }
+            }
         }
 
         public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
@@ -60,5 +98,17 @@ namespace SimpleExec
 
         public static void Throw(this Process process) =>
             throw new NonZeroExitCodeException(process.ExitCode);
+
+        private static void SafeSet(this ManualResetEventSlim syncEvent)
+        {
+            try
+            {
+                syncEvent.Set();
+            }
+            catch (ObjectDisposedException)
+            {
+                // intentionally ignored
+            }
+        }
     }
 }
