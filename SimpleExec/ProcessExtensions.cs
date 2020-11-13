@@ -15,34 +15,18 @@ namespace SimpleExec
 
         public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
-            var tcs = new TaskCompletionSource<object>();
-
-            using (var started = new SemaphoreSlim(0, 1))
-            using (var ranToCompletionOrCanceled = new SemaphoreSlim(1, 1))
-            using (var cancellation = cancellationToken.Register(() =>
+            var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
+            using (cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken), useSynchronizationContext: false))
             {
-                if (CatchDisposed(() => started.Wait()))
-                {
-                    return;
-                }
-
-                if (tcs.Task.Status == TaskStatus.RanToCompletion)
-                {
-                    return;
-                }
-
-                if (CatchDisposed(() => ranToCompletionOrCanceled.Wait()))
-                {
-                    return;
-                }
-
+                process.Exited += (s, e) => tcs.TrySetResult(default);
+                process.EnableRaisingEvents = true;
+                process.EchoAndStart(noEcho, echoPrefix);
                 try
                 {
-                    if (tcs.Task.Status == TaskStatus.RanToCompletion)
-                    {
-                        return;
-                    }
-
+                    await tcs.Task.ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
                     // best effort only, since exceptions may be thrown for all kinds of reasons
                     // and the _same exception_ may be thrown for all kinds of reasons
                     // System.Diagnostics.Process is "fine"
@@ -54,58 +38,11 @@ namespace SimpleExec
                     catch
 #pragma warning restore CA1031 // Do not catch general exception types
                     {
+                        // ignored
                     }
 
-                    // SetCanceled(cancellationToken) would make more sense here
-                    // but it only exists from .NET 5 onwards
-                    // see https://github.com/dotnet/runtime/issues/30862
-                    // however, we know TrySetCanceled will succeed
-                    // because we have full control of the underlying task
-                    tcs.TrySetCanceled(cancellationToken);
+                    throw;
                 }
-                finally
-                {
-                    CatchDisposed(() => ranToCompletionOrCanceled.Release());
-                }
-            }))
-            {
-                process.Exited += (s, e) =>
-                {
-                    if (CatchDisposed(() => cancellation.Dispose()))
-                    {
-                        return;
-                    }
-
-                    if (tcs.Task.Status == TaskStatus.Canceled)
-                    {
-                        return;
-                    }
-
-                    if (CatchDisposed(() => ranToCompletionOrCanceled.Wait()))
-                    {
-                        return;
-                    }
-
-                    try
-                    {
-                        if (tcs.Task.Status == TaskStatus.Canceled)
-                        {
-                            return;
-                        }
-
-                        tcs.SetResult(default);
-                    }
-                    finally
-                    {
-                        CatchDisposed(() => ranToCompletionOrCanceled.Release());
-                    }
-                };
-
-                process.EnableRaisingEvents = true;
-                process.EchoAndStart(noEcho, echoPrefix);
-                started.Release();
-
-                await tcs.Task.ConfigureAwait(false);
             }
         }
 
@@ -122,19 +59,5 @@ namespace SimpleExec
 
         public static void Throw(this Process process) =>
             throw new NonZeroExitCodeException(process.ExitCode);
-
-        private static bool CatchDisposed(Action action)
-        {
-            try
-            {
-                action();
-            }
-            catch (ObjectDisposedException)
-            {
-                return true;
-            }
-
-            return false;
-        }
     }
 }
