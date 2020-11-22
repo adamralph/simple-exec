@@ -2,6 +2,7 @@ namespace SimpleExec
 {
     using System;
     using System.Diagnostics;
+    using System.Threading;
     using System.Threading.Tasks;
 
     internal static class ProcessExtensions
@@ -12,13 +13,38 @@ namespace SimpleExec
             process.WaitForExit();
         }
 
-        public static Task RunAsync(this Process process, bool noEcho, string echoPrefix)
+        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
-            var tcs = new TaskCompletionSource<object>();
-            process.Exited += (s, e) => tcs.SetResult(default);
-            process.EnableRaisingEvents = true;
-            process.EchoAndStart(noEcho, echoPrefix);
-            return tcs.Task;
+            var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            using (cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken), useSynchronizationContext: false))
+            {
+                process.Exited += (s, e) => tcs.TrySetResult(default);
+                process.EnableRaisingEvents = true;
+                process.EchoAndStart(noEcho, echoPrefix);
+
+                try
+                {
+                    await tcs.Task.ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    // best effort only, since exceptions may be thrown for all kinds of reasons
+                    // and the _same exception_ may be thrown for all kinds of reasons
+                    // System.Diagnostics.Process is "fine"
+                    try
+                    {
+                        process.Kill();
+                    }
+#pragma warning disable CA1031 // Do not catch general exception types
+                    catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                    {
+                    }
+
+                    throw;
+                }
+            }
         }
 
         private static void EchoAndStart(this Process process, bool noEcho, string echoPrefix)
