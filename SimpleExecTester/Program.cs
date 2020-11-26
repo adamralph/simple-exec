@@ -23,7 +23,7 @@ namespace SimpleExecTester
 
             if (args.Contains("sleep"))
             {
-                Thread.Sleep(Timeout.Infinite);
+                Thread.Sleep(TimeSpan.FromSeconds(3));
                 return 0;
             }
 
