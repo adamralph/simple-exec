@@ -53,15 +53,27 @@ namespace SimpleExec
             }
         }
 
-        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
+        public static async Task<string> RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             using (cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken), useSynchronizationContext: false))
             {
+                StringBuilder stringBuilder = null;
+                if (process.StartInfo.RedirectStandardOutput)
+                {
+                    stringBuilder = new StringBuilder();
+                    process.OutputDataReceived += (s, e) => stringBuilder.AppendLine(e.Data);
+                }
+
                 process.Exited += (s, e) => tcs.TrySetResult(default);
                 process.EnableRaisingEvents = true;
                 process.EchoAndStart(noEcho, echoPrefix);
+
+                if (process.StartInfo.RedirectStandardOutput)
+                {
+                    process.BeginOutputReadLine();
+                }
 
                 try
                 {
