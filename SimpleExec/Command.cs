@@ -34,9 +34,8 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                var captureOutput = false;
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, captureOutput, windowsName, windowsArgs, configureEnvironment, createNoWindow);
-                _ = process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value, captureOutput, cancellationToken);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs, configureEnvironment, createNoWindow);
+                _ = process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
 
                 if (process.ExitCode != 0)
                 {
@@ -103,16 +102,15 @@ namespace SimpleExec
         {
             using (var process = new Process())
             {
-                var captureOutput = true;
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, captureOutput, windowsName, windowsArgs, configureEnvironment, createNoWindow);
-                var readOutput = process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value, captureOutput, cancellationToken);
+                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow);
+                var output = process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
 
                 if (process.ExitCode != 0)
                 {
                     process.Throw();
                 }
 
-                return readOutput;
+                return output;
             }
         }
 

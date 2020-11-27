@@ -8,20 +8,22 @@ namespace SimpleExec
 
     internal static class ProcessExtensions
     {
-        public static string Run(this Process process, bool noEcho, string echoPrefix, bool readStandardOutput, CancellationToken cancellationToken)
+        public static string Run(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
             using (var resetEvent = new ManualResetEventSlim(false))
             {
                 StringBuilder stringBuilder = null;
-                process.Exited += (s, e) => resetEvent.SafeSet();
-                if(readStandardOutput)
+                if (process.StartInfo.RedirectStandardOutput)
                 {
                     stringBuilder = new StringBuilder();
                     process.OutputDataReceived += (s, e) => stringBuilder.AppendLine(e.Data);
                 }
+
+                process.Exited += (s, e) => resetEvent.SafeSet();
                 process.EnableRaisingEvents = true;
                 process.EchoAndStart(noEcho, echoPrefix);
-                if (readStandardOutput)
+
+                if (process.StartInfo.RedirectStandardOutput)
                 {
                     process.BeginOutputReadLine();
                 }
