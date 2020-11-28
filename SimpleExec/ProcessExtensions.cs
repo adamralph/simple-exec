@@ -27,7 +27,7 @@ namespace SimpleExec
                 {
                     await tcs.Task.ConfigureAwait(false);
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException ex) when (ex.CancellationToken == cancellationToken)
                 {
                     // best effort only, since exceptions may be thrown for all kinds of reasons
                     // and the _same exception_ may be thrown for all kinds of reasons
