@@ -92,5 +92,33 @@ namespace SimpleExecTests
             "Then a Win32Exception exception, of all things, is thrown"
                 .x(() => Assert.IsType<Win32Exception>(exception));
         }
+
+        [Scenario]
+        [Example(null)]
+        [Example("")]
+        [Example(" ")]
+        public void RunningNoCommand(string name, Exception exception)
+        {
+            "When I run no command"
+                .x(() => exception = Record.Exception(
+                    () => Command.Run(name)));
+
+            "Then an ArgumentException exception is thrown"
+                .x(() => Assert.IsType<ArgumentException>(exception));
+        }
+
+        [Scenario]
+        [Example(null)]
+        [Example("")]
+        [Example(" ")]
+        public void RunningNoCommandAsync(string name, Exception exception)
+        {
+            "When I run no command async"
+                .x(async () => exception = await Record.ExceptionAsync(
+                    () => Command.RunAsync(name)));
+
+            "Then an ArgumentException exception is thrown"
+                .x(() => Assert.IsType<ArgumentException>(exception));
+        }
     }
 }

@@ -31,6 +31,8 @@ namespace SimpleExec
         /// </remarks>
         public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false)
         {
+            Validate(name);
+
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs, configureEnvironment, createNoWindow);
@@ -65,6 +67,8 @@ namespace SimpleExec
         /// </remarks>
         public static async Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, CancellationToken cancellationToken = default)
         {
+            Validate(name);
+
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs, configureEnvironment, createNoWindow);
@@ -102,6 +106,8 @@ namespace SimpleExec
         /// </remarks>
         public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false)
         {
+            Validate(name);
+
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow);
@@ -155,6 +161,8 @@ namespace SimpleExec
         /// </remarks>
         public static async Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, CancellationToken cancellationToken = default)
         {
+            Validate(name);
+
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow);
@@ -180,6 +188,13 @@ namespace SimpleExec
                 }
 
                 return readOutput.Result;
+            }
+        }
+        private static void Validate(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("The command name is missing.", nameof(name));
             }
         }
     }
