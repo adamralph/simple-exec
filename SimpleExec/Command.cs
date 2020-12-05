@@ -100,7 +100,7 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         ///
-        /// This method uses <see cref="Task.WaitAll(Task[])" and <see cref="System.Runtime.CompilerServices.TaskAwaiter.GetResult()"/> />.
+        /// This method uses <see cref="Task.WaitAll(Task[])" /> and <see cref="System.Runtime.CompilerServices.TaskAwaiter.GetResult()"/>.
         /// This should be fine in most contexts, such as console apps, but in some contexts, such as a UI or ASP.NET, it may deadlock.
         /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, CancellationToken)" /> should be used instead.
         /// </remarks>
