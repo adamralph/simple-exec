@@ -1,5 +1,6 @@
 namespace SimpleExecTests
 {
+    using System;
     using SimpleExec;
     using SimpleExecTests.Infra;
     using Xbehave;
@@ -29,6 +30,34 @@ namespace SimpleExecTests
 
             "Then I see the command output"
                 .x(() => Assert.Contains("hello world", output));
+        }
+
+        [Scenario]
+        public void ReadingAFailingCommand(Exception exception)
+        {
+            "When I read a failing command"
+                .x(() => exception = Record.Exception(
+                    () => Command.Read("dotnet", $"exec {Tester.Path} error hello world")));
+
+            "Then a non-zero exit code exception is thrown"
+                .x(() => Assert.IsType<NonZeroExitCodeException>(exception));
+
+            "And the exception contains the exit code"
+                .x(() => Assert.Equal(1, ((NonZeroExitCodeException)exception).ExitCode));
+        }
+
+        [Scenario]
+        public void ReadingAFailingCommandAsync(Exception exception)
+        {
+            "When I read a failing command async"
+                .x(async () => exception = await Record.ExceptionAsync(
+                    () => Command.ReadAsync("dotnet", $"exec {Tester.Path} error hello world")));
+
+            "Then a non-zero exit code exception is thrown"
+                .x(() => Assert.IsType<NonZeroExitCodeException>(exception));
+
+            "And the exception contains the exit code"
+                .x(() => Assert.Equal(1, ((NonZeroExitCodeException)exception).ExitCode));
         }
     }
 }
