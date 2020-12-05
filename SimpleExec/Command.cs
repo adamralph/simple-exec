@@ -96,7 +96,7 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         ///
-        /// This method uses <see cref="Task.WaitAll(Task[])" />.
+        /// This method uses <see cref="Task.WaitAll(Task[])" and <see cref="System.Runtime.CompilerServices.TaskAwaiter.GetResult()"/> />.
         /// This should be fine in most contexts, such as console apps, but in some contexts, such as a UI or ASP.NET, it may deadlock.
         /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, CancellationToken)" /> should be used instead.
         /// </remarks>
@@ -107,7 +107,17 @@ namespace SimpleExec
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow);
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, CancellationToken.None);
-                var readOutput = process.StandardOutput.ReadToEndAsync();
+
+                Task<string> readOutput;
+                try
+                {
+                    readOutput = process.StandardOutput.ReadToEndAsync();
+                }
+                catch (Exception)
+                {
+                    runProcess.GetAwaiter().GetResult();
+                    throw;
+                }
 
                 Task.WaitAll(runProcess, readOutput);
 
@@ -150,7 +160,17 @@ namespace SimpleExec
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow);
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
-                var readOutput = process.StandardOutput.ReadToEndAsync();
+
+                Task<string> readOutput;
+                try
+                {
+                    readOutput = process.StandardOutput.ReadToEndAsync();
+                }
+                catch (Exception)
+                {
+                    await runProcess;
+                    throw;
+                }
 
                 await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
 
