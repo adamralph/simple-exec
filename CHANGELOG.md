@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.4.0
+
+### Enhancements
+
+- [#230: Pass CancellationToken To RunAsync and ReadAsync](https://github.com/adamralph/simple-exec/issues/230)
+- [#249: add remark about Read deadlocks](https://github.com/adamralph/simple-exec/pull/249)
+
 ## 6.3.0
 
 ### Enhancements
