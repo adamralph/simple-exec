@@ -30,20 +30,30 @@ Run("foo.exe", "arg1 arg2");
 
 ```C#
 Run("foo.exe");
-Run("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
+Run("foo.exe", "arg1 arg2", "my-working-directory");
 
 await RunAsync("foo.exe");
-await RunAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
+await RunAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ```
 
 ### Read
 
 ```C#
 var output1 = Read("foo.exe");
-var output2 = Read("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
+var output2 = Read("foo.exe", "arg1 arg2", "my-working-directory");
 
 var output3 = await ReadAsync("foo.exe");
-var output4 = await ReadAsync("foo.exe", "arg1 arg2", "my-directory", noEcho: true);
+var output4 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
+```
+
+### Other optional arguments
+
+```C#
+bool noEcho = false,
+string echoPrefix = null,
+Action<IDictionary<string, string>> configureEnvironment = null,
+bool createNoWindow = false,
+CancellationToken cancellationToken = default,
 ```
 
 ### Exceptions
