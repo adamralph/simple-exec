@@ -190,6 +190,7 @@ namespace SimpleExec
                 return readOutput.Result;
             }
         }
+
         private static void Validate(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
