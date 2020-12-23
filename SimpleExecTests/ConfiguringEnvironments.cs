@@ -1,10 +1,10 @@
+using SimpleExec;
+using SimpleExecTests.Infra;
+using Xbehave;
+using Xunit;
+
 namespace SimpleExecTests
 {
-    using SimpleExec;
-    using SimpleExecTests.Infra;
-    using Xbehave;
-    using Xunit;
-
     public class ConfiguringEnvironments
     {
         [Scenario]

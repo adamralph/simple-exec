@@ -1,11 +1,11 @@
+using System;
+using SimpleExec;
+using SimpleExecTests.Infra;
+using Xbehave;
+using Xunit;
+
 namespace SimpleExecTests
 {
-    using System;
-    using SimpleExec;
-    using SimpleExecTests.Infra;
-    using Xbehave;
-    using Xunit;
-
     public class EchoingCommands
     {
         [Scenario]

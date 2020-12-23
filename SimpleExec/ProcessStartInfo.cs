@@ -1,9 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
 namespace SimpleExec
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
-
     internal static class ProcessStartInfo
     {
         public static System.Diagnostics.ProcessStartInfo Create(

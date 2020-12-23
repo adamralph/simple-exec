@@ -1,9 +1,9 @@
+using System;
+using System.Linq;
+using System.Threading;
+
 namespace SimpleExecTester
 {
-    using System;
-    using System.Linq;
-    using System.Threading;
-
     internal class Program
     {
         public static int Main(string[] args)

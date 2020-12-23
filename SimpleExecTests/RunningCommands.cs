@@ -1,13 +1,13 @@
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using SimpleExec;
+using SimpleExecTests.Infra;
+using Xbehave;
+using Xunit;
+
 namespace SimpleExecTests
 {
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.InteropServices;
-    using SimpleExec;
-    using SimpleExecTests.Infra;
-    using Xbehave;
-    using Xunit;
-
     public class RunningCommands
     {
         private static readonly string command = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "hello-world.cmd" : "ls";

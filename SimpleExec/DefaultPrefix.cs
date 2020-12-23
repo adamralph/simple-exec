@@ -1,7 +1,7 @@
+using System.Reflection;
+
 namespace SimpleExec
 {
-    using System.Reflection;
-
     internal static class DefaultPrefix
     {
         static DefaultPrefix()
