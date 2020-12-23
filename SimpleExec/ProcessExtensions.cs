@@ -1,10 +1,10 @@
+using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace SimpleExec
 {
-    using System;
-    using System.Diagnostics;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     internal static class ProcessExtensions
     {
         public static void Run(this Process process, bool noEcho, string echoPrefix)

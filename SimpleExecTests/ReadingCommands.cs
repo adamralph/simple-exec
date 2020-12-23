@@ -1,12 +1,12 @@
+using System;
+using System.ComponentModel;
+using SimpleExec;
+using SimpleExecTests.Infra;
+using Xbehave;
+using Xunit;
+
 namespace SimpleExecTests
 {
-    using System;
-    using System.ComponentModel;
-    using SimpleExec;
-    using SimpleExecTests.Infra;
-    using Xbehave;
-    using Xunit;
-
     public class ReadingCommands
     {
         [Scenario]

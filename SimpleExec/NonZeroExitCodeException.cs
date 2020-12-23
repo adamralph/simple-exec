@@ -1,7 +1,7 @@
+using System;
+
 namespace SimpleExec
 {
-    using System;
-
     /// <summary>
     /// The command exited with a non-zero exit code.
     /// </summary>

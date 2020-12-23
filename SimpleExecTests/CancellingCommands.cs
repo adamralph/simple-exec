@@ -1,13 +1,13 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using SimpleExec;
+using SimpleExecTests.Infra;
+using Xbehave;
+using Xunit;
+
 namespace SimpleExecTests
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using SimpleExec;
-    using SimpleExecTests.Infra;
-    using Xbehave;
-    using Xunit;
-
     public class CancellingCommands
     {
         [Scenario]
