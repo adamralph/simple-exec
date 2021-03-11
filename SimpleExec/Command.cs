@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -94,6 +95,7 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="encoding">Optional <see cref="Encoding"/> for stdout.</param>
         /// <returns>A <see cref="string"/> representing the contents of standard output (stdout).</returns>
         /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
@@ -104,13 +106,17 @@ namespace SimpleExec
         /// This should be fine in most contexts, such as console apps, but in some contexts, such as a UI or ASP.NET, it may deadlock.
         /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, CancellationToken)" /> should be used instead.
         /// </remarks>
-        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false)
+        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, Encoding encoding = null)
         {
             Validate(name);
 
             using (var process = new Process())
             {
                 process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow);
+                if (encoding != null)
+                {
+                    process.StartInfo.StandardOutputEncoding = encoding;
+                }
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, CancellationToken.None);
 
