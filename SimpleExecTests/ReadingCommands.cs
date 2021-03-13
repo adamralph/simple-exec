@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Text;
 using SimpleExec;
 using SimpleExecTests.Infra;
 using Xbehave;
@@ -31,6 +32,30 @@ namespace SimpleExecTests
 
             "Then I see the command output"
                 .x(() => Assert.Contains("hello world", output));
+        }
+
+        [Scenario]
+        [Example(false)]
+        [Example(true)]
+        public void ReadingAUnicodeCommand(bool largeOutput, string output)
+        {
+            ("When I read a Unicode command" + (largeOutput ? " with large output" : ""))
+                .x(() => output = Command.Read("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding()));
+
+            "Then I see Unicode chars in the output"
+                .x(() => Assert.Contains("Pi (\u03a0)", output));
+        }
+
+        [Scenario]
+        [Example(false)]
+        [Example(true)]
+        public void ReadingAUnicodeCommandAsync(bool largeOutput, string output)
+        {
+            ("When I read a Unicode command" + (largeOutput ? " with large output" : ""))
+                .x(async () => output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding()));
+
+            "Then I see Unicode chars in the output"
+                .x(() => Assert.Contains("Pi (\u03a0)", output));
         }
 
         [Scenario]
