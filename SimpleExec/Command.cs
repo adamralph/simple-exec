@@ -30,7 +30,16 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static void Run(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false)
+        public static void Run(
+            string name,
+            string args = null,
+            string workingDirectory = null,
+            bool noEcho = false,
+            string windowsName = null,
+            string windowsArgs = null,
+            string echoPrefix = null,
+            Action<IDictionary<string, string>> configureEnvironment = null,
+            bool createNoWindow = false)
         {
             Validate(name);
 
@@ -66,7 +75,17 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static async Task RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, CancellationToken cancellationToken = default)
+        public static async Task RunAsync(
+            string name,
+            string args = null,
+            string workingDirectory = null,
+            bool noEcho = false,
+            string windowsName = null,
+            string windowsArgs = null,
+            string echoPrefix = null,
+            Action<IDictionary<string, string>> configureEnvironment = null,
+            bool createNoWindow = false,
+            CancellationToken cancellationToken = default)
         {
             Validate(name);
 
@@ -106,7 +125,17 @@ namespace SimpleExec
         /// This should be fine in most contexts, such as console apps, but in some contexts, such as a UI or ASP.NET, it may deadlock.
         /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, Encoding, CancellationToken)" /> should be used instead.
         /// </remarks>
-        public static string Read(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, Encoding encoding = null)
+        public static string Read(
+            string name,
+            string args = null,
+            string workingDirectory = null,
+            bool noEcho = false,
+            string windowsName = null,
+            string windowsArgs = null,
+            string echoPrefix = null,
+            Action<IDictionary<string, string>> configureEnvironment = null,
+            bool createNoWindow = false,
+            Encoding encoding = null)
         {
             Validate(name);
 
@@ -162,7 +191,18 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static async Task<string> ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string echoPrefix = null, Action<IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, Encoding encoding = null, CancellationToken cancellationToken = default)
+        public static async Task<string> ReadAsync(
+            string name,
+            string args = null,
+            string workingDirectory = null,
+            bool noEcho = false,
+            string windowsName = null,
+            string windowsArgs = null,
+            string echoPrefix = null,
+            Action<IDictionary<string, string>> configureEnvironment = null,
+            bool createNoWindow = false,
+            Encoding encoding = null,
+            CancellationToken cancellationToken = default)
         {
             Validate(name);
 
