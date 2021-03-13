@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +26,11 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="domain">The domain to use when running the command.</param>
+        /// <param name="loadUserProfile">Indicates whether the Windows user profile is to be loaded from the registry.</param>
+        /// <param name="password">A secure string that contains the user password to use when running the command.</param>
+        /// <param name="passwordInClearText">The user password in clear text to use when running the command.</param>
+        /// <param name="userName">The user name to be used when running the command.</param>
         /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
@@ -39,7 +45,12 @@ namespace SimpleExec
             string windowsArgs = null,
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
-            bool createNoWindow = false)
+            bool createNoWindow = false,
+            string domain = null,
+            bool loadUserProfile = false,
+            SecureString password = null,
+            string passwordInClearText = null,
+            string userName = null)
         {
             Validate(name);
 
@@ -54,7 +65,12 @@ namespace SimpleExec
                     windowsArgs,
                     configureEnvironment,
                     createNoWindow,
-                    null);
+                    null,
+                    domain,
+                    loadUserProfile,
+                    password,
+                    passwordInClearText,
+                    userName);
 
                 process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value);
 
@@ -78,6 +94,11 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="domain">The domain to use when running the command.</param>
+        /// <param name="loadUserProfile">Indicates whether the Windows user profile is to be loaded from the registry.</param>
+        /// <param name="password">A secure string that contains the user password to use when running the command.</param>
+        /// <param name="passwordInClearText">The user password in clear text to use when running the command.</param>
+        /// <param name="userName">The user name to be used when running the command.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
         /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
@@ -95,6 +116,11 @@ namespace SimpleExec
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
+            string domain = null,
+            bool loadUserProfile = false,
+            SecureString password = null,
+            string passwordInClearText = null,
+            string userName = null,
             CancellationToken cancellationToken = default)
         {
             Validate(name);
@@ -110,7 +136,12 @@ namespace SimpleExec
                     windowsArgs,
                     configureEnvironment,
                     createNoWindow,
-                    null);
+                    null,
+                    domain,
+                    loadUserProfile,
+                    password,
+                    passwordInClearText,
+                    userName);
 
                 await process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
@@ -134,6 +165,11 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="domain">The domain to use when running the command.</param>
+        /// <param name="loadUserProfile">Indicates whether the Windows user profile is to be loaded from the registry.</param>
+        /// <param name="password">A secure string that contains the user password to use when running the command.</param>
+        /// <param name="passwordInClearText">The user password in clear text to use when running the command.</param>
+        /// <param name="userName">The user name to be used when running the command.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
         /// <returns>A <see cref="string"/> representing the contents of standard output (stdout).</returns>
         /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
@@ -143,7 +179,7 @@ namespace SimpleExec
         ///
         /// This method uses <see cref="Task.WaitAll(Task[])" /> and <see cref="System.Runtime.CompilerServices.TaskAwaiter.GetResult()"/>.
         /// This should be fine in most contexts, such as console apps, but in some contexts, such as a UI or ASP.NET, it may deadlock.
-        /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, Encoding, CancellationToken)" /> should be used instead.
+        /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, Encoding, string, bool, SecureString, string, string, CancellationToken)" /> should be used instead.
         /// </remarks>
         public static string Read(
             string name,
@@ -155,7 +191,12 @@ namespace SimpleExec
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
-            Encoding encoding = null)
+            Encoding encoding = null,
+            string domain = null,
+            bool loadUserProfile = false,
+            SecureString password = null,
+            string passwordInClearText = null,
+            string userName = null)
         {
             Validate(name);
 
@@ -170,7 +211,12 @@ namespace SimpleExec
                     windowsArgs,
                     configureEnvironment,
                     createNoWindow,
-                    encoding);
+                    encoding,
+                    domain,
+                    loadUserProfile,
+                    password,
+                    passwordInClearText,
+                    userName);
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, CancellationToken.None);
 
@@ -210,6 +256,11 @@ namespace SimpleExec
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
+        /// <param name="domain">The domain to use when running the command.</param>
+        /// <param name="loadUserProfile">Indicates whether the Windows user profile is to be loaded from the registry.</param>
+        /// <param name="password">A secure string that contains the user password to use when running the command.</param>
+        /// <param name="passwordInClearText">The user password in clear text to use when running the command.</param>
+        /// <param name="userName">The user name to be used when running the command.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
@@ -231,6 +282,11 @@ namespace SimpleExec
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Encoding encoding = null,
+            string domain = null,
+            bool loadUserProfile = false,
+            SecureString password = null,
+            string passwordInClearText = null,
+            string userName = null,
             CancellationToken cancellationToken = default)
         {
             Validate(name);
@@ -246,7 +302,12 @@ namespace SimpleExec
                     windowsArgs,
                     configureEnvironment,
                     createNoWindow,
-                    encoding);
+                    encoding,
+                    domain,
+                    loadUserProfile,
+                    password,
+                    passwordInClearText,
+                    userName);
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
 

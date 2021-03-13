@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 
 namespace SimpleExec
@@ -16,7 +18,12 @@ namespace SimpleExec
             string windowsArgs,
             Action<IDictionary<string, string>> configureEnvironment,
             bool createNoWindow,
-            Encoding encoding)
+            Encoding encoding,
+            string domain,
+            bool loadUserProfile,
+            SecureString password,
+            string passwordInClearText,
+            string userName)
         {
             var startInfo = new System.Diagnostics.ProcessStartInfo
             {
@@ -28,6 +35,11 @@ namespace SimpleExec
                 RedirectStandardOutput = captureOutput,
                 CreateNoWindow = createNoWindow,
                 StandardOutputEncoding = encoding,
+                Domain = domain,
+                LoadUserProfile = loadUserProfile,
+                Password = password,
+                PasswordInClearText = passwordInClearText,
+                UserName = userName,
             };
 
             configureEnvironment?.Invoke(startInfo.Environment);
