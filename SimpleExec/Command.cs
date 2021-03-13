@@ -179,7 +179,7 @@ namespace SimpleExec
                 }
                 catch (Exception)
                 {
-                    await runProcess;
+                    await runProcess.ConfigureAwait(false);
                     throw;
                 }
 
