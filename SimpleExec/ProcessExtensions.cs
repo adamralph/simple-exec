@@ -25,7 +25,7 @@ namespace SimpleExec
 
                 try
                 {
-                    await tcs.Task.ConfigureAwait(false);
+                    _ = await tcs.Task.ConfigureAwait(false);
                 }
                 catch (OperationCanceledException ex) when (ex.CancellationToken == cancellationToken)
                 {
@@ -55,7 +55,7 @@ namespace SimpleExec
                 Console.Error.WriteLine(message);
             }
 
-            process.Start();
+            _ = process.Start();
         }
 
         public static void Throw(this Process process) =>
