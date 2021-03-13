@@ -1,5 +1,17 @@
 # Changelog
 
+## 7.0.0
+
+### Enhancements
+
+- [#254: **[BREAKING]** throw ArgumentException when command name missing](https://github.com/adamralph/simple-exec/pull/254)
+- [#279: **[BREAKING]** Support preferred encoding when reading commands](https://github.com/adamralph/simple-exec/pull/279)
+
+### Fixed bugs
+
+- [#253: **[BREAKING]** Reading a non-existent command throws an InvalidOperationException](https://github.com/adamralph/simple-exec/pull/253)
+- [#281: Missing ConfigureAwait(false) in ReadAsync](https://github.com/adamralph/simple-exec/pull/281)
+
 ## 6.4.0
 
 ### Enhancements
