@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace SimpleExecTester
@@ -8,6 +10,12 @@ namespace SimpleExecTester
     {
         public static int Main(string[] args)
         {
+            if (args.Contains("unicode"))
+            {
+                Console.OutputEncoding = Encoding.Unicode;
+                args = args.Concat(new[] { "Pi (\u03a0)" }).ToArray();
+            }
+
             Console.Out.WriteLine($"SimpleExecTester (stdout): {string.Join(" ", args)}");
 
             if (args.Contains("large"))
