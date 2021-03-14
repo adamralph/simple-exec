@@ -45,7 +45,17 @@ namespace SimpleExec
 
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs, configureEnvironment, createNoWindow, null);
+                process.StartInfo = ProcessStartInfo.Create(
+                    name,
+                    args,
+                    workingDirectory,
+                    false,
+                    windowsName,
+                    windowsArgs,
+                    configureEnvironment,
+                    createNoWindow,
+                    null);
+
                 process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value);
 
                 if (process.ExitCode != 0)
@@ -91,7 +101,17 @@ namespace SimpleExec
 
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, false, windowsName, windowsArgs, configureEnvironment, createNoWindow, null);
+                process.StartInfo = ProcessStartInfo.Create(
+                    name,
+                    args,
+                    workingDirectory,
+                    false,
+                    windowsName,
+                    windowsArgs,
+                    configureEnvironment,
+                    createNoWindow,
+                    null);
+
                 await process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
                 if (process.ExitCode != 0)
@@ -141,7 +161,16 @@ namespace SimpleExec
 
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow, encoding);
+                process.StartInfo = ProcessStartInfo.Create(
+                    name,
+                    args,
+                    workingDirectory,
+                    true,
+                    windowsName,
+                    windowsArgs,
+                    configureEnvironment,
+                    createNoWindow,
+                    encoding);
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, CancellationToken.None);
 
@@ -208,7 +237,16 @@ namespace SimpleExec
 
             using (var process = new Process())
             {
-                process.StartInfo = ProcessStartInfo.Create(name, args, workingDirectory, true, windowsName, windowsArgs, configureEnvironment, createNoWindow, encoding);
+                process.StartInfo = ProcessStartInfo.Create(
+                    name,
+                    args,
+                    workingDirectory,
+                    true,
+                    windowsName,
+                    windowsArgs,
+                    configureEnvironment,
+                    createNoWindow,
+                    encoding);
 
                 var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
 
