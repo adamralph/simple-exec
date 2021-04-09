@@ -1,10 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <Description>Runs external commands.</Description>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIcon>simple-exec.png</PackageIcon>
