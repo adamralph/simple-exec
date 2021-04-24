@@ -17,9 +17,7 @@ namespace SimpleExecTests
                 .x(c => cancellationTokenSource = new CancellationTokenSource().Using(c));
 
             "When I start running a long-running command using the cancellation token"
-#pragma warning disable IDE0053 // Use expression body for lambda expressions
                 .x(() =>
-#pragma warning restore IDE0053 // Use expression body for lambda expressions
                 {
                     command = Command.RunAsync("dotnet", $"exec {Tester.Path} sleep", cancellationToken: cancellationTokenSource.Token);
                 });
@@ -41,9 +39,7 @@ namespace SimpleExecTests
                 .x(c => cancellationTokenSource = new CancellationTokenSource().Using(c));
 
             "When I start reading a long-running command using the cancellation token"
-#pragma warning disable IDE0053 // Use expression body for lambda expressions
                 .x(() =>
-#pragma warning restore IDE0053 // Use expression body for lambda expressions
                 {
                     command = Command.ReadAsync("dotnet", $"exec {Tester.Path} sleep", cancellationToken: cancellationTokenSource.Token);
                 });

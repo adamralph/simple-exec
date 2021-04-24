@@ -1,3 +1,4 @@
+using System;
 using SimpleExec;
 using SimpleExecTests.Infra;
 using Xbehave;
@@ -17,7 +18,7 @@ namespace SimpleExecTests
                     configureEnvironment: env => env["foo"] = "bar"));
 
             "Then I see the echoed 'foo' environment variable and value"
-                .x(() => Assert.Contains("foo=bar", output));
+                .x(() => Assert.Contains("foo=bar", output, StringComparison.Ordinal));
         }
     }
 }
