@@ -19,7 +19,7 @@ namespace SimpleExecTests
                 .x(() => output = Command.Read("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : "")));
 
             "Then I see the command output"
-                .x(() => Assert.Contains("hello world", output));
+                .x(() => Assert.Contains("hello world", output, StringComparison.Ordinal));
         }
 
         [Scenario]
@@ -31,7 +31,7 @@ namespace SimpleExecTests
                 .x(async () => output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : "")));
 
             "Then I see the command output"
-                .x(() => Assert.Contains("hello world", output));
+                .x(() => Assert.Contains("hello world", output, StringComparison.Ordinal));
         }
 
         [Scenario]
@@ -43,7 +43,7 @@ namespace SimpleExecTests
                 .x(() => output = Command.Read("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding()));
 
             "Then I see Unicode chars in the output"
-                .x(() => Assert.Contains("Pi (\u03a0)", output));
+                .x(() => Assert.Contains("Pi (\u03a0)", output, StringComparison.Ordinal));
         }
 
         [Scenario]
@@ -55,7 +55,7 @@ namespace SimpleExecTests
                 .x(async () => output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding()));
 
             "Then I see Unicode chars in the output"
-                .x(() => Assert.Contains("Pi (\u03a0)", output));
+                .x(() => Assert.Contains("Pi (\u03a0)", output, StringComparison.Ordinal));
         }
 
         [Scenario]

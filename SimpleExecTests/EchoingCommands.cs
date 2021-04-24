@@ -18,7 +18,7 @@ namespace SimpleExecTests
                 .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}"));
 
             "Then the command is echoed"
-                .x(c => Assert.Contains(c.Step.Scenario.DisplayName, Capture.Error.ToString()));
+                .x(c => Assert.Contains(c.Step.Scenario.DisplayName, Capture.Error.ToString(), StringComparison.Ordinal));
         }
 
         [Scenario]
@@ -31,7 +31,7 @@ namespace SimpleExecTests
                 .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: true));
 
             "Then the command is not echoed"
-                .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, Capture.Error.ToString()));
+                .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, Capture.Error.ToString(), StringComparison.OrdinalIgnoreCase));
         }
 
         [Scenario]
@@ -44,10 +44,10 @@ namespace SimpleExecTests
                 .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: false, echoPrefix: $"{c.Step.Scenario.DisplayName} prefix"));
 
             "Then the command is echoed"
-                .x(c => Assert.Contains(c.Step.Scenario.DisplayName, error = Capture.Error.ToString()));
+                .x(c => Assert.Contains(c.Step.Scenario.DisplayName, error = Capture.Error.ToString(), StringComparison.Ordinal));
 
             "And the echo has the specified prefix"
-                .x(c => Assert.Contains($"{c.Step.Scenario.DisplayName} prefix:", error));
+                .x(c => Assert.Contains($"{c.Step.Scenario.DisplayName} prefix:", error, StringComparison.Ordinal));
         }
 
         [Scenario]
@@ -60,10 +60,10 @@ namespace SimpleExecTests
                 .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: true, echoPrefix: $"{c.Step.Scenario.DisplayName} prefix"));
 
             "Then the command is not echoed"
-                .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, error = Capture.Error.ToString()));
+                .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, error = Capture.Error.ToString(), StringComparison.OrdinalIgnoreCase));
 
             "And the prefix is not echoed"
-                .x(c => Assert.DoesNotContain($"{c.Step.Scenario.DisplayName} prefix", error));
+                .x(c => Assert.DoesNotContain($"{c.Step.Scenario.DisplayName} prefix", error, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
