@@ -1,3 +1,4 @@
+<!-- markdownlint-disable-next-line MD041 -->
 <img src="assets/simple-exec.png" width="100" />
 
 # SimpleExec
