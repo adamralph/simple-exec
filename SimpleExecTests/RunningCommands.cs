@@ -1,124 +1,111 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using SimpleExec;
 using SimpleExecTests.Infra;
-using Xbehave;
 using Xunit;
 
 namespace SimpleExecTests
 {
-    public class RunningCommands
+    public static class RunningCommands
     {
         private static readonly string command = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "hello-world.cmd" : "ls";
 
-        [Scenario]
-        public void RunningASucceedingCommand(Exception exception)
+        [Fact]
+        public static void RunningASucceedingCommand()
         {
-            "When I run a succeeding command"
-                .x(() => exception = Record.Exception(() => Command.Run(command)));
+            // act
+            var exception = Record.Exception(() => Command.Run(command));
 
-            "Then no exception is thrown"
-                .x(() => Assert.Null(exception));
+            // assert
+            Assert.Null(exception);
         }
 
-        [Scenario]
-        public void RunningASucceedingCommandWithArgs(Exception exception)
+        [Fact]
+        public static void RunningASucceedingCommandWithArgs()
         {
-            "When I run a succeeding command"
-                .x(() => exception = Record.Exception(
-                    () => Command.Run("dotnet", $"exec {Tester.Path} hello world")));
+            // act
+            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} hello world"));
 
-            "Then no exception is thrown"
-                .x(() => Assert.Null(exception));
+            // assert
+            Assert.Null(exception);
         }
 
-        [Scenario]
-        public void RunningASucceedingCommandAsync(Exception exception)
+        [Fact]
+        public static async Task RunningASucceedingCommandAsync()
         {
-            "When I run a succeeding command async"
-                .x(async () => exception = await Record.ExceptionAsync(() => Command.RunAsync(command)));
+            // act
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync(command));
 
-            "Then no exception is thrown"
-                .x(() => Assert.Null(exception));
+            // assert
+            Assert.Null(exception);
         }
 
-        [Scenario]
-        public void RunningAFailingCommand(Exception exception)
+        [Fact]
+        public static void RunningAFailingCommand()
         {
-            "When I run a failing command"
-                .x(() => exception = Record.Exception(
-                    () => Command.Run("dotnet", $"exec {Tester.Path} error hello world")));
+            // act
+            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} error hello world"));
 
-            "Then a non-zero exit code exception is thrown"
-                .x(() => Assert.IsType<NonZeroExitCodeException>(exception));
-
-            "And the exception contains the exit code"
-                .x(() => Assert.Equal(1, ((NonZeroExitCodeException)exception).ExitCode));
+            // assert
+            Assert.Equal(1, Assert.IsType<NonZeroExitCodeException>(exception).ExitCode);
         }
 
-        [Scenario]
-        public void RunningAFailingCommandAsync(Exception exception)
+        [Fact]
+        public static async Task RunningAFailingCommandAsync()
         {
-            "When I run a failing command async"
-                .x(async () => exception = await Record.ExceptionAsync(
-                    () => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world")));
+            // act
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world"));
 
-            "Then a non-zero exit code exception is thrown"
-                .x(() => Assert.IsType<NonZeroExitCodeException>(exception));
-
-            "And the exception contains the exit code"
-                .x(() => Assert.Equal(1, ((NonZeroExitCodeException)exception).ExitCode));
+            // assert
+            Assert.Equal(1, Assert.IsType<NonZeroExitCodeException>(exception).ExitCode);
         }
 
-        [Scenario]
-        public void RunningANonExistentCommand(Exception exception)
+        [Fact]
+        public static void RunningANonExistentCommand()
         {
-            "When I run a non-existent command"
-                .x(() => exception = Record.Exception(
-                    () => Command.Run("simple-exec-tests-non-existent-command")));
+            // act
+            var exception = Record.Exception(() => Command.Run("simple-exec-tests-non-existent-command"));
 
-            "Then a Win32Exception exception, of all things, is thrown"
-                .x(() => Assert.IsType<Win32Exception>(exception));
+            // assert
+            _ = Assert.IsType<Win32Exception>(exception);
         }
 
-        [Scenario]
-        public void RunningANonExistentCommandAsync(Exception exception)
+        [Fact]
+        public static async Task RunningANonExistentCommandAsync()
         {
-            "When I run a non-existent command async"
-                .x(async () => exception = await Record.ExceptionAsync(
-                    () => Command.RunAsync("simple-exec-tests-non-existent-command")));
+            // act
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync("simple-exec-tests-non-existent-command"));
 
-            "Then a Win32Exception exception, of all things, is thrown"
-                .x(() => Assert.IsType<Win32Exception>(exception));
+            // assert
+            _ = Assert.IsType<Win32Exception>(exception);
         }
 
-        [Scenario]
-        [Example(null)]
-        [Example("")]
-        [Example(" ")]
-        public void RunningNoCommand(string name, Exception exception)
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public static void RunningNoCommand(string name)
         {
-            "When I run no command"
-                .x(() => exception = Record.Exception(
-                    () => Command.Run(name)));
+            // act
+            var exception = Record.Exception(() => Command.Run(name));
 
-            "Then an ArgumentException exception is thrown"
-                .x(() => Assert.IsType<ArgumentException>(exception));
+            // assert
+            Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);
         }
 
-        [Scenario]
-        [Example(null)]
-        [Example("")]
-        [Example(" ")]
-        public void RunningNoCommandAsync(string name, Exception exception)
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public static async Task RunningNoCommandAsync(string name)
         {
-            "When I run no command async"
-                .x(async () => exception = await Record.ExceptionAsync(
-                    () => Command.RunAsync(name)));
+            // act
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync(name));
 
-            "Then an ArgumentException exception is thrown"
-                .x(() => Assert.IsType<ArgumentException>(exception));
+            // assert
+            Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);
         }
     }
 }
