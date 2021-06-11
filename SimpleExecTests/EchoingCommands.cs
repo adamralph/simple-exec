@@ -1,69 +1,71 @@
 using System;
+using System.Runtime.CompilerServices;
 using SimpleExec;
 using SimpleExecTests.Infra;
-using Xbehave;
 using Xunit;
 
 namespace SimpleExecTests
 {
-    public class EchoingCommands
+    public static class EchoingCommands
     {
-        [Scenario]
-        public void EchoingACommand()
+        [Fact]
+        public static void EchoingACommand()
         {
-            "Given console output is being captured"
-                .x(() => Console.SetError(Capture.Error));
+            // arrange
+            Console.SetError(Capture.Error);
 
-            "When a command is run"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}"));
+            // act
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}");
 
-            "Then the command is echoed"
-                .x(c => Assert.Contains(c.Step.Scenario.DisplayName, Capture.Error.ToString(), StringComparison.Ordinal));
+            // assert
+            Assert.Contains(TestName(), Capture.Error.ToString(), StringComparison.Ordinal);
         }
 
-        [Scenario]
-        public void SuppressingCommandEcho()
+        [Fact]
+        public static void SuppressingCommandEcho()
         {
-            "Given console output is being captured"
-                .x(() => Console.SetError(Capture.Error));
+            // arrange
+            Console.SetError(Capture.Error);
 
-            "When a command is run with echo suppressed"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: true));
+            // act
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true);
 
-            "Then the command is not echoed"
-                .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, Capture.Error.ToString(), StringComparison.OrdinalIgnoreCase));
+            // assert
+            Assert.DoesNotContain(TestName(), Capture.Error.ToString(), StringComparison.Ordinal);
         }
 
-        [Scenario]
-        public void EchoingACommandWithASpecificPrefix(string error)
+        [Fact]
+        public static void EchoingACommandWithASpecificPrefix()
         {
-            "Given console output is being captured"
-                .x(() => Console.SetError(Capture.Error));
+            // arrange
+            Console.SetError(Capture.Error);
 
-            "When a command is run"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: false, echoPrefix: $"{c.Step.Scenario.DisplayName} prefix"));
+            // act
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix");
 
-            "Then the command is echoed"
-                .x(c => Assert.Contains(c.Step.Scenario.DisplayName, error = Capture.Error.ToString(), StringComparison.Ordinal));
+            // assert
+            var error = Capture.Error.ToString();
 
-            "And the echo has the specified prefix"
-                .x(c => Assert.Contains($"{c.Step.Scenario.DisplayName} prefix:", error, StringComparison.Ordinal));
+            Assert.Contains(TestName(), error, StringComparison.Ordinal);
+            Assert.Contains($"{TestName()} prefix:", error, StringComparison.Ordinal);
         }
 
-        [Scenario]
-        public void SuppressingCommandEchoWithASpecificPrefix(string error)
+        [Fact]
+        public static void SuppressingCommandEchoWithASpecificPrefix()
         {
-            "Given console output is being captured"
-                .x(() => Console.SetError(Capture.Error));
+            // arrange
+            Console.SetError(Capture.Error);
 
-            "When a command is run with echo suppressed"
-                .x(c => Command.Run("dotnet", $"exec {Tester.Path} {c.Step.Scenario.DisplayName}", noEcho: true, echoPrefix: $"{c.Step.Scenario.DisplayName} prefix"));
+            // act
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix");
 
-            "Then the command is not echoed"
-                .x(c => Assert.DoesNotContain(c.Step.Scenario.DisplayName, error = Capture.Error.ToString(), StringComparison.OrdinalIgnoreCase));
+            // assert
+            var error = Capture.Error.ToString();
 
-            "And the prefix is not echoed"
-                .x(c => Assert.DoesNotContain($"{c.Step.Scenario.DisplayName} prefix", error, StringComparison.OrdinalIgnoreCase));
+            Assert.DoesNotContain(TestName(), error, StringComparison.Ordinal);
+            Assert.DoesNotContain($"{TestName()} prefix:", error, StringComparison.Ordinal);
         }
+
+        private static string TestName([CallerMemberName] string _ = default) => _;
     }
 }

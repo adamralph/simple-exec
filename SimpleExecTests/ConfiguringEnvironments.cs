@@ -1,24 +1,20 @@
 using System;
 using SimpleExec;
 using SimpleExecTests.Infra;
-using Xbehave;
 using Xunit;
 
 namespace SimpleExecTests
 {
-    public class ConfiguringEnvironments
+    public static class ConfiguringEnvironments
     {
-        [Scenario]
-        public void ConfiguringEnvironment(string output)
+        [Fact]
+        public static void ConfiguringEnvironment()
         {
-            "When I read a command which echos the 'foo' environment variable and value"
-                .x(() => output = Command.Read(
-                    "dotnet",
-                    $"exec {Tester.Path} environment",
-                    configureEnvironment: env => env["foo"] = "bar"));
+            // act
+            var output = Command.Read("dotnet", $"exec {Tester.Path} environment", configureEnvironment: env => env["foo"] = "bar");
 
-            "Then I see the echoed 'foo' environment variable and value"
-                .x(() => Assert.Contains("foo=bar", output, StringComparison.Ordinal));
+            // assert
+            Assert.Contains("foo=bar", output, StringComparison.Ordinal);
         }
     }
 }
