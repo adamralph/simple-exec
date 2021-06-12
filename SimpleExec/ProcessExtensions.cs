@@ -21,7 +21,7 @@ namespace SimpleExec
             {
                 process.Exited += (s, e) => tcs.TrySetResult(default);
                 process.EnableRaisingEvents = true;
-                process.EchoAndStart(noEcho, echoPrefix);
+                await process.EchoAndStartAsync(noEcho, echoPrefix).ConfigureAwait(false);
 
                 try
                 {
@@ -51,12 +51,24 @@ namespace SimpleExec
         {
             if (!noEcho)
             {
-                var message = $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
-                Console.Error.WriteLine(message);
+                Console.Error.WriteLine(GetMessage(process, echoPrefix));
             }
 
             _ = process.Start();
         }
+
+        private static async Task EchoAndStartAsync(this Process process, bool noEcho, string echoPrefix)
+        {
+            if (!noEcho)
+            {
+                await Console.Error.WriteLineAsync(GetMessage(process, echoPrefix)).ConfigureAwait(false);
+            }
+
+            _ = process.Start();
+        }
+
+        private static string GetMessage(Process process, string echoPrefix) =>
+            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
 
         public static void Throw(this Process process) =>
             throw new ExitCodeException(process.ExitCode);
