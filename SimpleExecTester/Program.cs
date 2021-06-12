@@ -22,6 +22,12 @@ namespace SimpleExecTester
                 Console.WriteLine(new string('x', (int)Math.Pow(2, 12)));
             }
 
+            var exitCode = 0;
+            if (args.FirstOrDefault(arg => int.TryParse(arg, out exitCode)) != null)
+            {
+                return exitCode;
+            }
+
             if (args.Contains("error"))
             {
                 Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");
