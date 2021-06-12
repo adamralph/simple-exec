@@ -7,13 +7,13 @@ namespace SimpleExec
 {
     internal static class ProcessExtensions
     {
-        public static void Run(this Process process, bool noEcho, string echoPrefix)
+        public static void Run(this Process process, bool noEcho, string logPrefix)
         {
-            process.EchoAndStart(noEcho, echoPrefix);
+            process.EchoAndStart(noEcho, logPrefix);
             process.WaitForExit();
         }
 
-        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
+        public static async Task RunAsync(this Process process, bool noEcho, string logPrefix, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -21,7 +21,7 @@ namespace SimpleExec
             {
                 process.Exited += (s, e) => tcs.TrySetResult(default);
                 process.EnableRaisingEvents = true;
-                await process.EchoAndStartAsync(noEcho, echoPrefix).ConfigureAwait(false);
+                await process.EchoAndStartAsync(noEcho, logPrefix).ConfigureAwait(false);
 
                 try
                 {
@@ -37,9 +37,10 @@ namespace SimpleExec
                         process.Kill();
                     }
 #pragma warning disable CA1031 // Do not catch general exception types
-                    catch
+                    catch (Exception killEx)
 #pragma warning restore CA1031 // Do not catch general exception types
                     {
+                        await Console.Error.WriteLineAsync($"{logPrefix}: Exception thrown during cancellation: {killEx}").ConfigureAwait(false);
                     }
 
                     throw;
@@ -47,28 +48,28 @@ namespace SimpleExec
             }
         }
 
-        private static void EchoAndStart(this Process process, bool noEcho, string echoPrefix)
+        private static void EchoAndStart(this Process process, bool noEcho, string logPrefix)
         {
             if (!noEcho)
             {
-                Console.Error.WriteLine(GetMessage(process, echoPrefix));
+                Console.Error.WriteLine(GetMessage(process, logPrefix));
             }
 
             _ = process.Start();
         }
 
-        private static async Task EchoAndStartAsync(this Process process, bool noEcho, string echoPrefix)
+        private static async Task EchoAndStartAsync(this Process process, bool noEcho, string logPrefix)
         {
             if (!noEcho)
             {
-                await Console.Error.WriteLineAsync(GetMessage(process, echoPrefix)).ConfigureAwait(false);
+                await Console.Error.WriteLineAsync(GetMessage(process, logPrefix)).ConfigureAwait(false);
             }
 
             _ = process.Start();
         }
 
-        private static string GetMessage(Process process, string echoPrefix) =>
-            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
+        private static string GetMessage(Process process, string logPrefix) =>
+            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{logPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{logPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
 
         public static void Throw(this Process process) =>
             throw new ExitCodeException(process.ExitCode);
