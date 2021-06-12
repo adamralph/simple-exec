@@ -25,7 +25,7 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
-        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -80,7 +80,7 @@ namespace SimpleExec
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
-        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -136,7 +136,7 @@ namespace SimpleExec
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
         /// <returns>A <see cref="string"/> representing the contents of standard output (stdout).</returns>
-        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -215,7 +215,7 @@ namespace SimpleExec
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
         /// The task result is a <see cref="string"/> representing the contents of standard output (stdout).
         /// </returns>
-        /// <exception cref="NonZeroExitCodeException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
