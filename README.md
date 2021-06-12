@@ -5,10 +5,10 @@
 
 _[![NuGet version](https://img.shields.io/nuget/v/SimpleExec.svg?style=flat)](https://www.nuget.org/packages/SimpleExec)_
 
-_[![Build status](https://github.com/adamralph/simple-exec/workflows/.github/workflows/ci.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions)_
-_[![CodeQL analysis](https://github.com/adamralph/simple-exec/workflows/.github/workflows/codeql-analysis.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions?query=workflow%3A.github%2Fworkflows%2Fcodeql-analysis.yml)_
-_[![Lint](https://github.com/adamralph/simple-exec/workflows/.github/workflows/lint.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions?query=workflow%3A.github%2Fworkflows%2Flint.yml)_
-_[![Spell check](https://github.com/adamralph/simple-exec/workflows/.github/workflows/spell-check.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions?query=workflow%3A.github%2Fworkflows%2Fspell-check.yml)_
+_[![Build status](https://github.com/adamralph/simple-exec/workflows/.github/workflows/ci.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions/workflows/ci.yml?query=branch%3Amain)_
+_[![CodeQL analysis](https://github.com/adamralph/simple-exec/workflows/.github/workflows/codeql-analysis.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions/workflows/codeql-analysis.yml?query=branch%3Amain)_
+_[![Lint](https://github.com/adamralph/simple-exec/workflows/.github/workflows/lint.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions/workflows/lint.yml?query=branch%3Amain)_
+_[![Spell check](https://github.com/adamralph/simple-exec/workflows/.github/workflows/spell-check.yml/badge.svg)](https://github.com/adamralph/simple-exec/actions/workflows/spell-check.yml?query=branch%3Amain)_
 
 SimpleExec is a [.NET library](https://www.nuget.org/packages/SimpleExec) that runs external commands. It wraps [`System.Diagnostics.Process`](https://apisof.net/catalog/System.Diagnostics.Process) to make things easier.
 
