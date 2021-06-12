@@ -49,7 +49,7 @@ namespace SimpleExecTests
             var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} error hello world"));
 
             // assert
-            Assert.Equal(1, Assert.IsType<NonZeroExitCodeException>(exception).ExitCode);
+            Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace SimpleExecTests
             var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world"));
 
             // assert
-            Assert.Equal(1, Assert.IsType<NonZeroExitCodeException>(exception).ExitCode);
+            Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
         }
 
         [Fact]

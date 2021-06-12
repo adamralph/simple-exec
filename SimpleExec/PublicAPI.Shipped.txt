@@ -1,4 +1,6 @@
 SimpleExec.Command
+SimpleExec.ExitCodeException
+SimpleExec.ExitCodeException.ExitCodeException(int exitCode) -> void
 SimpleExec.NonZeroExitCodeException
 SimpleExec.NonZeroExitCodeException.ExitCode.get -> int
 SimpleExec.NonZeroExitCodeException.NonZeroExitCodeException(int exitCode) -> void

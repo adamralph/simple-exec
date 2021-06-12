@@ -5,6 +5,7 @@ namespace SimpleExec
     /// <summary>
     /// The command exited with a non-zero exit code.
     /// </summary>
+    [Obsolete("Use ExitCodeException instead. NonZeroExitCodeException will be removed in 8.0.0.")]
 #pragma warning disable CA1032 // Implement standard exception constructors
     public class NonZeroExitCodeException : Exception
 #pragma warning restore CA1032 // Implement standard exception constructors

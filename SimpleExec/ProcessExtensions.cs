@@ -59,6 +59,6 @@ namespace SimpleExec
         }
 
         public static void Throw(this Process process) =>
-            throw new NonZeroExitCodeException(process.ExitCode);
+            throw new ExitCodeException(process.ExitCode);
     }
 }
