@@ -60,6 +60,7 @@
     "Cresnar",
     "markdownlint",
     "MyGet",
-    "NuGet"
+    "NuGet",
+    "Robocopy"
   ]
 }
