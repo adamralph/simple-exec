@@ -22,7 +22,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -42,7 +42,7 @@ namespace SimpleExec
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string echoPrefix = null,
+            string logPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool> handleExitCode = null)
@@ -62,7 +62,7 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value);
+                process.Run(noEcho, logPrefix ?? DefaultPrefix.Value);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
@@ -81,7 +81,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -103,7 +103,7 @@ namespace SimpleExec
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string echoPrefix = null,
+            string logPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool> handleExitCode = null,
@@ -124,7 +124,7 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                await process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
+                await process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
@@ -143,7 +143,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
@@ -169,7 +169,7 @@ namespace SimpleExec
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string echoPrefix = null,
+            string logPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Encoding encoding = null,
@@ -190,7 +190,7 @@ namespace SimpleExec
                     createNoWindow,
                     encoding);
 
-                var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, CancellationToken.None);
+                var runProcess = process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, CancellationToken.None);
 
                 Task<string> readOutput;
                 try
@@ -224,7 +224,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
@@ -250,7 +250,7 @@ namespace SimpleExec
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string echoPrefix = null,
+            string logPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Encoding encoding = null,
@@ -272,7 +272,7 @@ namespace SimpleExec
                     createNoWindow,
                     encoding);
 
-                var runProcess = process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
+                var runProcess = process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken);
 
                 Task<string> readOutput;
                 try

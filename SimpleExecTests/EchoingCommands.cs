@@ -41,7 +41,7 @@ namespace SimpleExecTests
             Console.SetError(Capture.Error);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix");
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, logPrefix: $"{TestName()} prefix");
 
             // assert
             var error = Capture.Error.ToString();
@@ -57,7 +57,7 @@ namespace SimpleExecTests
             Console.SetError(Capture.Error);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix");
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, logPrefix: $"{TestName()} prefix");
 
             // assert
             var error = Capture.Error.ToString();
