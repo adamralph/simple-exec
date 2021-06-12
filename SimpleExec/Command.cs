@@ -25,6 +25,11 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="handleExitCode">
+        /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
+        /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
+        /// returns <see langword="false"/> otherwise.
+        /// </param>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
@@ -39,7 +44,8 @@ namespace SimpleExec
             string windowsArgs = null,
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
-            bool createNoWindow = false)
+            bool createNoWindow = false,
+            Func<int, bool> handleExitCode = null)
         {
             Validate(name);
 
@@ -58,7 +64,7 @@ namespace SimpleExec
 
                 process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value);
 
-                if (process.ExitCode != 0)
+                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
                     process.Throw();
                 }
@@ -78,6 +84,11 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="handleExitCode">
+        /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
+        /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
+        /// returns <see langword="false"/> otherwise.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
@@ -95,6 +106,7 @@ namespace SimpleExec
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
+            Func<int, bool> handleExitCode = null,
             CancellationToken cancellationToken = default)
         {
             Validate(name);
@@ -114,7 +126,7 @@ namespace SimpleExec
 
                 await process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
-                if (process.ExitCode != 0)
+                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
                     process.Throw();
                 }
@@ -135,6 +147,11 @@ namespace SimpleExec
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
+        /// <param name="handleExitCode">
+        /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
+        /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
+        /// returns <see langword="false"/> otherwise.
+        /// </param>
         /// <returns>A <see cref="string"/> representing the contents of standard output (stdout).</returns>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
@@ -143,7 +160,7 @@ namespace SimpleExec
         ///
         /// This method uses <see cref="Task.WaitAll(Task[])" /> and <see cref="System.Runtime.CompilerServices.TaskAwaiter.GetResult()"/>.
         /// This should be fine in most contexts, such as console apps, but in some contexts, such as a UI or ASP.NET, it may deadlock.
-        /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, Encoding, CancellationToken)" /> should be used instead.
+        /// In those contexts, <see cref="ReadAsync(string, string, string, bool, string, string, string, Action{IDictionary{string, string}}, bool, Encoding, Func{int, bool}, CancellationToken)" /> should be used instead.
         /// </remarks>
         public static string Read(
             string name,
@@ -155,7 +172,8 @@ namespace SimpleExec
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
-            Encoding encoding = null)
+            Encoding encoding = null,
+            Func<int, bool> handleExitCode = null)
         {
             Validate(name);
 
@@ -187,7 +205,7 @@ namespace SimpleExec
 
                 Task.WaitAll(runProcess, readOutput);
 
-                if (process.ExitCode != 0)
+                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
                     process.Throw();
                 }
@@ -210,6 +228,11 @@ namespace SimpleExec
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
+        /// <param name="handleExitCode">
+        /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
+        /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
+        /// returns <see langword="false"/> otherwise.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
@@ -231,6 +254,7 @@ namespace SimpleExec
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Encoding encoding = null,
+            Func<int, bool> handleExitCode = null,
             CancellationToken cancellationToken = default)
         {
             Validate(name);
@@ -263,7 +287,7 @@ namespace SimpleExec
 
                 await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
 
-                if (process.ExitCode != 0)
+                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
                     process.Throw();
                 }
