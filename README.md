@@ -14,7 +14,7 @@ SimpleExec is a [.NET library](https://www.nuget.org/packages/SimpleExec) that r
 
 SimpleExec intentionally does not invoke the system shell.
 
-The command is echoed to standard error (stderr) for visibility.
+By default, the command is echoed to standard error (stderr) for visibility.
 
 Platform support: [.NET Standard 1.3 and upwards](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
@@ -54,15 +54,18 @@ var output4 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 
 ```C#
 bool noEcho = false,
-string echoPrefix = null,
+string windowsName = null,
+string windowsArgs = null,
+string logPrefix = null,
 Action<IDictionary<string, string>> configureEnvironment = null,
 bool createNoWindow = false,
+Func<int, bool> handleExitCode = null,
 CancellationToken cancellationToken = default,
 ```
 
 ### Exceptions
 
-If the command has a non-zero exit code, a `NonZeroExitCodeException` is thrown with an `int` `ExitCode` property and a message in the form of:
+If the command has a non-zero exit code, an `ExitCodeException` is thrown with an `int` `ExitCode` property and a message in the form of:
 
 ```C#
 $"The process exited with code {ExitCode}."
