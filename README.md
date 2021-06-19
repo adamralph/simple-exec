@@ -1,5 +1,5 @@
 <!-- markdownlint-disable-next-line MD041 -->
-![SimpleExec](/assets/simple-exec.svg)
+![SimpleExec](https://raw.githubusercontent.com/adamralph/simple-exec/b72bacf1ba636b50c716036d3b594478bdffadd0/assets/simple-exec.svg)
 
 # SimpleExec
 
