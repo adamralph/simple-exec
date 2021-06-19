@@ -16,7 +16,7 @@ SimpleExec intentionally does not invoke the system shell.
 
 By default, the command is echoed to standard error (stderr) for visibility.
 
-Platform support: [.NET Standard 1.3 and upwards](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
+Platform support: [.NET Standard 2.0 and later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
 ## Quick start
 
