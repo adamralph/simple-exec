@@ -71,7 +71,7 @@ If the command has a non-zero exit code, an `ExitCodeException` is thrown with a
 $"The process exited with code {ExitCode}."
 ```
 
-This behaviour can be overridden by passing a delegate as argument to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
+This behaviour can be overridden by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
 
 ```C#
 Run("ROBOCOPY", "from to", handleExitCode: exitCode => exitCode < 8);
