@@ -78,6 +78,8 @@ Run("ROBOCOPY", "from to", handleExitCode: exitCode => exitCode < 8);
 
 ### Windows
 
+🙄
+
 Sometimes, for whatever wonderful reasons, it's necessary to run a different command on Windows. For example, when running [Yarn](https://yarnpkg.com), some combination of mysterious factors may require that you explicitly run `cmd.exe` with Yarn as an argument, rather than running Yarn directly. The optional `windowsNames` and `windowsArgs` parameters may be used to specify a different command name and arguments for Windows:
 
 ```c#
