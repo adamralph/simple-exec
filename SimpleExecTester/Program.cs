@@ -25,6 +25,7 @@ namespace SimpleExecTester
             var exitCode = 0;
             if (args.FirstOrDefault(arg => int.TryParse(arg, out exitCode)) != null)
             {
+                Console.Out.WriteLine($"exitcode {exitCode}");
                 return exitCode;
             }
 
