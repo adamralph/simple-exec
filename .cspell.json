@@ -1,66 +1,32 @@
 {
   "version": "0.1",
   "language": "en-GB",
-  "languageSettings": [
-    {
-      "languageId": "bash",
-      "words": [
-        "adamralph",
-        "nologo",
-        "nupkg",
-        "pipefail"
-      ]
-    },
-    {
-      "languageId": "csharp",
-      "words": [
-        "Xunit"
-      ]
-    },
-    {
-      "languageId": "cmd",
-      "words": [
-        "errorlevel",
-        "nologo"
-      ]
-    },
-    {
-      "languageId": "csproj",
-      "words": [
-        "netcoreapp",
-        "netstandard",
-        "visualstudio",
-        "xunit"
-      ]
-    }
-  ],
   "overrides": [
     {
       "filename": "{*.cmd,*.cs,*.csproj,*.sh,*.props}",
       "language": "en-US"
     },
     {
-      "filename": "*.cmd",
-      "languageId": "cmd"
-    },
-    {
-      "filename": "*.csproj",
-      "languageId": "csproj"
-    },
-    {
       "filename": "{.cspell.json,*.svg,PublicAPI.*.txt}",
       "enabled": false
-    },
-    {
-      "filename": "*.sh",
-      "languageId": "bash"
     }
   ],
   "words": [
+    "ADAMRALPH",
+    "autobuild",
+    "codeql",
     "Cresnar",
+    "errorlevel",
     "markdownlint",
     "MyGet",
+    "netcoreapp",
+    "netstandard",
+    "NOLOGO",
     "NuGet",
-    "Robocopy"
+    "nupkg",
+    "refs",
+    "Robocopy",
+    "SHFMT",
+    "xunit"
   ]
 }
