@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using SimpleExec;
 using SimpleExecTests.Infra;
@@ -53,8 +54,11 @@ namespace SimpleExecTests
         [InlineData(2, true)]
         public static void ReadingAComand(int exitCode, bool shouldThrow)
         {
+            // arrange
+            string @out = default;
+
             // act
-            var exception = Record.Exception(() => Command.Read("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
+            var exception = Record.Exception(() => @out = Command.Read("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
 
             // assert
             if (shouldThrow)
@@ -63,6 +67,7 @@ namespace SimpleExecTests
             }
             else
             {
+                Assert.Contains($"exitcode {exitCode}", @out, StringComparison.OrdinalIgnoreCase);
                 Assert.Null(exception);
             }
         }
@@ -73,8 +78,11 @@ namespace SimpleExecTests
         [InlineData(2, true)]
         public static async Task ReadingAComandAsync(int exitCode, bool shouldThrow)
         {
+            // arrange
+            string @out = default;
+
             // act
-            var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
+            var exception = await Record.ExceptionAsync(async () => @out = await Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
 
             // assert
             if (shouldThrow)
@@ -83,6 +91,7 @@ namespace SimpleExecTests
             }
             else
             {
+                Assert.Contains($"exitcode {exitCode}", @out, StringComparison.OrdinalIgnoreCase);
                 Assert.Null(exception);
             }
         }
