@@ -1,3 +1,6 @@
+#if NETCOREAPP3_1_OR_GREATER
+#pragma warning disable IDE0063 // Use simple 'using' statement
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 using SimpleExec;
