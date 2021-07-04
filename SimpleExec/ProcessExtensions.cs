@@ -71,7 +71,7 @@ namespace SimpleExec
         private static string GetMessage(Process process, string logPrefix) =>
             $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{logPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{logPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
 
-        public static void Throw(this Process process) =>
-            throw new ExitCodeException(process.ExitCode);
+        public static void Throw(this Process process, string error = null) =>
+            throw new ExitCodeException(process.ExitCode, error);
     }
 }
