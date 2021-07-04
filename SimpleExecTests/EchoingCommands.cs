@@ -15,7 +15,7 @@ namespace SimpleExecTests
             Console.SetError(Capture.Error);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}");
+            _ = Command.Run("dotnet", $"exec {Tester.Path} {TestName()}");
 
             // assert
             Assert.Contains(TestName(), Capture.Error.ToString(), StringComparison.Ordinal);
@@ -28,7 +28,7 @@ namespace SimpleExecTests
             Console.SetError(Capture.Error);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true);
+            _ = Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true);
 
             // assert
             Assert.DoesNotContain(TestName(), Capture.Error.ToString(), StringComparison.Ordinal);
@@ -41,7 +41,7 @@ namespace SimpleExecTests
             Console.SetError(Capture.Error);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, logPrefix: $"{TestName()} prefix");
+            _ = Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, logPrefix: $"{TestName()} prefix");
 
             // assert
             var error = Capture.Error.ToString();
@@ -57,7 +57,7 @@ namespace SimpleExecTests
             Console.SetError(Capture.Error);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, logPrefix: $"{TestName()} prefix");
+            _ = Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, logPrefix: $"{TestName()} prefix");
 
             // assert
             var error = Capture.Error.ToString();

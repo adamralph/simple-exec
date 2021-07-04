@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using SimpleExec;
 using SimpleExecTests.Infra;
@@ -14,8 +13,11 @@ namespace SimpleExecTests
         [InlineData(2, true)]
         public static void RunningAComand(int exitCode, bool shouldThrow)
         {
+            // arrange
+            CommandResult result = null;
+
             // act
-            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
+            var exception = Record.Exception(() => result = Command.Run("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
 
             // assert
             if (shouldThrow)
@@ -24,7 +26,8 @@ namespace SimpleExecTests
             }
             else
             {
-                Assert.Null(exception);
+                Assert.NotNull(result);
+                Assert.Equal(exitCode, result.ExitCode);
             }
         }
 
@@ -34,31 +37,11 @@ namespace SimpleExecTests
         [InlineData(2, true)]
         public static async Task RunningAComandAsync(int exitCode, bool shouldThrow)
         {
-            // act
-            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
-
-            // assert
-            if (shouldThrow)
-            {
-                Assert.Equal(exitCode, Assert.IsType<ExitCodeException>(exception).ExitCode);
-            }
-            else
-            {
-                Assert.Null(exception);
-            }
-        }
-
-        [Theory]
-        [InlineData(0, false)]
-        [InlineData(1, false)]
-        [InlineData(2, true)]
-        public static void ReadingAComand(int exitCode, bool shouldThrow)
-        {
             // arrange
-            string @out = default;
+            CommandResult result = null;
 
             // act
-            var exception = Record.Exception(() => @out = Command.Read("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
+            var exception = await Record.ExceptionAsync(async () => result = await Command.RunAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
 
             // assert
             if (shouldThrow)
@@ -67,8 +50,8 @@ namespace SimpleExecTests
             }
             else
             {
-                Assert.Contains($"exitcode {exitCode}", @out, StringComparison.OrdinalIgnoreCase);
-                Assert.Null(exception);
+                Assert.NotNull(result);
+                Assert.Equal(exitCode, result.ExitCode);
             }
         }
 
@@ -79,20 +62,20 @@ namespace SimpleExecTests
         public static async Task ReadingAComandAsync(int exitCode, bool shouldThrow)
         {
             // arrange
-            string @out = default;
+            CommandReadResult result = null;
 
             // act
-            var exception = await Record.ExceptionAsync(async () => @out = await Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
+            var exception = await Record.ExceptionAsync(async () => result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
 
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<ExitCodeException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<ExitCodeReadException>(exception).ExitCode);
             }
             else
             {
-                Assert.Contains($"exitcode {exitCode}", @out, StringComparison.OrdinalIgnoreCase);
-                Assert.Null(exception);
+                Assert.NotNull(result);
+                Assert.Equal(exitCode, result.ExitCode);
             }
         }
     }

@@ -16,23 +16,18 @@ namespace SimpleExecTester
             }
 
             Console.Out.WriteLine($"SimpleExecTester (stdout): {string.Join(" ", args)}");
+            Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");
 
             if (args.Contains("large"))
             {
-                Console.WriteLine(new string('x', (int)Math.Pow(2, 12)));
+                Console.Out.WriteLine(new string('x', (int)Math.Pow(2, 12)));
+                Console.Error.WriteLine(new string('x', (int)Math.Pow(2, 12)));
             }
 
             var exitCode = 0;
             if (args.FirstOrDefault(arg => int.TryParse(arg, out exitCode)) != null)
             {
-                Console.Out.WriteLine($"exitcode {exitCode}");
                 return exitCode;
-            }
-
-            if (args.Contains("error"))
-            {
-                Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");
-                return 1;
             }
 
             if (args.Contains("sleep"))

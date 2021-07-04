@@ -11,6 +11,7 @@ namespace SimpleExec
             string name,
             string args,
             string workingDirectory,
+            bool captureError,
             bool captureOutput,
             string windowsName,
             string windowsArgs,
@@ -24,9 +25,10 @@ namespace SimpleExec
                 Arguments = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args,
                 WorkingDirectory = workingDirectory,
                 UseShellExecute = false,
-                RedirectStandardError = false,
+                RedirectStandardError = captureError,
                 RedirectStandardOutput = captureOutput,
                 CreateNoWindow = createNoWindow,
+                StandardErrorEncoding = encoding,
                 StandardOutputEncoding = encoding,
             };
 

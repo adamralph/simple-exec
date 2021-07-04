@@ -16,37 +16,37 @@ namespace SimpleExecTests
         public static void RunningASucceedingCommand()
         {
             // act
-            var exception = Record.Exception(() => Command.Run(command));
+            var result = Command.Run(command);
 
             // assert
-            Assert.Null(exception);
+            Assert.Equal(0, result.ExitCode);
         }
 
         [Fact]
         public static void RunningASucceedingCommandWithArgs()
         {
             // act
-            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} hello world"));
+            var result = Command.Run("dotnet", $"exec {Tester.Path} hello world");
 
             // assert
-            Assert.Null(exception);
+            Assert.Equal(0, result.ExitCode);
         }
 
         [Fact]
         public static async Task RunningASucceedingCommandAsync()
         {
             // act
-            var exception = await Record.ExceptionAsync(() => Command.RunAsync(command));
+            var result = await Command.RunAsync(command);
 
             // assert
-            Assert.Null(exception);
+            Assert.Equal(0, result.ExitCode);
         }
 
         [Fact]
         public static void RunningAFailingCommand()
         {
             // act
-            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} error hello world"));
+            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
             Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
@@ -56,7 +56,7 @@ namespace SimpleExecTests
         public static async Task RunningAFailingCommandAsync()
         {
             // act
-            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world"));
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
             Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
