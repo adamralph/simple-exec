@@ -258,7 +258,63 @@ namespace SimpleExec
             bool createNoWindow = false,
             Encoding encoding = null,
             Func<int, bool> handleExitCode = null,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default) => (await ReadAsync(
+                name,
+                args,
+                workingDirectory,
+                noEcho,
+                windowsName,
+                windowsArgs,
+                logPrefix,
+                configureEnvironment,
+                createNoWindow,
+                encoding,
+                handleExitCode,
+                false,
+                cancellationToken).ConfigureAwait(false)).Item1;
+
+        public static Task<(string, string)> ReadAsyncWithDiagnostics(
+            string name,
+            string args = null,
+            string workingDirectory = null,
+            bool noEcho = false,
+            string windowsName = null,
+            string windowsArgs = null,
+            string logPrefix = null,
+            Action<IDictionary<string, string>> configureEnvironment = null,
+            bool createNoWindow = false,
+            Encoding encoding = null,
+            Func<int, bool> handleExitCode = null,
+            CancellationToken cancellationToken = default) => ReadAsync(
+                name,
+                args,
+                workingDirectory,
+                noEcho,
+                windowsName,
+                windowsArgs,
+                logPrefix,
+                configureEnvironment,
+                createNoWindow,
+                encoding,
+                handleExitCode,
+                true,
+                cancellationToken);
+
+
+        private static async Task<(string, string)> ReadAsync(
+            string name,
+            string args,
+            string workingDirectory,
+            bool noEcho,
+            string windowsName,
+            string windowsArgs,
+            string logPrefix,
+            Action<IDictionary<string, string>> configureEnvironment,
+            bool createNoWindow,
+            Encoding encoding,
+            Func<int, bool> handleExitCode,
+            bool captureError,
+            CancellationToken cancellationToken)
         {
             Validate(name);
 
@@ -268,7 +324,7 @@ namespace SimpleExec
                     name,
                     args,
                     workingDirectory,
-                    false,
+                    captureError,
                     true,
                     windowsName,
                     windowsArgs,
@@ -279,9 +335,12 @@ namespace SimpleExec
                 var runProcess = process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken);
 
                 Task<string> readOutput;
+                Task<string> readError;
+
                 try
                 {
                     readOutput = process.StandardOutput.ReadToEndAsync();
+                    readError = captureError ? process.StandardError.ReadToEndAsync() : Task.FromResult<string>(null);
                 }
                 catch (Exception)
                 {
@@ -293,10 +352,10 @@ namespace SimpleExec
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
-                    process.Throw();
+                    process.Throw(readError.Result);
                 }
 
-                return readOutput.Result;
+                return (readOutput.Result, readError.Result);
             }
         }
 
