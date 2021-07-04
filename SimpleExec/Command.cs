@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -258,6 +259,7 @@ namespace SimpleExec
             bool createNoWindow = false,
             Encoding encoding = null,
             Func<int, bool> handleExitCode = null,
+            Func<StreamReader, CancellationToken, Task> readStandardError = null,
             CancellationToken cancellationToken = default)
         {
             Validate(name);
@@ -279,9 +281,12 @@ namespace SimpleExec
                 var runProcess = process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken);
 
                 Task<string> readOutput;
+                Task readError;
+
                 try
                 {
                     readOutput = process.StandardOutput.ReadToEndAsync();
+                    readError = readStandardError?.Invoke(process.StandardError, cancellationToken) ?? Task.CompletedTask;
                 }
                 catch (Exception)
                 {
@@ -289,7 +294,7 @@ namespace SimpleExec
                     throw;
                 }
 
-                await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
+                await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
