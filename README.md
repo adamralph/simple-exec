@@ -42,11 +42,9 @@ await RunAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ### Read
 
 ```C#
-var output1 = Read("foo.exe");
-var output2 = Read("foo.exe", "arg1 arg2", "my-working-directory");
-
-var output3 = await ReadAsync("foo.exe");
-var output4 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
+// ReadAsync returns a CommandReadResult object with Out and Error properties representing standard out (stdout) and standard error (stderr)
+var result1 = await ReadAsync("foo.exe");
+var result2 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ```
 
 ### Other optional arguments
@@ -55,7 +53,7 @@ var output4 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 bool noEcho = false,
 string windowsName = null,
 string windowsArgs = null,
-string logPrefix = null,
+string echoPrefix = null,
 Action<IDictionary<string, string>> configureEnvironment = null,
 bool createNoWindow = false,
 Func<int, bool> handleExitCode = null,
@@ -70,10 +68,38 @@ If the command has a non-zero exit code, an `ExitCodeException` is thrown with a
 $"The process exited with code {ExitCode}."
 ```
 
-This behaviour can be overridden by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
+In the case of `ReadAsync`, a `ReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
 
 ```C#
-Run("ROBOCOPY", "from to", handleExitCode: exitCode => exitCode < 8);
+$@"The process exited with code {ExitCode}.
+
+Standard Output:
+
+{Out}
+
+Standard Error:
+
+{Error}"
+```
+
+#### Overriding default exit code handling
+
+The throwing of exceptions for specific non-zero exit codes can be suppressed by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
+
+```C#
+Run("ROBOCOPY", "from to", handleExitCode: code => code < 8);
+```
+
+Note that it may be useful to record the exit code. For example:
+
+```C#
+var exitCode = 0;
+var result = Run("ROBOCOPY", "from to", handleExitCode: code => (exitCode = code) < 8);
+
+// see https://ss64.com/nt/robocopy-exit.html
+var oneOrMoreFilesCopied = exitCode & 1;
+var extraFilesOrDirectoriesDetected = exitCode & 2;
+var misMatchedFilesOrDirectoriesDetected = exitCode & 4;
 ```
 
 ### Windows

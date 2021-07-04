@@ -12,39 +12,39 @@ namespace SimpleExecTests
         public static void EchoingACommand()
         {
             // arrange
-            Console.SetError(Capture.Error);
+            Console.SetOut(Capture.Out);
 
             // act
             Command.Run("dotnet", $"exec {Tester.Path} {TestName()}");
 
             // assert
-            Assert.Contains(TestName(), Capture.Error.ToString(), StringComparison.Ordinal);
+            Assert.Contains(TestName(), Capture.Out.ToString(), StringComparison.Ordinal);
         }
 
         [Fact]
         public static void SuppressingCommandEcho()
         {
             // arrange
-            Console.SetError(Capture.Error);
+            Console.SetOut(Capture.Out);
 
             // act
             Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true);
 
             // assert
-            Assert.DoesNotContain(TestName(), Capture.Error.ToString(), StringComparison.Ordinal);
+            Assert.DoesNotContain(TestName(), Capture.Out.ToString(), StringComparison.Ordinal);
         }
 
         [Fact]
         public static void EchoingACommandWithASpecificPrefix()
         {
             // arrange
-            Console.SetError(Capture.Error);
+            Console.SetOut(Capture.Out);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, logPrefix: $"{TestName()} prefix");
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix");
 
             // assert
-            var error = Capture.Error.ToString();
+            var error = Capture.Out.ToString();
 
             Assert.Contains(TestName(), error, StringComparison.Ordinal);
             Assert.Contains($"{TestName()} prefix:", error, StringComparison.Ordinal);
@@ -54,13 +54,13 @@ namespace SimpleExecTests
         public static void SuppressingCommandEchoWithASpecificPrefix()
         {
             // arrange
-            Console.SetError(Capture.Error);
+            Console.SetOut(Capture.Out);
 
             // act
-            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, logPrefix: $"{TestName()} prefix");
+            Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix");
 
             // assert
-            var error = Capture.Error.ToString();
+            var error = Capture.Out.ToString();
 
             Assert.DoesNotContain(TestName(), error, StringComparison.Ordinal);
             Assert.DoesNotContain($"{TestName()} prefix:", error, StringComparison.Ordinal);
