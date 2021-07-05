@@ -1,5 +1,18 @@
 # Changelog
 
+## 8.0.0
+
+### Enhancements
+
+- [#313: **[BREAKING]** Custom exit code handling](https://github.com/adamralph/simple-exec/issues/313)
+- [#318: **[BREAKING]** log exception thrown while killing process during cancellation](https://github.com/adamralph/simple-exec/pull/318)
+- [#319: echo asynchronously when possible](https://github.com/adamralph/simple-exec/pull/319)
+- [#324: add README.md to package](https://github.com/adamralph/simple-exec/pull/324)
+
+### Fixed bugs
+
+- [#320: source stepping doesn't work](https://github.com/adamralph/simple-exec/pull/320)
+
 ## 7.0.0
 
 ### Enhancements
