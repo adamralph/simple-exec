@@ -133,6 +133,7 @@ namespace SimpleExec
             }
         }
 
+        // TODO: consider whether echoing makes sense here
         /// <summary>
         /// Runs a command and reads standard output (stdout).
         /// By default, the command line is echoed to standard error (stderr).
