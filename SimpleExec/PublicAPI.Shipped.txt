@@ -1,22 +1,24 @@
 override SimpleExec.ExitCodeException.Message.get -> string
-override SimpleExec.ExitCodeReadException.Message.get -> string
+override SimpleExec.ReadException.Message.get -> string
 SimpleExec.Command
-SimpleExec.CommandReadResult
-SimpleExec.CommandReadResult.CommandReadResult(int exitCode, string out, string error) -> void
-SimpleExec.CommandReadResult.Error.get -> string
-SimpleExec.CommandReadResult.Out.get -> string
 SimpleExec.CommandResult
 SimpleExec.CommandResult.CommandResult(int exitCode) -> void
 SimpleExec.CommandResult.ExitCode.get -> int
 SimpleExec.ExitCodeException
 SimpleExec.ExitCodeException.ExitCode.get -> int
 SimpleExec.ExitCodeException.ExitCodeException(int exitCode) -> void
-SimpleExec.ExitCodeReadException
-SimpleExec.ExitCodeReadException.Error.get -> string
-SimpleExec.ExitCodeReadException.ExitCodeReadException(int exitCode, string out, string error) -> void
-SimpleExec.ExitCodeReadException.Out.get -> string
-SimpleExec.NonZeroExitCodeException
-SimpleExec.NonZeroExitCodeException.NonZeroExitCodeException() -> void
-static SimpleExec.Command.ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string logPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, System.Text.Encoding encoding = null, System.Func<int, bool> handleExitCode = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<SimpleExec.CommandReadResult>
+SimpleExec.ReadException
+SimpleExec.ReadException.Error.get -> string
+SimpleExec.ReadException.Out.get -> string
+SimpleExec.ReadException.ReadException(int exitCode, string out, string error) -> void
+SimpleExec.ReadResult
+SimpleExec.ReadResult.Error.get -> string
+SimpleExec.ReadResult.Out.get -> string
+SimpleExec.ReadResult.ReadResult(int exitCode, string out, string error) -> void
+SimpleExec.RunException
+SimpleExec.RunException.RunException(int exitCode) -> void
+SimpleExec.RunResult
+SimpleExec.RunResult.RunResult(int exitCode) -> void
+static SimpleExec.Command.ReadAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string logPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, System.Text.Encoding encoding = null, System.Func<int, bool> handleExitCode = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<SimpleExec.ReadResult>
 static SimpleExec.Command.Run(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string logPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, System.Func<int, bool> handleExitCode = null) -> SimpleExec.CommandResult
 static SimpleExec.Command.RunAsync(string name, string args = null, string workingDirectory = null, bool noEcho = false, string windowsName = null, string windowsArgs = null, string logPrefix = null, System.Action<System.Collections.Generic.IDictionary<string, string>> configureEnvironment = null, bool createNoWindow = false, System.Func<int, bool> handleExitCode = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<SimpleExec.CommandResult>

@@ -22,7 +22,7 @@ namespace SimpleExecTests
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<ExitCodeException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<RunException>(exception).ExitCode);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace SimpleExecTests
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<ExitCodeException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<RunException>(exception).ExitCode);
             }
             else
             {
@@ -62,7 +62,7 @@ namespace SimpleExecTests
         public static async Task ReadingAComandAsync(int exitCode, bool shouldThrow)
         {
             // arrange
-            CommandReadResult result = null;
+            ReadResult result = null;
 
             // act
             var exception = await Record.ExceptionAsync(async () => result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
@@ -70,7 +70,7 @@ namespace SimpleExecTests
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<ExitCodeReadException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<ReadException>(exception).ExitCode);
             }
             else
             {

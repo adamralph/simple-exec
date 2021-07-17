@@ -42,7 +42,7 @@ await RunAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ### Read
 
 ```C#
-// RunAsync returns a CommandReadResult object, with ExitCode, Out, and Error properties
+// ReadAsync returns a CommandReadResult object, with ExitCode, Out, and Error properties
 var result1 = await ReadAsync("foo.exe");
 var result2 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ```

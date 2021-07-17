@@ -3,21 +3,21 @@ using System;
 namespace SimpleExec
 {
     /// <summary>
-    /// The command exited with an unexpected exit code.
+    /// The command being read exited with an unexpected exit code.
     /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
-    public class ExitCodeReadException : ExitCodeException
+    public class ReadException : ExitCodeException
 #pragma warning restore CA1032 // Implement standard exception constructors
     {
         private static readonly string twoNewLines = $"{Environment.NewLine}{Environment.NewLine}";
 
         /// <summary>
-        /// Constructs an instance of a <see cref="ExitCodeReadException"/>.
+        /// Constructs an instance of a <see cref="ReadException"/>.
         /// </summary>
         /// <param name="exitCode">The exit code of the command.</param>
         /// <param name="out">The contents of standard output (stdour).</param>
         /// <param name="error">The contents of standard error (stderr).</param>
-        public ExitCodeReadException(int exitCode, string @out, string error) : base(exitCode) => (this.Out, this.Error) = (@out, error);
+        public ReadException(int exitCode, string @out, string error) : base(exitCode) => (this.Out, this.Error) = (@out, error);
 
         /// <summary>
         /// Gets the contents of standard output (stdout).

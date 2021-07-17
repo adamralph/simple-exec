@@ -66,8 +66,8 @@ namespace SimpleExec
                 process.Run(noEcho, logPrefix ?? DefaultPrefix.Value);
 
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new CommandResult(process.ExitCode)
-                    : throw new ExitCodeException(process.ExitCode);
+                    ? new RunResult(process.ExitCode)
+                    : throw new RunException(process.ExitCode);
             }
         }
 
@@ -91,7 +91,7 @@ namespace SimpleExec
         /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
-        /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ReadException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -128,8 +128,8 @@ namespace SimpleExec
                 await process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new CommandResult(process.ExitCode)
-                    : throw new ExitCodeException(process.ExitCode);
+                    ? new RunResult(process.ExitCode)
+                    : throw new RunException(process.ExitCode);
             }
         }
 
@@ -157,12 +157,12 @@ namespace SimpleExec
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
         /// The task result is a <see cref="string"/> representing the contents of standard output (stdout).
         /// </returns>
-        /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ReadException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static async Task<CommandReadResult> ReadAsync(
+        public static async Task<ReadResult> ReadAsync(
             string name,
             string args = null,
             string workingDirectory = null,
@@ -211,8 +211,8 @@ namespace SimpleExec
                 await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
 
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new CommandReadResult(process.ExitCode, readOutput.Result, readError.Result)
-                    : throw new ExitCodeReadException(process.ExitCode, readOutput.Result, readError.Result);
+                    ? new ReadResult(process.ExitCode, readOutput.Result, readError.Result)
+                    : throw new ReadException(process.ExitCode, readOutput.Result, readError.Result);
             }
         }
 

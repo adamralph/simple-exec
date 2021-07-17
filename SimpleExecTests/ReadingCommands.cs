@@ -45,7 +45,7 @@ namespace SimpleExecTests
             var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
-            var exitCodeReadException = Assert.IsType<ExitCodeReadException>(exception);
+            var exitCodeReadException = Assert.IsType<ReadException>(exception);
             Assert.Equal(1, exitCodeReadException.ExitCode);
             Assert.Contains("hello world", exitCodeReadException.Out, StringComparison.Ordinal);
             Assert.Contains("hello world", exitCodeReadException.Error, StringComparison.Ordinal);
