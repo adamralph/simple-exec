@@ -35,7 +35,7 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static CommandResult Run(
+        public static void Run(
             string name,
             string args = null,
             string workingDirectory = null,
@@ -65,9 +65,10 @@ namespace SimpleExec
 
                 process.Run(noEcho, logPrefix ?? DefaultPrefix.Value);
 
-                return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new RunResult(process.ExitCode)
-                    : throw new RunException(process.ExitCode);
+                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
+                {
+                    throw new RunException(process.ExitCode);
+                }
             }
         }
 
@@ -96,7 +97,7 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static async Task<CommandResult> RunAsync(
+        public static async Task RunAsync(
             string name,
             string args = null,
             string workingDirectory = null,
@@ -127,9 +128,10 @@ namespace SimpleExec
 
                 await process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
-                return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new RunResult(process.ExitCode)
-                    : throw new RunException(process.ExitCode);
+                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
+                {
+                    throw new RunException(process.ExitCode);
+                }
             }
         }
 
@@ -212,7 +214,7 @@ namespace SimpleExec
                 await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
 
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new ReadResult(process.ExitCode, readOutput.Result, readError.Result)
+                    ? new ReadResult(readOutput.Result, readError.Result)
                     : throw new ReadException(process.ExitCode, readOutput.Result, readError.Result);
             }
         }

@@ -19,7 +19,6 @@ namespace SimpleExecTests
             var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
 
             // assert
-            Assert.Equal(0, result.ExitCode);
             Assert.Contains("hello world", result.Out, StringComparison.Ordinal);
             Assert.Contains("hello world", result.Error, StringComparison.Ordinal);
         }
@@ -33,7 +32,6 @@ namespace SimpleExecTests
             var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
 
             // assert
-            Assert.Equal(0, result.ExitCode);
             Assert.Contains("Pi (\u03a0)", result.Out, StringComparison.Ordinal);
             Assert.Contains("Pi (\u03a0)", result.Error, StringComparison.Ordinal);
         }

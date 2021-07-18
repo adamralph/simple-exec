@@ -16,30 +16,30 @@ namespace SimpleExecTests
         public static void RunningASucceedingCommand()
         {
             // act
-            var result = Command.Run(command);
+            var exception = Record.Exception(() => Command.Run(command));
 
             // assert
-            Assert.Equal(0, result.ExitCode);
+            Assert.Null(exception);
         }
 
         [Fact]
         public static void RunningASucceedingCommandWithArgs()
         {
             // act
-            var result = Command.Run("dotnet", $"exec {Tester.Path} hello world");
+            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} hello world"));
 
             // assert
-            Assert.Equal(0, result.ExitCode);
+            Assert.Null(exception);
         }
 
         [Fact]
         public static async Task RunningASucceedingCommandAsync()
         {
             // act
-            var result = await Command.RunAsync(command);
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync(command));
 
             // assert
-            Assert.Equal(0, result.ExitCode);
+            Assert.Null(exception);
         }
 
         [Fact]
