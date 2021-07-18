@@ -42,7 +42,7 @@ await RunAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ### Read
 
 ```C#
-// ReadAsync returns a CommandReadResult object, with ExitCode, Out, and Error properties
+// ReadAsync returns a CommandReadResult object with Out and Error properties
 var result1 = await ReadAsync("foo.exe");
 var result2 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ```
@@ -68,7 +68,7 @@ If the command has a non-zero exit code, an `ExitCodeException` is thrown with a
 $"The process exited with code {ExitCode}."
 ```
 
-In the case of `ReadAsync`, an `ExitCodeReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
+In the case of `ReadAsync`, a `ReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
 
 ```C#
 $@"The process exited with code {ExitCode}.
@@ -84,21 +84,22 @@ Standard Error:
 
 #### Overriding default exit code handling
 
-The throwing of `ExitCodeException` and `ExitCodeReadException` can be suppressed by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
+The throwing of exceptions for non-zero exit codes can be suppressed by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
 
 ```C#
 Run("ROBOCOPY", "from to", handleExitCode: exitCode => exitCode < 8);
 ```
 
-Note that `Run` returns a `CommandResult` object with an `ExitCode` property. This may useful when `handleExitCode` is used to suppress the throwing of `ExitCodeReadException` for non-zero exit codes. For example:
+Note that it may be useful to record the exit code. For example:
 
 ```C#
-var result = Run("ROBOCOPY", "from to", handleExitCode: exitCode => exitCode < 8);
+var exitCode = 0;
+var result = Run("ROBOCOPY", "from to", handleExitCode: code => (exitCode = code) < 8);
 
 // see https://ss64.com/nt/robocopy-exit.html
-var oneOrMoreFilesCopied = result.ExitCode & 1;
-var extraFilesOrDirectoriesDetected = result.ExitCode & 2;
-var misMatchedFilesOrDirectoriesDetected = result.ExitCode & 4;
+var oneOrMoreFilesCopied = exitCode & 1;
+var extraFilesOrDirectoriesDetected = exitCode & 2;
+var misMatchedFilesOrDirectoriesDetected = exitCode & 4;
 ```
 
 ### Windows
