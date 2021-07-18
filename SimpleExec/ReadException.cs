@@ -15,22 +15,22 @@ namespace SimpleExec
         /// Constructs an instance of a <see cref="ReadException"/>.
         /// </summary>
         /// <param name="exitCode">The exit code of the command.</param>
-        /// <param name="out">The contents of standard output (stdour).</param>
-        /// <param name="error">The contents of standard error (stderr).</param>
-        public ReadException(int exitCode, string @out, string error) : base(exitCode) => (this.Out, this.Error) = (@out, error);
+        /// <param name="standardOutput">The contents of standard output (stdour).</param>
+        /// <param name="standardError">The contents of standard error (stderr).</param>
+        public ReadException(int exitCode, string standardOutput, string standardError) : base(exitCode) => (this.StandardOutput, this.StandardError) = (standardOutput, standardError);
 
         /// <summary>
         /// Gets the contents of standard output (stdout).
         /// </summary>
-        public string Out { get; }
+        public string StandardOutput { get; }
 
         /// <summary>
         /// Gets the contents of standard error (stderr).
         /// </summary>
-        public string Error { get; }
+        public string StandardError { get; }
 
         /// <inheritdoc/>
         public override string Message =>
-            $"{base.Message}{twoNewLines}Standard output:{twoNewLines}{this.Out}{twoNewLines}Standard error:{twoNewLines}{this.Error}";
+            $"{base.Message}{twoNewLines}Standard output (stdout):{twoNewLines}{this.StandardOutput}{twoNewLines}Standard error (stderr):{twoNewLines}{this.StandardError}";
     }
 }

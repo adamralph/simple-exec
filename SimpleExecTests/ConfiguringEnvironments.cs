@@ -15,7 +15,7 @@ namespace SimpleExecTests
             var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} environment", configureEnvironment: env => env["foo"] = "bar");
 
             // assert
-            Assert.Contains("foo=bar", result.Out, StringComparison.Ordinal);
+            Assert.Contains("foo=bar", result.StandardOutput, StringComparison.Ordinal);
         }
     }
 }

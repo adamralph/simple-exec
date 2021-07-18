@@ -15,6 +15,13 @@ namespace SimpleExecTester
                 args = args.Concat(new[] { "Pi (\u03a0)" }).ToArray();
             }
 
+            var input = args.Contains("in")
+                ? Console.In.ReadToEnd()
+                    .Replace("\r", "\\r", StringComparison.Ordinal)
+                    .Replace("\n", "\\n", StringComparison.Ordinal)
+                : null;
+
+            Console.Out.WriteLine($"SimpleExecTester (stdin): {input}");
             Console.Out.WriteLine($"SimpleExecTester (stdout): {string.Join(" ", args)}");
             Console.Error.WriteLine($"SimpleExecTester (stderr): {string.Join(" ", args)}");
 

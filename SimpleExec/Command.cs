@@ -56,7 +56,6 @@ namespace SimpleExec
                     args,
                     workingDirectory,
                     false,
-                    false,
                     windowsName,
                     windowsArgs,
                     configureEnvironment,
@@ -119,7 +118,6 @@ namespace SimpleExec
                     args,
                     workingDirectory,
                     false,
-                    false,
                     windowsName,
                     windowsArgs,
                     configureEnvironment,
@@ -165,10 +163,11 @@ namespace SimpleExec
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
-        public static async Task<ReadResult> ReadAsync(
+        public static async Task<Result> ReadAsync(
             string name,
             string args = null,
             string workingDirectory = null,
+            string standardInput = null,
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
@@ -188,7 +187,6 @@ namespace SimpleExec
                     args,
                     workingDirectory,
                     true,
-                    true,
                     windowsName,
                     windowsArgs,
                     configureEnvironment,
@@ -202,6 +200,9 @@ namespace SimpleExec
 
                 try
                 {
+                    await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
+                    process.StandardInput.Close();
+
                     readOutput = process.StandardOutput.ReadToEndAsync();
                     readError = process.StandardError.ReadToEndAsync();
                 }
@@ -211,10 +212,10 @@ namespace SimpleExec
                     throw;
                 }
 
-                await Task.WhenAll(runProcess, readOutput).ConfigureAwait(false);
+                await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
 
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new ReadResult(readOutput.Result, readError.Result)
+                    ? new Result(readOutput.Result, readError.Result)
                     : throw new ReadException(process.ExitCode, readOutput.Result, readError.Result);
             }
         }

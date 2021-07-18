@@ -3,23 +3,23 @@ namespace SimpleExec
     /// <summary>
     /// The result of reading a command.
     /// </summary>
-    public class ReadResult
+    public class Result
     {
         /// <summary>
-        /// Constructs an instance of a <see cref="ReadResult"/>.
+        /// Constructs an instance of a <see cref="Result"/>.
         /// </summary>
         /// <param name="out">The contents of standard output (stdout).</param>
         /// <param name="error">The contents of standard error (stderr).</param>
-        public ReadResult(string @out, string error) => (this.Out, this.Error) = (@out, error);
+        public Result(string @out, string error) => (this.StandardOutput, this.StandardError) = (@out, error);
 
         /// <summary>
         /// Gets the contents of standard output (stdout).
         /// </summary>
-        public string Out { get; }
+        public string StandardOutput { get; }
 
         /// <summary>
         /// Gets the contents of standard error (stderr).
         /// </summary>
-        public string Error { get; }
+        public string StandardError { get; }
     }
 }

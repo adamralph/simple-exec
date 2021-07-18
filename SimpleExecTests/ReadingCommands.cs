@@ -19,8 +19,22 @@ namespace SimpleExecTests
             var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
 
             // assert
-            Assert.Contains("hello world", result.Out, StringComparison.Ordinal);
-            Assert.Contains("hello world", result.Error, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardError, StringComparison.Ordinal);
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public static async Task ReadingACommandWithInputAsync(bool largeOutput)
+        {
+            // act
+            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input");
+
+            // assert
+            Assert.Contains("hello world", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("this is input", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardError, StringComparison.Ordinal);
         }
 
         [Theory]
@@ -32,8 +46,8 @@ namespace SimpleExecTests
             var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
 
             // assert
-            Assert.Contains("Pi (\u03a0)", result.Out, StringComparison.Ordinal);
-            Assert.Contains("Pi (\u03a0)", result.Error, StringComparison.Ordinal);
+            Assert.Contains("Pi (\u03a0)", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("Pi (\u03a0)", result.StandardError, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -45,8 +59,8 @@ namespace SimpleExecTests
             // assert
             var exitCodeReadException = Assert.IsType<ReadException>(exception);
             Assert.Equal(1, exitCodeReadException.ExitCode);
-            Assert.Contains("hello world", exitCodeReadException.Out, StringComparison.Ordinal);
-            Assert.Contains("hello world", exitCodeReadException.Error, StringComparison.Ordinal);
+            Assert.Contains("hello world", exitCodeReadException.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", exitCodeReadException.StandardError, StringComparison.Ordinal);
         }
 
         [Fact]
