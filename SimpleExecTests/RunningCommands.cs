@@ -46,7 +46,7 @@ namespace SimpleExecTests
         public static void RunningAFailingCommand()
         {
             // act
-            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} error hello world"));
+            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
             Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
@@ -56,10 +56,30 @@ namespace SimpleExecTests
         public static async Task RunningAFailingCommandAsync()
         {
             // act
-            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} error hello world"));
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
             Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
+        }
+
+        [Fact]
+        public static void RunningACommandInANonExistentWorkDirectory()
+        {
+            // act
+            var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path}", "non-existent-working-directory"));
+
+            // assert
+            _ = Assert.IsType<Win32Exception>(exception);
+        }
+
+        [Fact]
+        public static async Task RunningACommandAsyncInANonExistentWorkDirectory()
+        {
+            // act
+            var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory"));
+
+            // assert
+            _ = Assert.IsType<Win32Exception>(exception);
         }
 
         [Fact]

@@ -13,37 +13,28 @@ namespace SimpleExecTests
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public static void ReadingACommand(bool largeOutput)
-        {
-            // act
-            var output = Command.Read("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
-
-            // assert
-            Assert.Contains("hello world", output, StringComparison.Ordinal);
-        }
-
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
         public static async Task ReadingACommandAsync(bool largeOutput)
         {
             // act
-            var output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
+            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
 
             // assert
-            Assert.Contains("hello world", output, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardError, StringComparison.Ordinal);
         }
 
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public static void ReadingAUnicodeCommand(bool largeOutput)
+        public static async Task ReadingACommandWithInputAsync(bool largeOutput)
         {
             // act
-            var output = Command.Read("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
+            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input");
 
             // assert
-            Assert.Contains("Pi (\u03a0)", output, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("this is input", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", result.StandardError, StringComparison.Ordinal);
         }
 
         [Theory]
@@ -52,37 +43,31 @@ namespace SimpleExecTests
         public static async Task ReadingAUnicodeCommandAsync(bool largeOutput)
         {
             // act
-            var output = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
+            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
 
             // assert
-            Assert.Contains("Pi (\u03a0)", output, StringComparison.Ordinal);
-        }
-
-        [Fact]
-        public static void ReadingAFailingCommand()
-        {
-            // act
-            var exception = Record.Exception(() => Command.Read("dotnet", $"exec {Tester.Path} error hello world"));
-
-            // assert
-            Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
+            Assert.Contains("Pi (\u03a0)", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("Pi (\u03a0)", result.StandardError, StringComparison.Ordinal);
         }
 
         [Fact]
         public static async Task ReadingAFailingCommandAsync()
         {
             // act
-            var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} error hello world"));
+            var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
-            Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
+            var exitCodeReadException = Assert.IsType<ExitCodeReadException>(exception);
+            Assert.Equal(1, exitCodeReadException.ExitCode);
+            Assert.Contains("hello world", exitCodeReadException.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", exitCodeReadException.StandardError, StringComparison.Ordinal);
         }
 
         [Fact]
-        public static void ReadingANonExistentCommand()
+        public static async Task ReadingACommandAsyncInANonExistentWorkDirectory()
         {
             // act
-            var exception = Record.Exception(() => Command.Read("simple-exec-tests-non-existent-command"));
+            var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory"));
 
             // assert
             _ = Assert.IsType<Win32Exception>(exception);
@@ -96,19 +81,6 @@ namespace SimpleExecTests
 
             // assert
             _ = Assert.IsType<Win32Exception>(exception);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        public static void ReadingNoCommand(string name)
-        {
-            // act
-            var exception = Record.Exception(() => Command.Read(name));
-
-            // assert
-            Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);
         }
 
         [Theory]
