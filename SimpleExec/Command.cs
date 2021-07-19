@@ -30,6 +30,7 @@ namespace SimpleExec
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
         /// returns <see langword="false"/> otherwise.
         /// </param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
@@ -45,7 +46,8 @@ namespace SimpleExec
             string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
-            Func<int, bool> handleExitCode = null)
+            Func<int, bool> handleExitCode = null,
+            CancellationToken cancellationToken = default)
         {
             Validate(name);
 
@@ -62,7 +64,7 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value);
+                process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {

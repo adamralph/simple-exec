@@ -1,6 +1,7 @@
 #if NETCOREAPP3_1_OR_GREATER
 #pragma warning disable IDE0063 // Use simple 'using' statement
 #endif
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SimpleExec;
@@ -12,7 +13,25 @@ namespace SimpleExecTests
     public static class CancellingCommands
     {
         [Fact]
-        public static async Task RunningACommand()
+        public static void RunningACommand()
+        {
+            // arrange
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                // use a cancellation token source to ensure value type equality comparision in assertion is meaningful
+                var cancellationToken = cancellationTokenSource.Token;
+                cancellationTokenSource.Cancel();
+
+                // act
+                var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} sleep", cancellationToken: cancellationToken));
+
+                // assert
+                Assert.Equal(cancellationToken, Assert.IsType<OperationCanceledException>(exception).CancellationToken);
+            }
+        }
+
+        [Fact]
+        public static async Task RunningACommandAsync()
         {
             // arrange
             using (var cancellationTokenSource = new CancellationTokenSource())
@@ -30,7 +49,7 @@ namespace SimpleExecTests
         }
 
         [Fact]
-        public static async Task ReadingACommand()
+        public static async Task ReadingACommandAsync()
         {
             // arrange
             using (var cancellationTokenSource = new CancellationTokenSource())
