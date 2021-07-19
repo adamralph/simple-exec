@@ -6,14 +6,14 @@ namespace SimpleExec
     /// The command exited with an unexpected exit code.
     /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
-    public abstract class ExitCodeException : Exception
+    public class ExitCodeException : Exception
 #pragma warning restore CA1032 // Implement standard exception constructors
     {
         /// <summary>
         /// Constructs an instance of a <see cref="ExitCodeException"/>.
         /// </summary>
         /// <param name="exitCode">The exit code of the command.</param>
-        protected ExitCodeException(int exitCode) => this.ExitCode = exitCode;
+        public ExitCodeException(int exitCode) => this.ExitCode = exitCode;
 
         /// <summary>
         /// Gets the exit code of the command.

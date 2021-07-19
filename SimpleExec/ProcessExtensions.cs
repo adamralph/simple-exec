@@ -7,68 +7,72 @@ namespace SimpleExec
 {
     internal static class ProcessExtensions
     {
-        public static void Run(this Process process, bool noEcho, string logPrefix)
+        public static void Run(this Process process, bool noEcho, string echoPrefix)
         {
-            process.EchoAndStart(noEcho, logPrefix);
+            process.EchoAndStart(noEcho, echoPrefix);
             process.WaitForExit();
         }
 
-        public static async Task RunAsync(this Process process, bool noEcho, string logPrefix, CancellationToken cancellationToken)
+        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            using (cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken), useSynchronizationContext: false))
+            using (cancellationToken.Register(
+                () =>
+                {
+                    if (process.TryKill())
+                    {
+                        _ = tcs.TrySetCanceled(cancellationToken);
+                    }
+                }, useSynchronizationContext: false))
             {
                 process.Exited += (s, e) => tcs.TrySetResult(default);
                 process.EnableRaisingEvents = true;
-                await process.EchoAndStartAsync(noEcho, logPrefix).ConfigureAwait(false);
+                await process.EchoAndStartAsync(noEcho, echoPrefix).ConfigureAwait(false);
 
-                try
-                {
-                    _ = await tcs.Task.ConfigureAwait(false);
-                }
-                catch (OperationCanceledException ex) when (ex.CancellationToken == cancellationToken)
-                {
-                    // best effort only, since exceptions may be thrown for all kinds of reasons
-                    // and the _same exception_ may be thrown for all kinds of reasons
-                    // System.Diagnostics.Process is "fine"
-                    try
-                    {
-                        process.Kill();
-                    }
+                _ = await tcs.Task.ConfigureAwait(false);
+            }
+        }
+
+        private static void EchoAndStart(this Process process, bool noEcho, string echoPrefix)
+        {
+            if (!noEcho)
+            {
+                Console.Error.WriteLine(GetMessage(process, echoPrefix));
+            }
+
+            _ = process.Start();
+        }
+
+        private static async Task EchoAndStartAsync(this Process process, bool noEcho, string echoPrefix)
+        {
+            if (!noEcho)
+            {
+                await Console.Error.WriteLineAsync(GetMessage(process, echoPrefix)).ConfigureAwait(false);
+            }
+
+            _ = process.Start();
+        }
+
+        private static string GetMessage(Process process, string echoPrefix) =>
+            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
+
+        private static bool TryKill(this Process process)
+        {
+            // exceptions may be thrown for all kinds of reasons
+            // and the _same exception_ may be thrown for all kinds of reasons
+            // System.Diagnostics.Process is "fine"
+            try
+            {
+                process.Kill();
+                return true;
+            }
 #pragma warning disable CA1031 // Do not catch general exception types
-                    catch (Exception killEx)
+            catch (Exception)
 #pragma warning restore CA1031 // Do not catch general exception types
-                    {
-                        await Console.Error.WriteLineAsync($"{logPrefix}: Exception thrown during cancellation: {killEx}").ConfigureAwait(false);
-                    }
-
-                    throw;
-                }
-            }
-        }
-
-        private static void EchoAndStart(this Process process, bool noEcho, string logPrefix)
-        {
-            if (!noEcho)
             {
-                Console.Error.WriteLine(GetMessage(process, logPrefix));
+                return false;
             }
-
-            _ = process.Start();
         }
-
-        private static async Task EchoAndStartAsync(this Process process, bool noEcho, string logPrefix)
-        {
-            if (!noEcho)
-            {
-                await Console.Error.WriteLineAsync(GetMessage(process, logPrefix)).ConfigureAwait(false);
-            }
-
-            _ = process.Start();
-        }
-
-        private static string GetMessage(Process process, string logPrefix) =>
-            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{logPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{logPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
     }
 }

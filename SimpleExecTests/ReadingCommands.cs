@@ -57,10 +57,20 @@ namespace SimpleExecTests
             var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} 1 hello world"));
 
             // assert
-            var exitCodeReadException = Assert.IsType<ReadException>(exception);
+            var exitCodeReadException = Assert.IsType<ExitCodeReadException>(exception);
             Assert.Equal(1, exitCodeReadException.ExitCode);
             Assert.Contains("hello world", exitCodeReadException.StandardOutput, StringComparison.Ordinal);
             Assert.Contains("hello world", exitCodeReadException.StandardError, StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public static async Task ReadingACommandAsyncInANonExistentWorkDirectory()
+        {
+            // act
+            var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory"));
+
+            // assert
+            _ = Assert.IsType<Win32Exception>(exception);
         }
 
         [Fact]

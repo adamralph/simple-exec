@@ -13,7 +13,7 @@ namespace SimpleExec
     public static class Command
     {
         /// <summary>
-        /// Runs a command.
+        /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
         /// By default, the command line is echoed to standard error (stderr).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
@@ -22,7 +22,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -42,7 +42,7 @@ namespace SimpleExec
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string logPrefix = null,
+            string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool> handleExitCode = null)
@@ -62,17 +62,17 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                process.Run(noEcho, logPrefix ?? DefaultPrefix.Value);
+                process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
-                    throw new RunException(process.ExitCode);
+                    throw new ExitCodeException(process.ExitCode);
                 }
             }
         }
 
         /// <summary>
-        /// Runs a command asynchronously.
+        /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
         /// By default, the command line is echoed to standard error (stderr).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
@@ -81,7 +81,7 @@ namespace SimpleExec
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -91,7 +91,7 @@ namespace SimpleExec
         /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
-        /// <exception cref="ReadException">The command exited with non-zero exit code.</exception>
+        /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
         /// <remarks>
         /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
@@ -103,7 +103,7 @@ namespace SimpleExec
             bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string logPrefix = null,
+            string echoPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool> handleExitCode = null,
@@ -124,58 +124,49 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                await process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
+                await process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
-                    throw new RunException(process.ExitCode);
+                    throw new ExitCodeException(process.ExitCode);
                 }
             }
         }
 
-        // TODO: consider whether echoing makes sense here
         /// <summary>
-        /// Runs a command and reads standard output (stdout).
-        /// By default, the command line is echoed to standard error (stderr).
+        /// Runs a command and reads standard output (stdout) and standard error (stderr) and optionally writes to standard input (stdin).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
         /// <param name="args">The arguments to pass to the command.</param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
-        /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="logPrefix">The prefix to use when logging messages to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-        /// <param name="createNoWindow">Whether to run the command in a new window.</param>
-        /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout).</param>
+        /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard error (stderr).</param>
         /// <param name="handleExitCode">
         /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
         /// returns <see langword="false"/> otherwise.
         /// </param>
+        /// <param name="standardInput">The contents of standard input (stdin).</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>
-        /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout).
-        /// The task result is a <see cref="string"/> representing the contents of standard output (stdout).
+        /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout) and standard error (stderr).
+        /// The task result is a <see cref="Result"/> representing the contents of standard output (stdout) and standard error (stderr).
         /// </returns>
-        /// <exception cref="ReadException">The command exited with non-zero exit code.</exception>
-        /// <remarks>
-        /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
-        /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
-        /// </remarks>
+        /// <exception cref="ExitCodeReadException">
+        /// The command exited with non-zero exit code. The exception contains the contents of standard output (stdout) and standard error (stderr).
+        /// </exception>
         public static async Task<Result> ReadAsync(
             string name,
             string args = null,
             string workingDirectory = null,
-            string standardInput = null,
-            bool noEcho = false,
             string windowsName = null,
             string windowsArgs = null,
-            string logPrefix = null,
             Action<IDictionary<string, string>> configureEnvironment = null,
-            bool createNoWindow = false,
             Encoding encoding = null,
             Func<int, bool> handleExitCode = null,
+            string standardInput = null,
             CancellationToken cancellationToken = default)
         {
             Validate(name);
@@ -190,10 +181,10 @@ namespace SimpleExec
                     windowsName,
                     windowsArgs,
                     configureEnvironment,
-                    createNoWindow,
+                    true,
                     encoding);
 
-                var runProcess = process.RunAsync(noEcho, logPrefix ?? DefaultPrefix.Value, cancellationToken);
+                var runProcess = process.RunAsync(true, default, cancellationToken);
 
                 Task<string> readOutput;
                 Task<string> readError;
@@ -216,7 +207,7 @@ namespace SimpleExec
 
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
                     ? new Result(readOutput.Result, readError.Result)
-                    : throw new ReadException(process.ExitCode, readOutput.Result, readError.Result);
+                    : throw new ExitCodeReadException(process.ExitCode, readOutput.Result, readError.Result);
             }
         }
 

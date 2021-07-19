@@ -19,7 +19,7 @@ namespace SimpleExecTests
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<RunException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<ExitCodeException>(exception).ExitCode);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace SimpleExecTests
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<RunException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<ExitCodeException>(exception).ExitCode);
             }
             else
             {
@@ -59,7 +59,7 @@ namespace SimpleExecTests
             // assert
             if (shouldThrow)
             {
-                Assert.Equal(exitCode, Assert.IsType<ReadException>(exception).ExitCode);
+                Assert.Equal(exitCode, Assert.IsType<ExitCodeReadException>(exception).ExitCode);
             }
             else
             {

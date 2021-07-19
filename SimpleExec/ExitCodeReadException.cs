@@ -6,18 +6,18 @@ namespace SimpleExec
     /// The command being read exited with an unexpected exit code.
     /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
-    public class ReadException : ExitCodeException
+    public class ExitCodeReadException : ExitCodeException
 #pragma warning restore CA1032 // Implement standard exception constructors
     {
         private static readonly string twoNewLines = $"{Environment.NewLine}{Environment.NewLine}";
 
         /// <summary>
-        /// Constructs an instance of a <see cref="ReadException"/>.
+        /// Constructs an instance of a <see cref="ExitCodeReadException"/>.
         /// </summary>
         /// <param name="exitCode">The exit code of the command.</param>
         /// <param name="standardOutput">The contents of standard output (stdour).</param>
         /// <param name="standardError">The contents of standard error (stderr).</param>
-        public ReadException(int exitCode, string standardOutput, string standardError) : base(exitCode) => (this.StandardOutput, this.StandardError) = (standardOutput, standardError);
+        public ExitCodeReadException(int exitCode, string standardOutput, string standardError) : base(exitCode) => (this.StandardOutput, this.StandardError) = (standardOutput, standardError);
 
         /// <summary>
         /// Gets the contents of standard output (stdout).
