@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace SimpleExec
     /// </summary>
     public static class Command
     {
+        private static readonly string defaultEchoPrefix = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
+
         /// <summary>
         /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
         /// By default, the command line is echoed to standard error (stderr).
@@ -64,7 +67,7 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                process.Run(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken);
+                process.Run(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
@@ -126,7 +129,7 @@ namespace SimpleExec
                     createNoWindow,
                     null);
 
-                await process.RunAsync(noEcho, echoPrefix ?? DefaultPrefix.Value, cancellationToken).ConfigureAwait(false);
+                await process.RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken).ConfigureAwait(false);
 
                 if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
                 {
