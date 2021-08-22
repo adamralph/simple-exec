@@ -13,11 +13,14 @@ namespace SimpleExec
         /// Constructs an instance of a <see cref="ExitCodeException"/>.
         /// </summary>
         /// <param name="exitCode">The exit code of the command.</param>
-        public ExitCodeException(int exitCode) : base($"The command exited with code {exitCode}.") => this.ExitCode = exitCode;
+        public ExitCodeException(int exitCode) => this.ExitCode = exitCode;
 
         /// <summary>
         /// Gets the exit code of the command.
         /// </summary>
         public int ExitCode { get; }
+
+        /// <inheritdoc/>
+        public override string Message => $"The command exited with code {this.ExitCode}.";
     }
 }

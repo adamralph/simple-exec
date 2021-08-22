@@ -11,7 +11,7 @@ namespace SimpleExec
             string name,
             string args,
             string workingDirectory,
-            bool captureOutput,
+            bool redirectStandardStreams,
             string windowsName,
             string windowsArgs,
             Action<IDictionary<string, string>> configureEnvironment,
@@ -24,9 +24,11 @@ namespace SimpleExec
                 Arguments = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args,
                 WorkingDirectory = workingDirectory,
                 UseShellExecute = false,
-                RedirectStandardError = false,
-                RedirectStandardOutput = captureOutput,
+                RedirectStandardError = redirectStandardStreams,
+                RedirectStandardInput = redirectStandardStreams,
+                RedirectStandardOutput = redirectStandardStreams,
                 CreateNoWindow = createNoWindow,
+                StandardErrorEncoding = encoding,
                 StandardOutputEncoding = encoding,
             };
 
