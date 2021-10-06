@@ -1,5 +1,16 @@
 # Changelog
 
+## 9.0.0
+
+### Enhancements
+
+- [#351: **[BREAKING]** New API for version 9](https://github.com/adamralph/simple-exec/issues/351)
+- [#352: Echo to standard out instead of standard error](https://github.com/adamralph/simple-exec/issues/352)
+
+### Other
+
+- [#312: **[BREAKING]** Remove NonZeroExitCodeException](https://github.com/adamralph/simple-exec/issues/312)
+
 ## 8.0.0
 
 ### Enhancements
