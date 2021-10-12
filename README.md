@@ -68,7 +68,7 @@ If the command has a non-zero exit code, an `ExitCodeException` is thrown with a
 $"The process exited with code {ExitCode}."
 ```
 
-In the case of `ReadAsync`, a `ReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
+In the case of `ReadAsync`, an `ExitCodeReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
 
 ```C#
 $@"The process exited with code {ExitCode}.
