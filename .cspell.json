@@ -16,6 +16,7 @@
     "analyzer",
     "autobuild",
     "codeql",
+    "cref",
     "Cresnar",
     "errorlevel",
     "markdownlint",
