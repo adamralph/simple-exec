@@ -10,6 +10,7 @@
 ### Other
 
 - [#312: **[BREAKING]** Remove NonZeroExitCodeException](https://github.com/adamralph/simple-exec/issues/312)
+- [#375: **[BREAKING]** switch from netstandard2.0 to netstandard2.1](https://github.com/adamralph/simple-exec/pull/375)
 
 ## 8.0.0
 
