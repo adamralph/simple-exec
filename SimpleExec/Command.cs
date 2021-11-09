@@ -54,25 +54,24 @@ namespace SimpleExec
         {
             Validate(name);
 
-            using (var process = new Process())
+            using var process = new Process();
+
+            process.StartInfo = ProcessStartInfo.Create(
+                name,
+                args,
+                workingDirectory,
+                false,
+                windowsName,
+                windowsArgs,
+                configureEnvironment,
+                createNoWindow,
+                null);
+
+            process.Run(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken);
+
+            if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
             {
-                process.StartInfo = ProcessStartInfo.Create(
-                    name,
-                    args,
-                    workingDirectory,
-                    false,
-                    windowsName,
-                    windowsArgs,
-                    configureEnvironment,
-                    createNoWindow,
-                    null);
-
-                process.Run(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken);
-
-                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
-                {
-                    throw new ExitCodeException(process.ExitCode);
-                }
+                throw new ExitCodeException(process.ExitCode);
             }
         }
 
@@ -116,25 +115,24 @@ namespace SimpleExec
         {
             Validate(name);
 
-            using (var process = new Process())
+            using var process = new Process();
+
+            process.StartInfo = ProcessStartInfo.Create(
+                name,
+                args,
+                workingDirectory,
+                false,
+                windowsName,
+                windowsArgs,
+                configureEnvironment,
+                createNoWindow,
+                null);
+
+            await process.RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken).ConfigureAwait(false);
+
+            if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
             {
-                process.StartInfo = ProcessStartInfo.Create(
-                    name,
-                    args,
-                    workingDirectory,
-                    false,
-                    windowsName,
-                    windowsArgs,
-                    configureEnvironment,
-                    createNoWindow,
-                    null);
-
-                await process.RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken).ConfigureAwait(false);
-
-                if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
-                {
-                    throw new ExitCodeException(process.ExitCode);
-                }
+                throw new ExitCodeException(process.ExitCode);
             }
         }
 
@@ -176,49 +174,48 @@ namespace SimpleExec
         {
             Validate(name);
 
-            using (var process = new Process())
+            using var process = new Process();
+
+            process.StartInfo = ProcessStartInfo.Create(
+                name,
+                args,
+                workingDirectory,
+                true,
+                windowsName,
+                windowsArgs,
+                configureEnvironment,
+                true,
+                encoding);
+
+            var runProcess = process.RunAsync(true, default, cancellationToken);
+
+            Task<string> readOutput;
+            Task<string> readError;
+
+            try
             {
-                process.StartInfo = ProcessStartInfo.Create(
-                    name,
-                    args,
-                    workingDirectory,
-                    true,
-                    windowsName,
-                    windowsArgs,
-                    configureEnvironment,
-                    true,
-                    encoding);
+                await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
+                process.StandardInput.Close();
 
-                var runProcess = process.RunAsync(true, default, cancellationToken);
+                readOutput = process.StandardOutput.ReadToEndAsync();
+                readError = process.StandardError.ReadToEndAsync();
+            }
+            catch (Exception)
+            {
+                await runProcess.ConfigureAwait(false);
+                throw;
+            }
 
-                Task<string> readOutput;
-                Task<string> readError;
-
-                try
-                {
-                    await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
-                    process.StandardInput.Close();
-
-                    readOutput = process.StandardOutput.ReadToEndAsync();
-                    readError = process.StandardError.ReadToEndAsync();
-                }
-                catch (Exception)
-                {
-                    await runProcess.ConfigureAwait(false);
-                    throw;
-                }
-
-                await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
+            await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
 
 #pragma warning disable CA1849 // Call async methods when in an async method
-                var output = readOutput.Result;
-                var error = readError.Result;
+            var output = readOutput.Result;
+            var error = readError.Result;
 #pragma warning restore CA1849 // Call async methods when in an async method
 
-                return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new Result(output, error)
-                    : throw new ExitCodeReadException(process.ExitCode, output, error);
-            }
+            return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
+                ? new Result(output, error)
+                : throw new ExitCodeReadException(process.ExitCode, output, error);
         }
 
         private static void Validate(string name)
