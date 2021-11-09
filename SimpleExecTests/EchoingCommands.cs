@@ -66,6 +66,6 @@ namespace SimpleExecTests
             Assert.DoesNotContain($"{TestName()} prefix:", error, StringComparison.Ordinal);
         }
 
-        private static string TestName([CallerMemberName] string _ = default) => _;
+        private static string TestName([CallerMemberName] string _ = "") => _;
     }
 }

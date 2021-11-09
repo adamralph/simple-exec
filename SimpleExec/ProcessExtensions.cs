@@ -39,10 +39,11 @@ namespace SimpleExec
 
         public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
+            // NOTE: can switch to TaskCompletionSource when moving to .NET 5+
             var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             process.EnableRaisingEvents = true;
-            process.Exited += (s, e) => tcs.TrySetResult(default);
+            process.Exited += (s, e) => tcs.TrySetResult(0);
 
             if (!noEcho)
             {
