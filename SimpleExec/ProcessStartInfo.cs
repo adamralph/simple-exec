@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SimpleExec
@@ -12,16 +11,14 @@ namespace SimpleExec
             string args,
             string workingDirectory,
             bool redirectStandardStreams,
-            string windowsName,
-            string windowsArgs,
             Action<IDictionary<string, string>> configureEnvironment,
             bool createNoWindow,
-            Encoding encoding)
+            Encoding? encoding)
         {
             var startInfo = new System.Diagnostics.ProcessStartInfo
             {
-                FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsName ?? name : name,
-                Arguments = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args,
+                FileName = name,
+                Arguments = args,
                 WorkingDirectory = workingDirectory,
                 UseShellExecute = false,
                 RedirectStandardError = redirectStandardStreams,
@@ -32,7 +29,7 @@ namespace SimpleExec
                 StandardOutputEncoding = encoding,
             };
 
-            configureEnvironment?.Invoke(startInfo.Environment);
+            configureEnvironment(startInfo.Environment);
 
             return startInfo;
         }
