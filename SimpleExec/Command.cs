@@ -210,9 +210,14 @@ namespace SimpleExec
 
                 await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
 
+#pragma warning disable CA1849 // Call async methods when in an async method
+                var output = readOutput.Result;
+                var error = readError.Result;
+#pragma warning restore CA1849 // Call async methods when in an async method
+
                 return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                    ? new Result(readOutput.Result, readError.Result)
-                    : throw new ExitCodeReadException(process.ExitCode, readOutput.Result, readError.Result);
+                    ? new Result(output, error)
+                    : throw new ExitCodeReadException(process.ExitCode, output, error);
             }
         }
 
