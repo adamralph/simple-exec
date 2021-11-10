@@ -51,12 +51,12 @@ var result2 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 
 ```C#
 bool noEcho = false,
-string windowsName = null,
-string windowsArgs = null,
-string echoPrefix = null,
-Action<IDictionary<string, string>> configureEnvironment = null,
+string? windowsName = null,
+string? windowsArgs = null,
+string? echoPrefix = null,
+Action<IDictionary<string, string>>? configureEnvironment = null,
 bool createNoWindow = false,
-Func<int, bool> handleExitCode = null,
+Func<int, bool>? handleExitCode = null,
 CancellationToken cancellationToken = default,
 ```
 
