@@ -14,6 +14,7 @@ namespace SimpleExec
     /// </summary>
     public static class Command
     {
+        private static readonly Action<IDictionary<string, string>> defaultAction = _ => { };
         private static readonly string defaultEchoPrefix = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
 
         /// <summary>
@@ -62,9 +63,8 @@ namespace SimpleExec
                 (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args) ?? "",
                 workingDirectory ?? "",
                 false,
-                configureEnvironment ?? (_ => { }),
-                createNoWindow,
-                null);
+                configureEnvironment ?? defaultAction,
+                createNoWindow);
 
             process.Run(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken);
 
@@ -121,9 +121,8 @@ namespace SimpleExec
                 (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args) ?? "",
                 workingDirectory ?? "",
                 false,
-                configureEnvironment ?? (_ => { }),
-                createNoWindow,
-                null);
+                configureEnvironment ?? defaultAction,
+                createNoWindow);
 
             await process.RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken).ConfigureAwait(false);
 
@@ -178,7 +177,7 @@ namespace SimpleExec
                 (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args) ?? "",
                 workingDirectory ?? "",
                 true,
-                configureEnvironment ?? (_ => { }),
+                configureEnvironment ?? defaultAction,
                 true,
                 encoding);
 
