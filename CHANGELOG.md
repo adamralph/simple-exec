@@ -6,6 +6,7 @@
 
 - [#351: **[BREAKING]** New API for version 9](https://github.com/adamralph/simple-exec/issues/351)
 - [#352: Echo to standard out instead of standard error](https://github.com/adamralph/simple-exec/issues/352)
+- [#377: add nullable annotations](https://github.com/adamralph/simple-exec/pull/377)
 
 ### Other
 
