@@ -43,8 +43,8 @@ namespace SimpleExec
         /// </remarks>
         public static void Run(
             string name,
-            string? args = null,
-            string? workingDirectory = null,
+            string args = "",
+            string workingDirectory = "",
             bool noEcho = false,
             string? windowsName = null,
             string? windowsArgs = null,
@@ -60,8 +60,8 @@ namespace SimpleExec
 
             process.StartInfo = ProcessStartInfo.Create(
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsName ?? name : name,
-                (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args) ?? "",
-                workingDirectory ?? "",
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args,
+                workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
                 createNoWindow);
@@ -101,8 +101,8 @@ namespace SimpleExec
         /// </remarks>
         public static async Task RunAsync(
             string name,
-            string? args = null,
-            string? workingDirectory = null,
+            string args = "",
+            string workingDirectory = "",
             bool noEcho = false,
             string? windowsName = null,
             string? windowsArgs = null,
@@ -118,8 +118,8 @@ namespace SimpleExec
 
             process.StartInfo = ProcessStartInfo.Create(
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsName ?? name : name,
-                (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args) ?? "",
-                workingDirectory ?? "",
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args,
+                workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
                 createNoWindow);
@@ -158,8 +158,8 @@ namespace SimpleExec
         /// </exception>
         public static async Task<Result> ReadAsync(
             string name,
-            string? args = null,
-            string? workingDirectory = null,
+            string args = "",
+            string workingDirectory = "",
             string? windowsName = null,
             string? windowsArgs = null,
             Action<IDictionary<string, string>>? configureEnvironment = null,
@@ -174,8 +174,8 @@ namespace SimpleExec
 
             process.StartInfo = ProcessStartInfo.Create(
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsName ?? name : name,
-                (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args) ?? "",
-                workingDirectory ?? "",
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsArgs ?? args : args,
+                workingDirectory,
                 true,
                 configureEnvironment ?? defaultAction,
                 true,
