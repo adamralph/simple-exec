@@ -30,6 +30,7 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="windowStyle">The window style to use when the command is run.</param>
         /// <param name="handleExitCode">
         /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
@@ -51,6 +52,7 @@ namespace SimpleExec
             string? echoPrefix = null,
             Action<IDictionary<string, string>>? configureEnvironment = null,
             bool createNoWindow = false,
+            ProcessWindowStyle windowStyle = ProcessWindowStyle.Normal,
             Func<int, bool>? handleExitCode = null,
             CancellationToken cancellationToken = default)
         {
@@ -64,7 +66,8 @@ namespace SimpleExec
                 workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
-                createNoWindow);
+                createNoWindow,
+                windowStyle);
 
             process.Run(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken);
 
@@ -87,6 +90,7 @@ namespace SimpleExec
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+        /// <param name="windowStyle">The window style to use when the command is run.</param>
         /// <param name="handleExitCode">
         /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
@@ -109,6 +113,7 @@ namespace SimpleExec
             string? echoPrefix = null,
             Action<IDictionary<string, string>>? configureEnvironment = null,
             bool createNoWindow = false,
+            ProcessWindowStyle windowStyle = ProcessWindowStyle.Normal,
             Func<int, bool>? handleExitCode = null,
             CancellationToken cancellationToken = default)
         {
@@ -122,7 +127,8 @@ namespace SimpleExec
                 workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
-                createNoWindow);
+                createNoWindow,
+                windowStyle);
 
             await process.RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, cancellationToken).ConfigureAwait(false);
 
@@ -179,6 +185,7 @@ namespace SimpleExec
                 true,
                 configureEnvironment ?? defaultAction,
                 true,
+                ProcessWindowStyle.Normal,
                 encoding);
 
             var runProcess = process.RunAsync(true, defaultEchoPrefix, cancellationToken);

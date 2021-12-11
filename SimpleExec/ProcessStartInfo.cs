@@ -13,6 +13,7 @@ namespace SimpleExec
             bool redirectStandardStreams,
             Action<IDictionary<string, string>> configureEnvironment,
             bool createNoWindow,
+            System.Diagnostics.ProcessWindowStyle windowStyle,
             Encoding? encoding = null)
         {
             var startInfo = new System.Diagnostics.ProcessStartInfo
@@ -27,6 +28,7 @@ namespace SimpleExec
                 CreateNoWindow = createNoWindow,
                 StandardErrorEncoding = encoding,
                 StandardOutputEncoding = encoding,
+                WindowStyle = windowStyle,
             };
 
             configureEnvironment(startInfo.Environment);
