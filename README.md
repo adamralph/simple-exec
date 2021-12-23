@@ -56,7 +56,6 @@ string? windowsArgs = null,
 string? echoPrefix = null,
 Action<IDictionary<string, string>>? configureEnvironment = null,
 bool createNoWindow = false,
-ProcessWindowStyle windowStyle = ProcessWindowStyle.Normal,
 Func<int, bool>? handleExitCode = null,
 CancellationToken cancellationToken = default,
 ```
