@@ -42,9 +42,8 @@ await RunAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ### Read
 
 ```C#
-// ReadAsync returns a CommandReadResult object with Out and Error properties representing standard out (stdout) and standard error (stderr)
-var result1 = await ReadAsync("foo.exe");
-var result2 = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
+var (standardOutput1, standardError1) = await ReadAsync("foo.exe");
+var (standardOutput2, standardError2) = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
 ```
 
 ### Other optional arguments
