@@ -12,10 +12,10 @@ namespace SimpleExecTests
         public static async Task ConfiguringEnvironment()
         {
             // act
-            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} environment", configureEnvironment: env => env["foo"] = "bar");
+            var (standardOutput, _) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} environment", configureEnvironment: env => env["foo"] = "bar");
 
             // assert
-            Assert.Contains("foo=bar", result.StandardOutput, StringComparison.Ordinal);
+            Assert.Contains("foo=bar", standardOutput, StringComparison.Ordinal);
         }
     }
 }
