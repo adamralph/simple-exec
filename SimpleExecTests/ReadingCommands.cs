@@ -16,11 +16,11 @@ namespace SimpleExecTests
         public static async Task ReadingACommandAsync(bool largeOutput)
         {
             // act
-            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
+            var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""));
 
             // assert
-            Assert.Contains("hello world", result.StandardOutput, StringComparison.Ordinal);
-            Assert.Contains("hello world", result.StandardError, StringComparison.Ordinal);
+            Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", standardError, StringComparison.Ordinal);
         }
 
         [Theory]
@@ -29,12 +29,12 @@ namespace SimpleExecTests
         public static async Task ReadingACommandWithInputAsync(bool largeOutput)
         {
             // act
-            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input");
+            var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input");
 
             // assert
-            Assert.Contains("hello world", result.StandardOutput, StringComparison.Ordinal);
-            Assert.Contains("this is input", result.StandardOutput, StringComparison.Ordinal);
-            Assert.Contains("hello world", result.StandardError, StringComparison.Ordinal);
+            Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
+            Assert.Contains("this is input", standardOutput, StringComparison.Ordinal);
+            Assert.Contains("hello world", standardError, StringComparison.Ordinal);
         }
 
         [Theory]
@@ -43,11 +43,11 @@ namespace SimpleExecTests
         public static async Task ReadingAUnicodeCommandAsync(bool largeOutput)
         {
             // act
-            var result = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
+            var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding());
 
             // assert
-            Assert.Contains("Pi (\u03a0)", result.StandardOutput, StringComparison.Ordinal);
-            Assert.Contains("Pi (\u03a0)", result.StandardError, StringComparison.Ordinal);
+            Assert.Contains("Pi (\u03a0)", standardOutput, StringComparison.Ordinal);
+            Assert.Contains("Pi (\u03a0)", standardError, StringComparison.Ordinal);
         }
 
         [Fact]
