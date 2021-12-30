@@ -151,12 +151,12 @@ namespace SimpleExec
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout) and standard error (stderr).
-        /// The task result is a <see cref="Result"/> representing the contents of standard output (stdout) and standard error (stderr).
+        /// The task result is a <see cref="ValueTuple{T1, T2}"/> representing the contents of standard output (stdout) and standard error (stderr).
         /// </returns>
         /// <exception cref="ExitCodeReadException">
         /// The command exited with non-zero exit code. The exception contains the contents of standard output (stdout) and standard error (stderr).
         /// </exception>
-        public static async Task<Result> ReadAsync(
+        public static async Task<(string StandardOutput, string StandardError)> ReadAsync(
             string name,
             string args = "",
             string workingDirectory = "",
@@ -208,7 +208,7 @@ namespace SimpleExec
 #pragma warning restore CA1849 // Call async methods when in an async method
 
             return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
-                ? new Result(output, error)
+                ? (output, error)
                 : throw new ExitCodeReadException(process.ExitCode, output, error);
         }
 
