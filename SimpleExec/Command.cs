@@ -14,7 +14,7 @@ namespace SimpleExec
     /// </summary>
     public static class Command
     {
-        private static readonly Action<IDictionary<string, string>> defaultAction = _ => { };
+        private static readonly Action<IDictionary<string, string?>> defaultAction = _ => { };
         private static readonly string defaultEchoPrefix = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SimpleExec
             string? windowsName = null,
             string? windowsArgs = null,
             string? echoPrefix = null,
-            Action<IDictionary<string, string>>? configureEnvironment = null,
+            Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
             CancellationToken cancellationToken = default)
@@ -107,7 +107,7 @@ namespace SimpleExec
             string? windowsName = null,
             string? windowsArgs = null,
             string? echoPrefix = null,
-            Action<IDictionary<string, string>>? configureEnvironment = null,
+            Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
             CancellationToken cancellationToken = default)
@@ -162,7 +162,7 @@ namespace SimpleExec
             string workingDirectory = "",
             string? windowsName = null,
             string? windowsArgs = null,
-            Action<IDictionary<string, string>>? configureEnvironment = null,
+            Action<IDictionary<string, string?>>? configureEnvironment = null,
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
             string? standardInput = null,
