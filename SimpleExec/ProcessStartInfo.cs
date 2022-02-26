@@ -11,7 +11,7 @@ namespace SimpleExec
             string args,
             string workingDirectory,
             bool redirectStandardStreams,
-            Action<IDictionary<string, string>> configureEnvironment,
+            Action<IDictionary<string, string?>> configureEnvironment,
             bool createNoWindow,
             Encoding? encoding = null)
         {
