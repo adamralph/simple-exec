@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,26 @@ namespace SimpleExecTests
             // assert
             Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
             Assert.Contains("hello world", standardError, StringComparison.Ordinal);
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public static async Task ReadingACommandAsyncWithAnArgumentList(bool largeOutput)
+        {
+            // act
+            var args = new List<string> { "exec", Tester.Path, "he llo", "world", };
+            if (largeOutput)
+            {
+                args.Add("large");
+            }
+
+            var (standardOutput, standardError) = await Command.ReadAsync("dotnet", args);
+
+            // assert
+            Assert.Contains(largeOutput ? "Arg count: 3" : "Arg count: 2", standardOutput, StringComparison.Ordinal);
+            Assert.Contains("he llo world", standardOutput, StringComparison.Ordinal);
+            Assert.Contains("he llo world", standardError, StringComparison.Ordinal);
         }
 
         [Theory]

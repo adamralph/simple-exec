@@ -9,6 +9,7 @@ namespace SimpleExec
         public static System.Diagnostics.ProcessStartInfo Create(
             string name,
             string args,
+            IEnumerable<string> argList,
             string workingDirectory,
             bool redirectStandardStreams,
             Action<IDictionary<string, string?>> configureEnvironment,
@@ -28,6 +29,11 @@ namespace SimpleExec
                 StandardErrorEncoding = encoding,
                 StandardOutputEncoding = encoding,
             };
+
+            foreach (var arg in argList)
+            {
+                startInfo.ArgumentList.Add(arg);
+            }
 
             configureEnvironment(startInfo.Environment);
 
