@@ -15,6 +15,8 @@ namespace SimpleExecTester
                 args = args.Concat(new[] { "Pi (\u03a0)" }).ToArray();
             }
 
+            Console.Out.WriteLine($"Arg count: {args.Length}");
+
             var input = args.Contains("in")
                 ? Console.In.ReadToEnd()
                     .Replace("\r", "\\r", StringComparison.Ordinal)

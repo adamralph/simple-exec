@@ -33,29 +33,35 @@ Run("foo.exe", "arg1 arg2");
 
 ```C#
 Run("foo.exe");
-Run("foo.exe", "arg1 arg2", "my-working-directory");
+Run("foo.exe", "arg1 arg2");
+Run("foo.exe", new[] { "arg1", "arg2" });
 
 await RunAsync("foo.exe");
-await RunAsync("foo.exe", "arg1 arg2", "my-working-directory");
+await RunAsync("foo.exe", "arg1 arg2");
+await RunAsync("foo.exe", new[] { "arg1", "arg2" });
 ```
 
 ### Read
 
 ```C#
 var (standardOutput1, standardError1) = await ReadAsync("foo.exe");
-var (standardOutput2, standardError2) = await ReadAsync("foo.exe", "arg1 arg2", "my-working-directory");
+var (standardOutput2, standardError2) = await ReadAsync("foo.exe", "arg1 arg2");
+var (standardOutput3, standardError3) = await ReadAsync("foo.exe", new[] { "arg1", "arg2" });
 ```
 
 ### Other optional arguments
 
 ```C#
+string workingDirectory = "",
 bool noEcho = false,
 string? windowsName = null,
 string? windowsArgs = null,
 string? echoPrefix = null,
 Action<IDictionary<string, string?>>? configureEnvironment = null,
 bool createNoWindow = false,
+Encoding? encoding = null,
 Func<int, bool>? handleExitCode = null,
+string? standardInput = null,
 CancellationToken cancellationToken = default,
 ```
 
