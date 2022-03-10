@@ -52,7 +52,7 @@ namespace SimpleExec
 
             _ = process.Start();
 
-            using (cancellationToken.Register(
+            await using (cancellationToken.Register(
                 () =>
                 {
                     if (process.TryKill())
@@ -67,7 +67,7 @@ namespace SimpleExec
         }
 
         private static string GetMessage(this Process process, string echoPrefix) =>
-            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName} {process.StartInfo.Arguments}";
+            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName}{(string.IsNullOrEmpty(process.StartInfo.Arguments) ? "" : $" {process.StartInfo.Arguments}")}";
 
         private static bool TryKill(this Process process)
         {
