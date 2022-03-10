@@ -15,7 +15,7 @@ namespace SimpleExec
         /// Constructs an instance of a <see cref="ExitCodeReadException"/>.
         /// </summary>
         /// <param name="exitCode">The exit code of the command.</param>
-        /// <param name="standardOutput">The contents of standard output (stdour).</param>
+        /// <param name="standardOutput">The contents of standard output (stdout).</param>
         /// <param name="standardError">The contents of standard error (stderr).</param>
         public ExitCodeReadException(int exitCode, string standardOutput, string standardError) : base(exitCode) => (this.StandardOutput, this.StandardError) = (standardOutput, standardError);
 

@@ -11,7 +11,7 @@ namespace SimpleExecTests
         [InlineData(0, false)]
         [InlineData(1, false)]
         [InlineData(2, true)]
-        public static void RunningAComand(int exitCode, bool shouldThrow)
+        public static void RunningACommand(int exitCode, bool shouldThrow)
         {
             // act
             var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
@@ -31,7 +31,7 @@ namespace SimpleExecTests
         [InlineData(0, false)]
         [InlineData(1, false)]
         [InlineData(2, true)]
-        public static async Task RunningAComandAsync(int exitCode, bool shouldThrow)
+        public static async Task RunningACommandAsync(int exitCode, bool shouldThrow)
         {
             // act
             var exception = await Record.ExceptionAsync(async () => await Command.RunAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
@@ -51,7 +51,7 @@ namespace SimpleExecTests
         [InlineData(0, false)]
         [InlineData(1, false)]
         [InlineData(2, true)]
-        public static async Task ReadingAComandAsync(int exitCode, bool shouldThrow)
+        public static async Task ReadingACommandAsync(int exitCode, bool shouldThrow)
         {
             // act
             var exception = await Record.ExceptionAsync(async () => _ = await Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1));
