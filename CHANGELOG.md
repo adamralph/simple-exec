@@ -1,5 +1,11 @@
 # Changelog
 
+## 9.1.0
+
+### Enhancements
+
+- [#425: Overloads with argument lists](https://github.com/adamralph/simple-exec/pull/425)
+
 ## 9.0.0
 
 ### Enhancements
