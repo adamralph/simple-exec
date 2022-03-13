@@ -14,7 +14,7 @@ namespace SimpleExec
 
             if (!noEcho)
             {
-                Console.Out.WriteLine(process.StartInfo.GetMessage(echoPrefix));
+                Console.Out.Write(process.StartInfo.GetEchoLines(echoPrefix));
             }
 
             _ = process.Start();
@@ -48,7 +48,7 @@ namespace SimpleExec
 
             if (!noEcho)
             {
-                await Console.Out.WriteLineAsync(process.StartInfo.GetMessage(echoPrefix)).ConfigureAwait(false);
+                await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(echoPrefix)).ConfigureAwait(false);
             }
 
             _ = process.Start();
@@ -67,7 +67,7 @@ namespace SimpleExec
             }
         }
 
-        private static string GetMessage(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
+        private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
         {
             var builder = new StringBuilder();
 
