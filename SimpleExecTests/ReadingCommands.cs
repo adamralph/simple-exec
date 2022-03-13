@@ -27,15 +27,16 @@ namespace SimpleExecTests
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public static async Task ReadingACommandAsyncWithAnArgumentList(bool largeOutput)
+        public static async Task ReadingACommandAsyncWithAnArgList(bool largeOutput)
         {
-            // act
+            // arrange
             var args = new List<string> { "exec", Tester.Path, "he llo", "world", };
             if (largeOutput)
             {
                 args.Add("large");
             }
 
+            // act
             var (standardOutput, standardError) = await Command.ReadAsync("dotnet", args);
 
             // assert
