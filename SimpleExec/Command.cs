@@ -20,15 +20,15 @@ namespace SimpleExec
 
         /// <summary>
         /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
-        /// By default, the command line is echoed to standard error (stderr).
+        /// By default, the command line is echoed to standard output (stdout).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
         /// <param name="args">The arguments to pass to the command.</param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
-        /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -39,7 +39,7 @@ namespace SimpleExec
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
-        /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
+        /// By default, the resulting command line and the working directory (if specified) are echoed to standard output (stdout).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
         public static void Run(
@@ -67,7 +67,7 @@ namespace SimpleExec
 
         /// <summary>
         /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
-        /// By default, the command line is echoed to standard error (stderr).
+        /// By default, the command line is echoed to standard output (stdout).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
         /// <param name="args">
@@ -75,13 +75,13 @@ namespace SimpleExec
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
-        /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">
         /// The arguments to pass to the command on Windows only.
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -134,15 +134,15 @@ namespace SimpleExec
 
         /// <summary>
         /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
-        /// By default, the command line is echoed to standard error (stderr).
+        /// By default, the command line is echoed to standard output (stdout).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
         /// <param name="args">The arguments to pass to the command.</param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
-        /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -154,7 +154,7 @@ namespace SimpleExec
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
         /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
         /// <remarks>
-        /// By default, the resulting command line and the working directory (if specified) are echoed to standard error (stderr).
+        /// By default, the resulting command line and the working directory (if specified) are echoed to standard output (stdout).
         /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
         /// </remarks>
         public static async Task RunAsync(
@@ -183,7 +183,7 @@ namespace SimpleExec
 
         /// <summary>
         /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
-        /// By default, the command line is echoed to standard error (stderr).
+        /// By default, the command line is echoed to standard output (stdout).
         /// </summary>
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
         /// <param name="args">
@@ -191,13 +191,13 @@ namespace SimpleExec
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
-        /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">
         /// The arguments to pass to the command on Windows only.
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
-        /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard error (stderr).</param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -259,7 +259,7 @@ namespace SimpleExec
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-        /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard error (stderr).</param>
+        /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard output (stdout).</param>
         /// <param name="handleExitCode">
         /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
