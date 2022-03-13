@@ -4,7 +4,11 @@
 
 ### Enhancements
 
-- [#425: Overloads with argument lists](https://github.com/adamralph/simple-exec/pull/425)
+- [#430: Overloads with argument lists](https://github.com/adamralph/simple-exec/issues/430)
+
+### Fixed bugs
+
+- [#433: XML docs state that echo is to standard error (stderr) instead of standard output (stdout)](https://github.com/adamralph/simple-exec/pull/433)
 
 ## 9.0.0
 
