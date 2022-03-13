@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace SimpleExec
 
             if (!noEcho)
             {
-                Console.Out.WriteLine(process.GetMessage(echoPrefix));
+                Console.Out.WriteLine(process.StartInfo.GetMessage(echoPrefix));
             }
 
             _ = process.Start();
@@ -47,7 +48,7 @@ namespace SimpleExec
 
             if (!noEcho)
             {
-                await Console.Out.WriteLineAsync(process.GetMessage(echoPrefix)).ConfigureAwait(false);
+                await Console.Out.WriteLineAsync(process.StartInfo.GetMessage(echoPrefix)).ConfigureAwait(false);
             }
 
             _ = process.Start();
@@ -66,8 +67,31 @@ namespace SimpleExec
             }
         }
 
-        private static string GetMessage(this Process process, string echoPrefix) =>
-            $"{(string.IsNullOrEmpty(process.StartInfo.WorkingDirectory) ? "" : $"{echoPrefix}: Working directory: {process.StartInfo.WorkingDirectory}{Environment.NewLine}")}{echoPrefix}: {process.StartInfo.FileName}{(string.IsNullOrEmpty(process.StartInfo.Arguments) ? "" : $" {process.StartInfo.Arguments}")}";
+        private static string GetMessage(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
+        {
+            var builder = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(info.WorkingDirectory))
+            {
+                _ = builder.AppendLine($"{echoPrefix}: Working directory: {info.WorkingDirectory}");
+            }
+
+            if (info.ArgumentList.Count > 0)
+            {
+                _ = builder.AppendLine($"{echoPrefix}: {info.FileName}");
+
+                foreach (var arg in info.ArgumentList)
+                {
+                    _ = builder.AppendLine($"{echoPrefix}:   {arg}");
+                }
+            }
+            else
+            {
+                _ = builder.AppendLine($"{echoPrefix}: {info.FileName}{(string.IsNullOrEmpty(info.Arguments) ? "" : $" {info.Arguments}")}");
+            }
+
+            return builder.ToString();
+        }
 
         private static bool TryKill(this Process process)
         {
