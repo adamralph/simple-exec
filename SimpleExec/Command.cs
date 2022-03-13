@@ -75,11 +75,13 @@ namespace SimpleExec
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
+        /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">
         /// The arguments to pass to the command on Windows only.
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -93,8 +95,10 @@ namespace SimpleExec
             string name,
             IEnumerable<string> args,
             string workingDirectory = "",
+            bool noEcho = false,
             string? windowsName = null,
             IEnumerable<string>? windowsArgs = null,
+            string? echoPrefix = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
@@ -108,7 +112,7 @@ namespace SimpleExec
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
-                .Run(true, "", handleExitCode, cancellationToken);
+                .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken);
 
         private static void Run(
             this System.Diagnostics.ProcessStartInfo startInfo,
@@ -187,11 +191,13 @@ namespace SimpleExec
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
+        /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard error (stderr).</param>
         /// <param name="windowsName">The name of the command to use on Windows only.</param>
         /// <param name="windowsArgs">
         /// The arguments to pass to the command on Windows only.
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
+        /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard error (stderr).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
         /// <param name="handleExitCode">
@@ -206,8 +212,10 @@ namespace SimpleExec
             string name,
             IEnumerable<string> args,
             string workingDirectory = "",
+            bool noEcho = false,
             string? windowsName = null,
             IEnumerable<string>? windowsArgs = null,
+            string? echoPrefix = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
@@ -221,7 +229,7 @@ namespace SimpleExec
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
-                .RunAsync(true, "", handleExitCode, cancellationToken)
+                .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken)
                 .ConfigureAwait(false);
 
         private static async Task RunAsync(
