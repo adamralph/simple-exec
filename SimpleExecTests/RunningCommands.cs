@@ -1,6 +1,9 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using SimpleExec;
 using SimpleExecTests.Infra;
@@ -126,6 +129,39 @@ namespace SimpleExecTests
 
             // assert
             Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);
+        }
+
+        [WindowsFact]
+        public static async Task RunningCommandsInPathOnWindows()
+        {
+            // arrange
+            var directory = Path.Combine(
+                Path.GetTempPath(),
+                "SimpleExecTests",
+                DateTimeOffset.UtcNow.UtcTicks.ToString(CultureInfo.InvariantCulture),
+                "RunningCommandsInPathOnWindows");
+
+            _ = Directory.CreateDirectory(directory);
+
+            if (!SpinWait.SpinUntil(() => Directory.Exists(directory), 50))
+            {
+                throw new IOException($"Failed to create directory '{directory}'.");
+            }
+
+            var name = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            var fullName = Path.Combine(directory, Path.ChangeExtension(name, "cmd"));
+            await File.WriteAllTextAsync(fullName, "echo foo");
+
+            Environment.SetEnvironmentVariable(
+                "PATH",
+                $"{Environment.GetEnvironmentVariable("PATH")}{Path.PathSeparator}{directory}",
+                EnvironmentVariableTarget.Process);
+
+            // act
+            var exception = Record.Exception(() => Command.Run(name));
+
+            // assert
+            Assert.Null(exception);
         }
     }
 }
