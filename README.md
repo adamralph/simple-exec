@@ -99,7 +99,7 @@ Note that it may be useful to record the exit code. For example:
 
 ```C#
 var exitCode = 0;
-var result = Run("ROBOCOPY", "from to", handleExitCode: code => (exitCode = code) < 8);
+Run("ROBOCOPY", "from to", handleExitCode: code => (exitCode = code) < 8);
 
 // see https://ss64.com/nt/robocopy-exit.html
 var oneOrMoreFilesCopied = exitCode & 1;
