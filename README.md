@@ -54,8 +54,6 @@ var (standardOutput3, standardError3) = await ReadAsync("foo.exe", new[] { "arg1
 ```C#
 string workingDirectory = "",
 bool noEcho = false,
-string? windowsName = null,
-string? windowsArgs = null,
 string? echoPrefix = null,
 Action<IDictionary<string, string?>>? configureEnvironment = null,
 bool createNoWindow = false,
