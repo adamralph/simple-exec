@@ -1,5 +1,11 @@
 # Changelog
 
+## 10.0.0
+
+### Enhancements
+
+- [#441: **[BREAKING]** Automatically resolve .cmd and .bat paths on Windows](https://github.com/adamralph/simple-exec/issues/441)
+
 ## 9.1.0
 
 ### Enhancements
