@@ -374,16 +374,24 @@ namespace SimpleExec
 
         private static string Resolve(string name)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
-                Path.IsPathRooted(name) ||
-                !string.IsNullOrEmpty(Path.GetExtension(name)))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Path.IsPathRooted(name))
             {
                 return name;
             }
 
-            var fileNames = windowsExecutableExtensions.Select(extension => Path.ChangeExtension(name, extension)).ToList();
+            var extension = Path.GetExtension(name);
+            if (!string.IsNullOrEmpty(extension) && extension != ".cmd" && extension != ".bat")
+            {
+                return name;
+            }
 
-            return GetSearchDirectories().SelectMany(_ => fileNames, Path.Combine).FirstOrDefault(File.Exists) ?? name;
+            var searchFileNames = string.IsNullOrEmpty(extension)
+                ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
+                : new List<string> { name, };
+
+            var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine).FirstOrDefault(File.Exists);
+
+            return path == null || Path.GetExtension(path) == ".exe" ? name : path;
         }
 
         // see https://github.com/dotnet/runtime/blob/14304eb31eea134db58870a6d87312231b1e02b6/src/libraries/System.Diagnostics.Process/src/System/Diagnostics/Process.Unix.cs#L703-L726
