@@ -53,10 +53,13 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
-            CancellationToken cancellationToken = default) =>
+            CancellationToken cancellationToken = default)
+        {
+            (name, args) = Resolve(Validate(name), args);
+
             ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    name,
                     args,
                     Enumerable.Empty<string>(),
                     workingDirectory,
@@ -64,6 +67,7 @@ namespace SimpleExec
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
                 .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken);
+        }
 
         /// <summary>
         /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -95,17 +99,21 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
-            CancellationToken cancellationToken = default) =>
+            CancellationToken cancellationToken = default)
+        {
+            (name, args) = Resolve(Validate(name), args ?? throw new ArgumentNullException(nameof(args)));
+
             ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    name,
                     "",
-                    args ?? throw new ArgumentNullException(nameof(args)),
+                    args,
                     workingDirectory,
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
                 .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken);
+        }
 
         private static void Run(
             this System.Diagnostics.ProcessStartInfo startInfo,
@@ -157,10 +165,13 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
-            CancellationToken cancellationToken = default) =>
+            CancellationToken cancellationToken = default)
+        {
+            (name, args) = Resolve(Validate(name), args);
+
             await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    name,
                     args,
                     Enumerable.Empty<string>(),
                     workingDirectory,
@@ -169,6 +180,7 @@ namespace SimpleExec
                     createNoWindow)
                 .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken)
                 .ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -201,18 +213,22 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
-            CancellationToken cancellationToken = default) =>
+            CancellationToken cancellationToken = default)
+        {
+            (name, args) = Resolve(Validate(name), args ?? throw new ArgumentNullException(nameof(args)));
+
             await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    name,
                     "",
-                    args ?? throw new ArgumentNullException(nameof(args)),
+                    args,
                     workingDirectory,
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
                 .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken)
                 .ConfigureAwait(false);
+        }
 
         private static async Task RunAsync(
             this System.Diagnostics.ProcessStartInfo startInfo,
@@ -262,10 +278,13 @@ namespace SimpleExec
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
             string? standardInput = null,
-            CancellationToken cancellationToken = default) =>
-            await ProcessStartInfo
+            CancellationToken cancellationToken = default)
+        {
+            (name, args) = Resolve(Validate(name), args);
+
+            return await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    name,
                     args,
                     Enumerable.Empty<string>(),
                     workingDirectory,
@@ -278,6 +297,7 @@ namespace SimpleExec
                     standardInput,
                     cancellationToken)
                 .ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Runs a command and reads standard output (stdout) and standard error (stderr) and optionally writes to standard input (stdin).
@@ -312,12 +332,15 @@ namespace SimpleExec
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
             string? standardInput = null,
-            CancellationToken cancellationToken = default) =>
-            await ProcessStartInfo
+            CancellationToken cancellationToken = default)
+        {
+            (name, args) = Resolve(Validate(name), args ?? throw new ArgumentNullException(nameof(args)));
+
+            return await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    name,
                     "",
-                    args ?? throw new ArgumentNullException(nameof(args)),
+                    args,
                     workingDirectory,
                     true,
                     configureEnvironment ?? defaultAction,
@@ -328,6 +351,7 @@ namespace SimpleExec
                     standardInput,
                     cancellationToken)
                 .ConfigureAwait(false);
+        }
 
         private static async Task<(string StandardOutput, string StandardError)> ReadAsync(
             this System.Diagnostics.ProcessStartInfo startInfo,
@@ -372,17 +396,23 @@ namespace SimpleExec
         private static string Validate(string name) =>
             string.IsNullOrWhiteSpace(name) ? throw new ArgumentException("The command name is missing.", nameof(name)) : name;
 
-        private static string Resolve(string name)
+        private static (string Name, string Args) Resolve(string name, string args) =>
+            RequiresCmd(name) ? ("cmd", $"/c {Escape(name)} {args}") : (name, args);
+
+        private static (string Name, IEnumerable<string> Args) Resolve(string name, IEnumerable<string> args) =>
+            RequiresCmd(name) ? ("cmd", new[] { "/c", Escape(name), }.Concat(args)) : (name, args);
+
+        private static bool RequiresCmd(string name)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Path.IsPathRooted(name))
             {
-                return name;
+                return false;
             }
 
             var extension = Path.GetExtension(name);
             if (!string.IsNullOrEmpty(extension) && extension != ".cmd" && extension != ".bat")
             {
-                return name;
+                return false;
             }
 
             var searchFileNames = string.IsNullOrEmpty(extension)
@@ -391,8 +421,10 @@ namespace SimpleExec
 
             var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine).FirstOrDefault(File.Exists);
 
-            return path == null || Path.GetExtension(path) == ".exe" ? name : path;
+            return path != null && Path.GetExtension(path) != ".exe";
         }
+
+        private static string Escape(string name) => name.Contains(' ', StringComparison.InvariantCulture) ? "" : name;
 
         // see https://github.com/dotnet/runtime/blob/14304eb31eea134db58870a6d87312231b1e02b6/src/libraries/System.Diagnostics.Process/src/System/Diagnostics/Process.Unix.cs#L703-L726
         private static IEnumerable<string> GetSearchDirectories()

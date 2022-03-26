@@ -148,7 +148,8 @@ namespace SimpleExecTests
                 throw new IOException($"Failed to create directory '{directory}'.");
             }
 
-            var name = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            // test the edge case of having a space in the file name
+            var name = Path.GetFileNameWithoutExtension($"foo {Path.GetRandomFileName()}");
             var fullName = Path.Combine(directory, Path.ChangeExtension(name, "cmd"));
             await File.WriteAllTextAsync(fullName, "echo foo");
 
