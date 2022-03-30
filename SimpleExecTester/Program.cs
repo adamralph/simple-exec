@@ -12,7 +12,7 @@ namespace SimpleExecTester
             if (args.Contains("unicode"))
             {
                 Console.OutputEncoding = Encoding.Unicode;
-                args = args.Concat(new[] { "Pi (\u03a0)", }).ToArray();
+                args = args.Append("Pi (\u03a0)").ToArray();
             }
 
             Console.Out.WriteLine($"Arg count: {args.Length}");
