@@ -13,8 +13,6 @@ SimpleExec is a [.NET library](https://www.nuget.org/packages/SimpleExec) that r
 
 SimpleExec intentionally does not invoke the system shell.
 
-By default, the command is echoed to standard error (stderr) for visibility.
-
 Platform support: [.NET Standard 2.1 and later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
 ## Quick start
@@ -40,6 +38,8 @@ await RunAsync("foo");
 await RunAsync("foo", "arg1 arg2");
 await RunAsync("foo", new[] { "arg1", "arg2" });
 ```
+
+By default, the command is echoed to standard output (stdout) for visibility.
 
 ### Read
 
