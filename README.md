@@ -24,7 +24,7 @@ using static SimpleExec.Command;
 ```
 
 ```C#
-Run("foo.exe", "arg1 arg2");
+Run("foo", "arg1 arg2");
 ```
 
 ## API
@@ -32,21 +32,21 @@ Run("foo.exe", "arg1 arg2");
 ### Run
 
 ```C#
-Run("foo.exe");
-Run("foo.exe", "arg1 arg2");
-Run("foo.exe", new[] { "arg1", "arg2" });
+Run("foo");
+Run("foo", "arg1 arg2");
+Run("foo", new[] { "arg1", "arg2" });
 
-await RunAsync("foo.exe");
-await RunAsync("foo.exe", "arg1 arg2");
-await RunAsync("foo.exe", new[] { "arg1", "arg2" });
+await RunAsync("foo");
+await RunAsync("foo", "arg1 arg2");
+await RunAsync("foo", new[] { "arg1", "arg2" });
 ```
 
 ### Read
 
 ```C#
-var (standardOutput1, standardError1) = await ReadAsync("foo.exe");
-var (standardOutput2, standardError2) = await ReadAsync("foo.exe", "arg1 arg2");
-var (standardOutput3, standardError3) = await ReadAsync("foo.exe", new[] { "arg1", "arg2" });
+var (standardOutput1, standardError1) = await ReadAsync("foo");
+var (standardOutput2, standardError2) = await ReadAsync("foo", "arg1 arg2");
+var (standardOutput3, standardError3) = await ReadAsync("foo", new[] { "arg1", "arg2" });
 ```
 
 ### Other optional arguments
@@ -87,7 +87,11 @@ Standard Error:
 
 #### Overriding default exit code handling
 
-The throwing of exceptions for specific non-zero exit codes can be suppressed by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise. For example:
+Most programs return a zero exit code when they succeed and a non-zero exit code fail. However, there are some programs which return a non-zero exit code when they succeed. For example, [Robocopy](https://ss64.com/nt/robocopy.html) returns an exit code less than 8 when it succeeds and 8 or greater when a failure occurs.
+
+The throwing of exceptions for specific non-zero exit codes may be suppressed by passing a delegate to `handleExitCode` which returns `true` when it has handled the exit code and default exit code handling should be suppressed, and returns `false` otherwise.
+
+For example, when running Robocopy, exception throwing should be suppressed for an exit code less than 8:
 
 ```C#
 Run("ROBOCOPY", "from to", handleExitCode: code => code < 8);
