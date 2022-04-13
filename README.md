@@ -15,6 +15,12 @@ SimpleExec intentionally does not invoke the system shell.
 
 Platform support: [.NET Standard 2.1 and later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
+- [Quick start](#quick-start)
+- [Run](#run)
+- [Read](#read)
+- [Other optional arguments](#other-optional-arguments)
+- [Exceptions](#exceptions)
+
 ## Quick start
 
 ```C#
@@ -25,9 +31,7 @@ using static SimpleExec.Command;
 Run("foo", "arg1 arg2");
 ```
 
-## API
-
-### Run
+## Run
 
 ```C#
 Run("foo");
@@ -41,7 +45,7 @@ await RunAsync("foo", new[] { "arg1", "arg2" });
 
 By default, the command is echoed to standard output (stdout) for visibility.
 
-### Read
+## Read
 
 ```C#
 var (standardOutput1, standardError1) = await ReadAsync("foo");
@@ -49,7 +53,7 @@ var (standardOutput2, standardError2) = await ReadAsync("foo", "arg1 arg2");
 var (standardOutput3, standardError3) = await ReadAsync("foo", new[] { "arg1", "arg2" });
 ```
 
-### Other optional arguments
+## Other optional arguments
 
 ```C#
 string workingDirectory = "",
@@ -63,7 +67,7 @@ string? standardInput = null,
 CancellationToken cancellationToken = default,
 ```
 
-### Exceptions
+## Exceptions
 
 If the command has a non-zero exit code, an `ExitCodeException` is thrown with an `int` `ExitCode` property and a message in the form of:
 
@@ -85,7 +89,7 @@ Standard Error:
 {Error}"
 ```
 
-#### Overriding default exit code handling
+### Overriding default exit code handling
 
 Most programs return a zero exit code when they succeed and a non-zero exit code fail. However, there are some programs which return a non-zero exit code when they succeed. For example, [Robocopy](https://ss64.com/nt/robocopy.html) returns an exit code less than 8 when it succeeds and 8 or greater when a failure occurs.
 
