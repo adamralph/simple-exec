@@ -23,17 +23,17 @@ Platform support: [.NET Standard 2.1 and later](https://docs.microsoft.com/en-us
 
 ## Quick start
 
-```C#
+```c#
 using static SimpleExec.Command;
 ```
 
-```C#
+```c#
 Run("foo", "arg1 arg2");
 ```
 
 ## Run
 
-```C#
+```c#
 Run("foo");
 Run("foo", "arg1 arg2");
 Run("foo", new[] { "arg1", "arg2" });
@@ -47,7 +47,7 @@ By default, the command is echoed to standard output (stdout) for visibility.
 
 ## Read
 
-```C#
+```c#
 var (standardOutput1, standardError1) = await ReadAsync("foo");
 var (standardOutput2, standardError2) = await ReadAsync("foo", "arg1 arg2");
 var (standardOutput3, standardError3) = await ReadAsync("foo", new[] { "arg1", "arg2" });
@@ -55,7 +55,7 @@ var (standardOutput3, standardError3) = await ReadAsync("foo", new[] { "arg1", "
 
 ## Other optional arguments
 
-```C#
+```c#
 string workingDirectory = "",
 bool noEcho = false,
 string? echoPrefix = null,
@@ -71,13 +71,13 @@ CancellationToken cancellationToken = default,
 
 If the command has a non-zero exit code, an `ExitCodeException` is thrown with an `int` `ExitCode` property and a message in the form of:
 
-```C#
+```c#
 $"The process exited with code {ExitCode}."
 ```
 
 In the case of `ReadAsync`, an `ExitCodeReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
 
-```C#
+```c#
 $@"The process exited with code {ExitCode}.
 
 Standard Output:
@@ -97,13 +97,13 @@ The throwing of exceptions for specific non-zero exit codes may be suppressed by
 
 For example, when running Robocopy, exception throwing should be suppressed for an exit code less than 8:
 
-```C#
+```c#
 Run("ROBOCOPY", "from to", handleExitCode: code => code < 8);
 ```
 
 Note that it may be useful to record the exit code. For example:
 
-```C#
+```c#
 var exitCode = 0;
 Run("ROBOCOPY", "from to", handleExitCode: code => (exitCode = code) < 8);
 
