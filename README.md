@@ -20,6 +20,7 @@ Platform support: [.NET Standard 2.1 and later](https://docs.microsoft.com/en-us
 - [Read](#read)
 - [Other optional arguments](#other-optional-arguments)
 - [Exceptions](#exceptions)
+- [Windows](#windows)
 
 ## Quick start
 
@@ -111,6 +112,43 @@ Run("ROBOCOPY", "from to", handleExitCode: code => (exitCode = code) < 8);
 var oneOrMoreFilesCopied = exitCode & 1;
 var extraFilesOrDirectoriesDetected = exitCode & 2;
 var misMatchedFilesOrDirectoriesDetected = exitCode & 4;
+```
+
+## Windows
+
+🙄
+
+If your command is a file named `foo` on Linux or macOS and named `foo.exe`, `foo.cmd`, or `foo.bat` on Windows, you can run it in the same way on all operating systems:
+
+```c#
+await RunAsync("foo", "bar baz");
+```
+
+This is because, when a command is specified without a filename extension, Windows attempts (with help from SimpleExec) to find a matching `.exe`, `.cmd`, or `.bat` file, in that order, and it treats those file types as executables.
+
+But in other scenarios this doesn't work. Instead, you have to run one command on Linux or macOS and another command on Windows, using the `windowsName` and `windowsArgs` parameters.
+
+### Examples
+
+Your Linux or macOS file may have an extension:
+
+```c#
+await RunAsync("foo.sh", "bar baz",
+    windowsName: "foo.cmd");
+```
+
+Your Windows file may be a PowerShell script:
+
+```c#
+await RunAsync("foo", "bar baz",
+    windowsName: "powershell", windowsArgs: "foo.ps1 bar baz");
+```
+
+Your Windows file may require different arguments:
+
+```c#
+await RunAsync("foo", "bar baz",
+    windowsArgs: "abc xyz");
 ```
 
 ---

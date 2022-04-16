@@ -30,6 +30,8 @@ namespace SimpleExec
         /// <param name="args">The arguments to pass to the command.</param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
+        /// <param name="windowsName">The name of the command to use on Windows only.</param>
+        /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -49,6 +51,8 @@ namespace SimpleExec
             string args = "",
             string workingDirectory = "",
             bool noEcho = false,
+            string? windowsName = null,
+            string? windowsArgs = null,
             string? echoPrefix = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
@@ -56,8 +60,8 @@ namespace SimpleExec
             CancellationToken cancellationToken = default) =>
             ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
-                    args,
+                    Resolve(Validate(Coalesce(name, windowsName))),
+                    Coalesce(args, windowsArgs),
                     Enumerable.Empty<string>(),
                     workingDirectory,
                     false,
@@ -76,6 +80,11 @@ namespace SimpleExec
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
         /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
+        /// <param name="windowsName">The name of the command to use on Windows only.</param>
+        /// <param name="windowsArgs">
+        /// The arguments to pass to the command on Windows only.
+        /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
+        /// </param>
         /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -91,6 +100,8 @@ namespace SimpleExec
             IEnumerable<string> args,
             string workingDirectory = "",
             bool noEcho = false,
+            string? windowsName = null,
+            IEnumerable<string>? windowsArgs = null,
             string? echoPrefix = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
@@ -98,9 +109,9 @@ namespace SimpleExec
             CancellationToken cancellationToken = default) =>
             ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    Resolve(Validate(Coalesce(name, windowsName))),
                     "",
-                    args ?? throw new ArgumentNullException(nameof(args)),
+                    Coalesce(args, windowsArgs) ?? throw new ArgumentNullException(nameof(args)),
                     workingDirectory,
                     false,
                     configureEnvironment ?? defaultAction,
@@ -133,6 +144,8 @@ namespace SimpleExec
         /// <param name="args">The arguments to pass to the command.</param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
         /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
+        /// <param name="windowsName">The name of the command to use on Windows only.</param>
+        /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -153,6 +166,8 @@ namespace SimpleExec
             string args = "",
             string workingDirectory = "",
             bool noEcho = false,
+            string? windowsName = null,
+            string? windowsArgs = null,
             string? echoPrefix = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
@@ -160,8 +175,8 @@ namespace SimpleExec
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
-                    args,
+                    Resolve(Validate(Coalesce(name, windowsName))),
+                    Coalesce(args, windowsArgs),
                     Enumerable.Empty<string>(),
                     workingDirectory,
                     false,
@@ -181,6 +196,11 @@ namespace SimpleExec
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
         /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
+        /// <param name="windowsName">The name of the command to use on Windows only.</param>
+        /// <param name="windowsArgs">
+        /// The arguments to pass to the command on Windows only.
+        /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
+        /// </param>
         /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -197,6 +217,8 @@ namespace SimpleExec
             IEnumerable<string> args,
             string workingDirectory = "",
             bool noEcho = false,
+            string? windowsName = null,
+            IEnumerable<string>? windowsArgs = null,
             string? echoPrefix = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
@@ -204,9 +226,9 @@ namespace SimpleExec
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    Resolve(Validate(Coalesce(name, windowsName))),
                     "",
-                    args ?? throw new ArgumentNullException(nameof(args)),
+                    Coalesce(args, windowsArgs) ?? throw new ArgumentNullException(nameof(args)),
                     workingDirectory,
                     false,
                     configureEnvironment ?? defaultAction,
@@ -238,6 +260,8 @@ namespace SimpleExec
         /// <param name="name">The name of the command. This can be a path to an executable file.</param>
         /// <param name="args">The arguments to pass to the command.</param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
+        /// <param name="windowsName">The name of the command to use on Windows only.</param>
+        /// <param name="windowsArgs">The arguments to pass to the command on Windows only.</param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard output (stdout).</param>
         /// <param name="handleExitCode">
@@ -258,6 +282,8 @@ namespace SimpleExec
             string name,
             string args = "",
             string workingDirectory = "",
+            string? windowsName = null,
+            string? windowsArgs = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
@@ -265,8 +291,8 @@ namespace SimpleExec
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
-                    args,
+                    Resolve(Validate(Coalesce(name, windowsName))),
+                    Coalesce(args, windowsArgs),
                     Enumerable.Empty<string>(),
                     workingDirectory,
                     true,
@@ -288,6 +314,11 @@ namespace SimpleExec
         /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
         /// </param>
         /// <param name="workingDirectory">The working directory in which to run the command.</param>
+        /// <param name="windowsName">The name of the command to use on Windows only.</param>
+        /// <param name="windowsArgs">
+        /// The arguments to pass to the command on Windows only.
+        /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
+        /// </param>
         /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
         /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard error (stderr).</param>
         /// <param name="handleExitCode">
@@ -308,6 +339,8 @@ namespace SimpleExec
             string name,
             IEnumerable<string> args,
             string workingDirectory = "",
+            string? windowsName = null,
+            IEnumerable<string>? windowsArgs = null,
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
@@ -315,9 +348,9 @@ namespace SimpleExec
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
-                    Resolve(Validate(name)),
+                    Resolve(Validate(Coalesce(name, windowsName))),
                     "",
-                    args ?? throw new ArgumentNullException(nameof(args)),
+                    Coalesce(args, windowsArgs) ?? throw new ArgumentNullException(nameof(args)),
                     workingDirectory,
                     true,
                     configureEnvironment ?? defaultAction,
@@ -368,6 +401,9 @@ namespace SimpleExec
                 ? (output, error)
                 : throw new ExitCodeReadException(process.ExitCode, output, error);
         }
+
+        private static T Coalesce<T>(T value, T? windowsValue) where T : class =>
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? windowsValue ?? value : value;
 
         private static string Validate(string name) =>
             string.IsNullOrWhiteSpace(name) ? throw new ArgumentException("The command name is missing.", nameof(name)) : name;
