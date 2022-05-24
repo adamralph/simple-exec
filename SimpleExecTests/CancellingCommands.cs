@@ -15,7 +15,7 @@ namespace SimpleExecTests
             // arrange
             using var cancellationTokenSource = new CancellationTokenSource();
 
-            // use a cancellation token source to ensure value type equality comparision in assertion is meaningful
+            // use a cancellation token source to ensure value type equality comparison in assertion is meaningful
             var cancellationToken = cancellationTokenSource.Token;
             cancellationTokenSource.Cancel();
 
@@ -32,7 +32,7 @@ namespace SimpleExecTests
             // arrange
             using var cancellationTokenSource = new CancellationTokenSource();
 
-            // use a cancellation token source to ensure value type equality comparision in assertion is meaningful
+            // use a cancellation token source to ensure value type equality comparison in assertion is meaningful
             var cancellationToken = cancellationTokenSource.Token;
             cancellationTokenSource.Cancel();
 
@@ -49,7 +49,7 @@ namespace SimpleExecTests
             // arrange
             using var cancellationTokenSource = new CancellationTokenSource();
 
-            // use a cancellation token source to ensure value type equality comparision in assertion is meaningful
+            // use a cancellation token source to ensure value type equality comparison in assertion is meaningful
             var cancellationToken = cancellationTokenSource.Token;
             cancellationTokenSource.Cancel();
 
