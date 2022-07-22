@@ -29,6 +29,7 @@
     "NuGet",
     "nupkg",
     "paramref",
+    "PATHEXT",
     "pipefail",
     "refs",
     "Robocopy",
