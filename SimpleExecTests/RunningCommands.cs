@@ -163,5 +163,49 @@ namespace SimpleExecTests
             // assert
             Assert.Null(exception);
         }
+
+        [WindowsTheory]
+        [InlineData(".BAT;.CMD", "hello from bat")]
+        [InlineData(".CMD;.BAT", "hello from cmd")]
+        public static async Task RunningCommandsInPathOnWindowsWithSpecificPathExt(
+            string pathExt, string expected)
+        {
+            // arrange
+            var directory = Path.Combine(
+                Path.GetTempPath(),
+                "SimpleExecTests",
+                DateTimeOffset.UtcNow.UtcTicks.ToString(CultureInfo.InvariantCulture),
+                "RunningCommandsInPathOnWindows");
+
+            _ = Directory.CreateDirectory(directory);
+
+            if (!SpinWait.SpinUntil(() => Directory.Exists(directory), 50))
+            {
+                throw new IOException($"Failed to create directory '{directory}'.");
+            }
+
+            var name = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            var batName = Path.Combine(directory, Path.ChangeExtension(name, "bat"));
+            await File.WriteAllTextAsync(batName, "@echo hello from bat");
+
+            var cmdName = Path.Combine(directory, Path.ChangeExtension(name, "cmd"));
+            await File.WriteAllTextAsync(cmdName, "@echo hello from cmd");
+
+            Environment.SetEnvironmentVariable(
+                "PATH",
+                $"{Environment.GetEnvironmentVariable("PATH")}{Path.PathSeparator}{directory}",
+                EnvironmentVariableTarget.Process);
+
+            Environment.SetEnvironmentVariable(
+                "PATHEXT",
+                pathExt,
+                EnvironmentVariableTarget.Process);
+
+            // act
+            var actual = (await Command.ReadAsync(name)).StandardOutput.Trim();
+
+            // assert
+            Assert.Equal(expected, actual);
+        }
     }
 }
