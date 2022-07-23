@@ -1,5 +1,11 @@
 # Changelog
 
+## 11.0.0
+
+### Fixed bugs
+
+- [#491: **[BREAKING]** PATHEXT file extension order is not respected on Windows](https://github.com/adamralph/simple-exec/issues/491)
+
 ## 10.0.0
 
 ### Enhancements
