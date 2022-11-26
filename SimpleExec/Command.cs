@@ -345,8 +345,13 @@ namespace SimpleExec
                 await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
                 process.StandardInput.Close();
 
+#if NET7_0_OR_GREATER
+                readOutput = process.StandardOutput.ReadToEndAsync(cancellationToken);
+                readError = process.StandardError.ReadToEndAsync(cancellationToken);
+#else
                 readOutput = process.StandardOutput.ReadToEndAsync();
                 readError = process.StandardError.ReadToEndAsync();
+#endif
             }
             catch (Exception)
             {
@@ -367,7 +372,9 @@ namespace SimpleExec
         }
 
         private static string Validate(string name) =>
-            string.IsNullOrWhiteSpace(name) ? throw new ArgumentException("The command name is missing.", nameof(name)) : name;
+            string.IsNullOrWhiteSpace(name)
+                ? throw new ArgumentException("The command name is missing.", nameof(name))
+                : name;
 
         private static string Resolve(string name)
         {
@@ -395,7 +402,8 @@ namespace SimpleExec
                 ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
                 : new List<string> { name, };
 
-            var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine).FirstOrDefault(File.Exists);
+            var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine)
+                .FirstOrDefault(File.Exists);
 
             return path == null || Path.GetExtension(path) == ".exe" ? name : path;
         }

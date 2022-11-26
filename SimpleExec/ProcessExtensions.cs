@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,21 +74,21 @@ namespace SimpleExec
 
             if (!string.IsNullOrEmpty(info.WorkingDirectory))
             {
-                _ = builder.AppendLine($"{echoPrefix}: Working directory: {info.WorkingDirectory}");
+                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: Working directory: {info.WorkingDirectory}");
             }
 
             if (info.ArgumentList.Count > 0)
             {
-                _ = builder.AppendLine($"{echoPrefix}: {info.FileName}");
+                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}");
 
                 foreach (var arg in info.ArgumentList)
                 {
-                    _ = builder.AppendLine($"{echoPrefix}:   {arg}");
+                    _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}:   {arg}");
                 }
             }
             else
             {
-                _ = builder.AppendLine($"{echoPrefix}: {info.FileName}{(string.IsNullOrEmpty(info.Arguments) ? "" : $" {info.Arguments}")}");
+                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}{(string.IsNullOrEmpty(info.Arguments) ? "" : $" {info.Arguments}")}");
             }
 
             return builder.ToString();
