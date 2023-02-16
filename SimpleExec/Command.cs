@@ -385,11 +385,11 @@ namespace SimpleExec
             var pathExt = Environment.GetEnvironmentVariable("PATHEXT") ?? ".EXE;.BAT;.CMD";
 
             var windowsExecutableExtensions = pathExt.Split(';')
-                .Select(extension => extension.TrimStart('.'))
-                .Where(extension =>
-                    string.Equals(extension, "exe", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(extension, "bat", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(extension, "cmd", StringComparison.OrdinalIgnoreCase));
+                .Select(ext => ext.TrimStart('.'))
+                .Where(ext =>
+                    string.Equals(ext, "exe", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(ext, "bat", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(ext, "cmd", StringComparison.OrdinalIgnoreCase));
 
             var searchFileNames = string.IsNullOrEmpty(extension)
                 ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
