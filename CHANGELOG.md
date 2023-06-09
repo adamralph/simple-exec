@@ -1,5 +1,11 @@
 # Changelog
 
+## 12.0.0
+
+### Enhancements
+
+- [#521: **[BREAKING]** switch from netstandard2.1 to net6.0 and net7.0](https://github.com/adamralph/simple-exec/pull/521)
+
 ## 11.0.0
 
 ### Fixed bugs
