@@ -45,7 +45,7 @@ namespace SimpleExec
             var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             process.EnableRaisingEvents = true;
-            process.Exited += (s, e) => tcs.TrySetResult(0);
+            process.Exited += (_, _) => tcs.TrySetResult(0);
 
             if (!noEcho)
             {
