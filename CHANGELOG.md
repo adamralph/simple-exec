@@ -5,6 +5,7 @@
 ### Enhancements
 
 - [#521: **[BREAKING]** switch from netstandard2.1 to net6.0 and net7.0](https://github.com/adamralph/simple-exec/pull/521)
+- [#578: include build metadata in informational version](https://github.com/adamralph/simple-exec/pull/578)
 
 ## 11.0.0
 
