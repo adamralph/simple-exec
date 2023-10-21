@@ -40,10 +40,11 @@ namespace SimpleExec
 
         public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
         {
+            using var sync = new SemaphoreSlim(1, 1);
             var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 
             process.EnableRaisingEvents = true;
-            process.Exited += (_, _) => tcs.TrySetResult();
+            process.Exited += (_, _) => sync.Run(() => tcs.Task.Status != TaskStatus.Canceled, () => _ = tcs.TrySetResult());
 
             if (!noEcho)
             {
@@ -53,13 +54,15 @@ namespace SimpleExec
             _ = process.Start();
 
             await using var register = cancellationToken.Register(
-                () =>
-                {
-                    if (process.TryKill())
+                () => sync.Run(
+                    () => tcs.Task.Status != TaskStatus.RanToCompletion,
+                    () =>
                     {
-                        _ = tcs.TrySetCanceled(cancellationToken);
-                    }
-                },
+                        if (process.TryKill())
+                        {
+                            _ = tcs.TrySetCanceled(cancellationToken);
+                        }
+                    }),
                 useSynchronizationContext: false).ConfigureAwait(false);
 
             await tcs.Task.ConfigureAwait(false);
@@ -108,6 +111,41 @@ namespace SimpleExec
             }
 
             return true;
+        }
+
+        private static void Run(this SemaphoreSlim sync, Func<bool> doubleCheckPredicate, Action action)
+        {
+            if (!doubleCheckPredicate())
+            {
+                return;
+            }
+
+            try
+            {
+                sync.Wait();
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+
+            try
+            {
+                if (doubleCheckPredicate())
+                {
+                    action();
+                }
+            }
+            finally
+            {
+                try
+                {
+                    _ = sync.Release();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+            }
         }
     }
 }
