@@ -20,7 +20,7 @@ namespace SimpleExec
 
             _ = process.Start();
 
-            using (cancellationToken.Register(
+            using var register = cancellationToken.Register(
                 () =>
                 {
                     if (process.TryKill())
@@ -28,10 +28,9 @@ namespace SimpleExec
                         _ = Interlocked.Increment(ref cancelled);
                     }
                 },
-                useSynchronizationContext: false))
-            {
-                process.WaitForExit();
-            }
+                useSynchronizationContext: false);
+
+            process.WaitForExit();
 
             if (Interlocked.Read(ref cancelled) == 1)
             {
@@ -53,7 +52,7 @@ namespace SimpleExec
 
             _ = process.Start();
 
-            await using (cancellationToken.Register(
+            await using var register = cancellationToken.Register(
                 () =>
                 {
                     if (process.TryKill())
@@ -61,10 +60,9 @@ namespace SimpleExec
                         _ = tcs.TrySetCanceled(cancellationToken);
                     }
                 },
-                useSynchronizationContext: false))
-            {
-                await tcs.Task.ConfigureAwait(false);
-            }
+                useSynchronizationContext: false).ConfigureAwait(false);
+
+            await tcs.Task.ConfigureAwait(false);
         }
 
         private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
