@@ -59,5 +59,27 @@ namespace SimpleExecTests
             // assert
             Assert.Equal(cancellationToken, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
         }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public static async Task RunningACommandAsyncWithCreateNoWindow(bool createNoWindow)
+        {
+            // arrange
+            using var cancellationTokenSource = new CancellationTokenSource();
+
+            // use a cancellation token source to ensure value type equality comparison in assertion is meaningful
+            var cancellationToken = cancellationTokenSource.Token;
+
+            var command = Command.RunAsync(
+                "dotnet", $"exec {Tester.Path} sleep", createNoWindow: createNoWindow, cancellationToken: cancellationToken);
+
+            // act
+            cancellationTokenSource.Cancel();
+
+            // assert
+            var exception = await Record.ExceptionAsync(async () => await command);
+            Assert.Equal(cancellationToken, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
+        }
     }
 }
