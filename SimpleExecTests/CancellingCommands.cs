@@ -34,7 +34,11 @@ namespace SimpleExecTests
 
             // use a cancellation token source to ensure value type equality comparison in assertion is meaningful
             var cancellationToken = cancellationTokenSource.Token;
+#if NET8_0_OR_GREATER
+            await cancellationTokenSource.CancelAsync();
+#else
             cancellationTokenSource.Cancel();
+#endif
 
             // act
             var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} sleep", cancellationToken: cancellationToken));
@@ -51,7 +55,11 @@ namespace SimpleExecTests
 
             // use a cancellation token source to ensure value type equality comparison in assertion is meaningful
             var cancellationToken = cancellationTokenSource.Token;
+#if NET8_0_OR_GREATER
+            await cancellationTokenSource.CancelAsync();
+#else
             cancellationTokenSource.Cancel();
+#endif
 
             // act
             var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} sleep", cancellationToken: cancellationToken));
@@ -75,7 +83,11 @@ namespace SimpleExecTests
                 "dotnet", $"exec {Tester.Path} sleep", createNoWindow: createNoWindow, cancellationToken: cancellationToken);
 
             // act
+#if NET8_0_OR_GREATER
+            await cancellationTokenSource.CancelAsync();
+#else
             cancellationTokenSource.Cancel();
+#endif
 
             // assert
             var exception = await Record.ExceptionAsync(async () => await command);

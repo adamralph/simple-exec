@@ -12,7 +12,11 @@ namespace SimpleExecTester
             if (args.Contains("unicode"))
             {
                 Console.OutputEncoding = Encoding.Unicode;
+#if NET8_0_OR_GREATER
+                args = [.. args, "Pi (\u03a0)"];
+#else
                 args = args.Append("Pi (\u03a0)").ToArray();
+#endif
             }
 
             Console.Out.WriteLine($"Arg count: {args.Length}");
