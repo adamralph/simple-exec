@@ -15,5 +15,11 @@ namespace SimpleExecTests.Infra
 #if NET7_0 && RELEASE
             $"../../../../SimpleExecTester/bin/Release/net7.0/SimpleExecTester.dll";
 #endif
+#if NET8_0 && DEBUG
+            $"../../../../SimpleExecTester/bin/Debug/net8.0/SimpleExecTester.dll";
+#endif
+#if NET8_0 && RELEASE
+            $"../../../../SimpleExecTester/bin/Release/net8.0/SimpleExecTester.dll";
+#endif
     }
 }

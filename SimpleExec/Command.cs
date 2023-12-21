@@ -400,7 +400,11 @@ namespace SimpleExec
 
             var searchFileNames = string.IsNullOrEmpty(extension)
                 ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
+#if NET8_0_OR_GREATER
+                : [name];
+#else
                 : new List<string> { name, };
+#endif
 
             var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine)
                 .FirstOrDefault(File.Exists);
