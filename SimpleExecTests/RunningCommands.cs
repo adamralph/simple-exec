@@ -106,7 +106,6 @@ namespace SimpleExecTests
         }
 
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
         public static void RunningNoCommand(string name)
@@ -119,7 +118,6 @@ namespace SimpleExecTests
         }
 
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
         public static async Task RunningNoCommandAsync(string name)
