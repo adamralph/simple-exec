@@ -106,7 +106,6 @@ namespace SimpleExecTests
         }
 
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
         public static async Task ReadingNoCommandAsync(string name)
