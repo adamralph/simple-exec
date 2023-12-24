@@ -35,6 +35,11 @@ namespace SimpleExec
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
         /// returns <see langword="false"/> otherwise.
         /// </param>
+        /// <param name="cancellationIgnoresProcessTree">
+        /// Whether to ignore the process tree when cancelling the command.
+        /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
+        /// are left running after the command is cancelled.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         /// <remarks>
@@ -50,6 +55,7 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
+            bool cancellationIgnoresProcessTree = false,
             CancellationToken cancellationToken = default) =>
             ProcessStartInfo
                 .Create(
@@ -60,7 +66,7 @@ namespace SimpleExec
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
-                .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken);
+                .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
         /// <summary>
         /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -81,6 +87,11 @@ namespace SimpleExec
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
         /// returns <see langword="false"/> otherwise.
         /// </param>
+        /// <param name="cancellationIgnoresProcessTree">
+        /// Whether to ignore the process tree when cancelling the command.
+        /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
+        /// are left running after the command is cancelled.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
         public static void Run(
@@ -92,6 +103,7 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
+            bool cancellationIgnoresProcessTree = false,
             CancellationToken cancellationToken = default) =>
             ProcessStartInfo
                 .Create(
@@ -102,19 +114,20 @@ namespace SimpleExec
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
-                .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken);
+                .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
         private static void Run(
             this System.Diagnostics.ProcessStartInfo startInfo,
             bool noEcho,
             string echoPrefix,
             Func<int, bool>? handleExitCode,
+            bool cancellationIgnoresProcessTree,
             CancellationToken cancellationToken)
         {
             using var process = new Process();
             process.StartInfo = startInfo;
 
-            process.Run(noEcho, echoPrefix, cancellationToken);
+            process.Run(noEcho, echoPrefix, cancellationIgnoresProcessTree, cancellationToken);
 
             if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
             {
@@ -138,6 +151,11 @@ namespace SimpleExec
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
         /// returns <see langword="false"/> otherwise.
         /// </param>
+        /// <param name="cancellationIgnoresProcessTree">
+        /// Whether to ignore the process tree when cancelling the command.
+        /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
+        /// are left running after the command is cancelled.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
         /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
@@ -154,6 +172,7 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
+            bool cancellationIgnoresProcessTree = false,
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
@@ -164,7 +183,7 @@ namespace SimpleExec
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
-                .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken)
+                .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken)
                 .ConfigureAwait(false);
 
         /// <summary>
@@ -186,6 +205,11 @@ namespace SimpleExec
         /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
         /// returns <see langword="false"/> otherwise.
         /// </param>
+        /// <param name="cancellationIgnoresProcessTree">
+        /// Whether to ignore the process tree when cancelling the command.
+        /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
+        /// are left running after the command is cancelled.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
         /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
@@ -198,6 +222,7 @@ namespace SimpleExec
             Action<IDictionary<string, string?>>? configureEnvironment = null,
             bool createNoWindow = false,
             Func<int, bool>? handleExitCode = null,
+            bool cancellationIgnoresProcessTree = false,
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
@@ -208,7 +233,7 @@ namespace SimpleExec
                     false,
                     configureEnvironment ?? defaultAction,
                     createNoWindow)
-                .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationToken)
+                .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken)
                 .ConfigureAwait(false);
 
         private static async Task RunAsync(
@@ -216,12 +241,13 @@ namespace SimpleExec
             bool noEcho,
             string echoPrefix,
             Func<int, bool>? handleExitCode,
+            bool cancellationIgnoresProcessTree,
             CancellationToken cancellationToken)
         {
             using var process = new Process();
             process.StartInfo = startInfo;
 
-            await process.RunAsync(noEcho, echoPrefix, cancellationToken).ConfigureAwait(false);
+            await process.RunAsync(noEcho, echoPrefix, cancellationIgnoresProcessTree, cancellationToken).ConfigureAwait(false);
 
             if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
             {
@@ -243,6 +269,11 @@ namespace SimpleExec
         /// returns <see langword="false"/> otherwise.
         /// </param>
         /// <param name="standardInput">The contents of standard input (stdin).</param>
+        /// <param name="cancellationIgnoresProcessTree">
+        /// Whether to ignore the process tree when cancelling the command.
+        /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
+        /// are left running after the command is cancelled.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout) and standard error (stderr).
@@ -259,6 +290,7 @@ namespace SimpleExec
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
             string? standardInput = null,
+            bool cancellationIgnoresProcessTree = false,
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
@@ -273,6 +305,7 @@ namespace SimpleExec
                 .ReadAsync(
                     handleExitCode,
                     standardInput,
+                    cancellationIgnoresProcessTree,
                     cancellationToken)
                 .ConfigureAwait(false);
 
@@ -293,6 +326,11 @@ namespace SimpleExec
         /// returns <see langword="false"/> otherwise.
         /// </param>
         /// <param name="standardInput">The contents of standard input (stdin).</param>
+        /// <param name="cancellationIgnoresProcessTree">
+        /// Whether to ignore the process tree when cancelling the command.
+        /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
+        /// are left running after the command is cancelled.
+        /// </param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
         /// <returns>
         /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout) and standard error (stderr).
@@ -309,6 +347,7 @@ namespace SimpleExec
             Encoding? encoding = null,
             Func<int, bool>? handleExitCode = null,
             string? standardInput = null,
+            bool cancellationIgnoresProcessTree = false,
             CancellationToken cancellationToken = default) =>
             await ProcessStartInfo
                 .Create(
@@ -323,6 +362,7 @@ namespace SimpleExec
                 .ReadAsync(
                     handleExitCode,
                     standardInput,
+                    cancellationIgnoresProcessTree,
                     cancellationToken)
                 .ConfigureAwait(false);
 
@@ -330,12 +370,13 @@ namespace SimpleExec
             this System.Diagnostics.ProcessStartInfo startInfo,
             Func<int, bool>? handleExitCode,
             string? standardInput,
+            bool cancellationIgnoresProcessTree,
             CancellationToken cancellationToken)
         {
             using var process = new Process();
             process.StartInfo = startInfo;
 
-            var runProcess = process.RunAsync(true, "", cancellationToken);
+            var runProcess = process.RunAsync(true, "", cancellationIgnoresProcessTree, cancellationToken);
 
             Task<string> readOutput;
             Task<string> readError;
