@@ -9,7 +9,7 @@ namespace SimpleExec
 {
     internal static class ProcessExtensions
     {
-        public static void Run(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
+        public static void Run(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
         {
             var cancelled = 0L;
 
@@ -23,7 +23,7 @@ namespace SimpleExec
             using var register = cancellationToken.Register(
                 () =>
                 {
-                    if (process.TryKill())
+                    if (process.TryKill(cancellationIgnoresProcessTree))
                     {
                         _ = Interlocked.Increment(ref cancelled);
                     }
@@ -38,7 +38,7 @@ namespace SimpleExec
             }
         }
 
-        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, CancellationToken cancellationToken)
+        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
         {
             using var sync = new SemaphoreSlim(1, 1);
             var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -58,7 +58,7 @@ namespace SimpleExec
                     () => tcs.Task.Status != TaskStatus.RanToCompletion,
                     () =>
                     {
-                        if (process.TryKill())
+                        if (process.TryKill(cancellationIgnoresProcessTree))
                         {
                             _ = tcs.TrySetCanceled(cancellationToken);
                         }
@@ -94,14 +94,14 @@ namespace SimpleExec
             return builder.ToString();
         }
 
-        private static bool TryKill(this Process process)
+        private static bool TryKill(this Process process, bool ignoreProcessTree)
         {
             // exceptions may be thrown for all kinds of reasons
             // and the _same exception_ may be thrown for all kinds of reasons
             // System.Diagnostics.Process is "fine"
             try
             {
-                process.Kill();
+                process.Kill(!ignoreProcessTree);
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception)
