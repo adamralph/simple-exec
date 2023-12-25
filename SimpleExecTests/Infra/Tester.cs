@@ -1,8 +1,8 @@
-namespace SimpleExecTests.Infra
+namespace SimpleExecTests.Infra;
+
+internal static class Tester
 {
-    internal static class Tester
-    {
-        public static string Path =>
+    public static string Path =>
 #if NET6_0 && DEBUG
             "../../../../SimpleExecTester/bin/Debug/net6.0/SimpleExecTester.dll";
 #endif
@@ -10,7 +10,7 @@ namespace SimpleExecTests.Infra
             "../../../../SimpleExecTester/bin/Release/net6.0/SimpleExecTester.dll";
 #endif
 #if NET7_0 && DEBUG
-            $"../../../../SimpleExecTester/bin/Debug/net7.0/SimpleExecTester.dll";
+        $"../../../../SimpleExecTester/bin/Debug/net7.0/SimpleExecTester.dll";
 #endif
 #if NET7_0 && RELEASE
             $"../../../../SimpleExecTester/bin/Release/net7.0/SimpleExecTester.dll";
@@ -21,5 +21,4 @@ namespace SimpleExecTests.Infra
 #if NET8_0 && RELEASE
             $"../../../../SimpleExecTester/bin/Release/net8.0/SimpleExecTester.dll";
 #endif
-    }
 }

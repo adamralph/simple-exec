@@ -5,146 +5,145 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SimpleExec
+namespace SimpleExec;
+
+internal static class ProcessExtensions
 {
-    internal static class ProcessExtensions
+    public static void Run(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
     {
-        public static void Run(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+        var cancelled = 0L;
+
+        if (!noEcho)
         {
-            var cancelled = 0L;
+            Console.Out.Write(process.StartInfo.GetEchoLines(echoPrefix));
+        }
 
-            if (!noEcho)
+        _ = process.Start();
+
+        using var register = cancellationToken.Register(
+            () =>
             {
-                Console.Out.Write(process.StartInfo.GetEchoLines(echoPrefix));
-            }
+                if (process.TryKill(cancellationIgnoresProcessTree))
+                {
+                    _ = Interlocked.Increment(ref cancelled);
+                }
+            },
+            useSynchronizationContext: false);
 
-            _ = process.Start();
+        process.WaitForExit();
 
-            using var register = cancellationToken.Register(
+        if (Interlocked.Read(ref cancelled) == 1)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+        }
+    }
+
+    public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+    {
+        using var sync = new SemaphoreSlim(1, 1);
+        var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        process.EnableRaisingEvents = true;
+        process.Exited += (_, _) => sync.Run(() => tcs.Task.Status != TaskStatus.Canceled, () => _ = tcs.TrySetResult());
+
+        if (!noEcho)
+        {
+            await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(echoPrefix)).ConfigureAwait(false);
+        }
+
+        _ = process.Start();
+
+        await using var register = cancellationToken.Register(
+            () => sync.Run(
+                () => tcs.Task.Status != TaskStatus.RanToCompletion,
                 () =>
                 {
                     if (process.TryKill(cancellationIgnoresProcessTree))
                     {
-                        _ = Interlocked.Increment(ref cancelled);
+                        _ = tcs.TrySetCanceled(cancellationToken);
                     }
-                },
-                useSynchronizationContext: false);
+                }),
+            useSynchronizationContext: false).ConfigureAwait(false);
 
-            process.WaitForExit();
+        await tcs.Task.ConfigureAwait(false);
+    }
 
-            if (Interlocked.Read(ref cancelled) == 1)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-            }
+    private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
+    {
+        var builder = new StringBuilder();
+
+        if (!string.IsNullOrEmpty(info.WorkingDirectory))
+        {
+            _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: Working directory: {info.WorkingDirectory}");
         }
 
-        public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+        if (info.ArgumentList.Count > 0)
         {
-            using var sync = new SemaphoreSlim(1, 1);
-            var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}");
 
-            process.EnableRaisingEvents = true;
-            process.Exited += (_, _) => sync.Run(() => tcs.Task.Status != TaskStatus.Canceled, () => _ = tcs.TrySetResult());
-
-            if (!noEcho)
+            foreach (var arg in info.ArgumentList)
             {
-                await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(echoPrefix)).ConfigureAwait(false);
+                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}:   {arg}");
             }
-
-            _ = process.Start();
-
-            await using var register = cancellationToken.Register(
-                () => sync.Run(
-                    () => tcs.Task.Status != TaskStatus.RanToCompletion,
-                    () =>
-                    {
-                        if (process.TryKill(cancellationIgnoresProcessTree))
-                        {
-                            _ = tcs.TrySetCanceled(cancellationToken);
-                        }
-                    }),
-                useSynchronizationContext: false).ConfigureAwait(false);
-
-            await tcs.Task.ConfigureAwait(false);
+        }
+        else
+        {
+            _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}{(string.IsNullOrEmpty(info.Arguments) ? "" : $" {info.Arguments}")}");
         }
 
-        private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
+        return builder.ToString();
+    }
+
+    private static bool TryKill(this Process process, bool ignoreProcessTree)
+    {
+        // exceptions may be thrown for all kinds of reasons
+        // and the _same exception_ may be thrown for all kinds of reasons
+        // System.Diagnostics.Process is "fine"
+        try
         {
-            var builder = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(info.WorkingDirectory))
-            {
-                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: Working directory: {info.WorkingDirectory}");
-            }
-
-            if (info.ArgumentList.Count > 0)
-            {
-                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}");
-
-                foreach (var arg in info.ArgumentList)
-                {
-                    _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}:   {arg}");
-                }
-            }
-            else
-            {
-                _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}{(string.IsNullOrEmpty(info.Arguments) ? "" : $" {info.Arguments}")}");
-            }
-
-            return builder.ToString();
+            process.Kill(!ignoreProcessTree);
         }
-
-        private static bool TryKill(this Process process, bool ignoreProcessTree)
-        {
-            // exceptions may be thrown for all kinds of reasons
-            // and the _same exception_ may be thrown for all kinds of reasons
-            // System.Diagnostics.Process is "fine"
-            try
-            {
-                process.Kill(!ignoreProcessTree);
-            }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch (Exception)
+        catch (Exception)
 #pragma warning restore CA1031 // Do not catch general exception types
-            {
-                return false;
-            }
-
-            return true;
+        {
+            return false;
         }
 
-        private static void Run(this SemaphoreSlim sync, Func<bool> doubleCheckPredicate, Action action)
-        {
-            if (!doubleCheckPredicate())
-            {
-                return;
-            }
+        return true;
+    }
 
+    private static void Run(this SemaphoreSlim sync, Func<bool> doubleCheckPredicate, Action action)
+    {
+        if (!doubleCheckPredicate())
+        {
+            return;
+        }
+
+        try
+        {
+            sync.Wait();
+        }
+        catch (ObjectDisposedException)
+        {
+            return;
+        }
+
+        try
+        {
+            if (doubleCheckPredicate())
+            {
+                action();
+            }
+        }
+        finally
+        {
             try
             {
-                sync.Wait();
+                _ = sync.Release();
             }
             catch (ObjectDisposedException)
             {
-                return;
-            }
-
-            try
-            {
-                if (doubleCheckPredicate())
-                {
-                    action();
-                }
-            }
-            finally
-            {
-                try
-                {
-                    _ = sync.Release();
-                }
-                catch (ObjectDisposedException)
-                {
-                }
             }
         }
     }
