@@ -6,7 +6,9 @@
 
 - [#521: **[BREAKING]** switch from netstandard2.1 to net6.0 and net7.0](https://github.com/adamralph/simple-exec/pull/521)
 - [#578: include build metadata in informational version](https://github.com/adamralph/simple-exec/pull/578)
+- [#584: avoid race between cancellation and exit](https://github.com/adamralph/simple-exec/pull/584)
 - [#585: target .NET 8](https://github.com/adamralph/simple-exec/pull/585)
+- [#600: Cancel child processes by default](https://github.com/adamralph/simple-exec/issues/600)
 
 ## 11.0.0
 
