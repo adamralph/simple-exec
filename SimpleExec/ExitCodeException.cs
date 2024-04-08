@@ -1,5 +1,3 @@
-using System;
-
 namespace SimpleExec;
 
 #if NET8_0_OR_GREATER

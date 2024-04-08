@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using SimpleExec;
 using SimpleExecTests.Infra;
 using Xunit;

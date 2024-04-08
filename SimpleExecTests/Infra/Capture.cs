@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace SimpleExecTests.Infra;
 
 internal static class Capture
