@@ -376,7 +376,7 @@ public static class Command
             await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
             process.StandardInput.Close();
 
-#if NET7_0_OR_GREATER
+#if NET8_0_OR_GREATER
             readOutput = process.StandardOutput.ReadToEndAsync(cancellationToken);
             readError = process.StandardError.ReadToEndAsync(cancellationToken);
 #else
