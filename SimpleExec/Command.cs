@@ -55,7 +55,11 @@ public static class Command
             .Create(
                 Resolve(Validate(name)),
                 args,
+#if NET8_0_OR_GREATER
+                [],
+#else
                 Enumerable.Empty<string>(),
+#endif
                 workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
@@ -172,7 +176,11 @@ public static class Command
             .Create(
                 Resolve(Validate(name)),
                 args,
+#if NET8_0_OR_GREATER
+                [],
+#else
                 Enumerable.Empty<string>(),
+#endif
                 workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
@@ -288,7 +296,11 @@ public static class Command
             .Create(
                 Resolve(Validate(name)),
                 args,
+#if NET8_0_OR_GREATER
+                [],
+#else
                 Enumerable.Empty<string>(),
+#endif
                 workingDirectory,
                 true,
                 configureEnvironment ?? defaultAction,
@@ -434,7 +446,7 @@ public static class Command
 #if NET8_0_OR_GREATER
             : [name];
 #else
-                : new List<string> { name, };
+            : new List<string> { name, };
 #endif
 
         var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine)
