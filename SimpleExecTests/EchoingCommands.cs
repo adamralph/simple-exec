@@ -27,7 +27,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", new[] { "exec", Tester.Path, "he llo", "\"world \"today\"", });
+        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",]);
 
         // assert
         var lines = Capture.Out.ToString()!.Split('\r', '\n').ToList();
