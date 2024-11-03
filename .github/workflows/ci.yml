@@ -1,7 +1,6 @@
 name: ci
 on:
   push:
-    branches: [main, release-*]
   pull_request:
 permissions: read-all
 env:
