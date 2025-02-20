@@ -55,11 +55,7 @@ public static class Command
             .Create(
                 Resolve(Validate(name)),
                 args,
-#if NET8_0_OR_GREATER
                 [],
-#else
-                Enumerable.Empty<string>(),
-#endif
                 workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
@@ -176,11 +172,7 @@ public static class Command
             .Create(
                 Resolve(Validate(name)),
                 args,
-#if NET8_0_OR_GREATER
                 [],
-#else
-                Enumerable.Empty<string>(),
-#endif
                 workingDirectory,
                 false,
                 configureEnvironment ?? defaultAction,
@@ -296,11 +288,7 @@ public static class Command
             .Create(
                 Resolve(Validate(name)),
                 args,
-#if NET8_0_OR_GREATER
                 [],
-#else
-                Enumerable.Empty<string>(),
-#endif
                 workingDirectory,
                 true,
                 configureEnvironment ?? defaultAction,
@@ -388,13 +376,8 @@ public static class Command
             await process.StandardInput.WriteAsync(standardInput).ConfigureAwait(false);
             process.StandardInput.Close();
 
-#if NET8_0_OR_GREATER
             readOutput = process.StandardOutput.ReadToEndAsync(cancellationToken);
             readError = process.StandardError.ReadToEndAsync(cancellationToken);
-#else
-            readOutput = process.StandardOutput.ReadToEndAsync();
-            readError = process.StandardError.ReadToEndAsync();
-#endif
         }
         catch (Exception)
         {
@@ -443,11 +426,7 @@ public static class Command
 
         var searchFileNames = string.IsNullOrEmpty(extension)
             ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
-#if NET8_0_OR_GREATER
             : [name];
-#else
-            : new List<string> { name, };
-#endif
 
         var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine)
             .FirstOrDefault(File.Exists);
