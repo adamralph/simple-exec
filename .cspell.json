@@ -14,6 +14,7 @@
   "words": [
     "ADAMRALPH",
     "analyzer",
+    "analyzers",
     "autobuild",
     "codeql",
     "cref",
@@ -25,6 +26,7 @@
     "markdownlint",
     "MyGet",
     "netstandard",
+    "Newtonsoft",
     "NOLOGO",
     "NuGet",
     "nupkg",
@@ -34,6 +36,8 @@
     "refs",
     "Robocopy",
     "SHFMT",
+    "simpleexec",
+    "simpleexectester",
     "xunit"
   ]
 }
