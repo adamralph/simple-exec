@@ -14,7 +14,7 @@ SimpleExec is a [.NET library](https://www.nuget.org/packages/SimpleExec) that r
 
 SimpleExec intentionally does not invoke the system shell.
 
-Platform support: [.NET 6.0 and later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
+Platform support: [.NET 8.0 and later](https://dot.net).
 
 - [Quick start](#quick-start)
 - [Run](#run)
