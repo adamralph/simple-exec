@@ -1,13 +1,19 @@
 # Changelog
 
+## 12.1.0
+
+### Enhancements
+
+- [#681: Target .NET 9 and remove .NET 6 target](https://github.com/adamralph/simple-exec/pull/681)
+
 ## 12.0.0
 
 ### Enhancements
 
-- [#521: **[BREAKING]** switch from netstandard2.1 to net6.0 and net7.0](https://github.com/adamralph/simple-exec/pull/521)
+- [#521: **[BREAKING]** Target .NET 6 and .NET 7 and remove .NET Standard 2.1 target](https://github.com/adamralph/simple-exec/pull/521)
 - [#578: include build metadata in informational version](https://github.com/adamralph/simple-exec/pull/578)
 - [#584: avoid race between cancellation and exit](https://github.com/adamralph/simple-exec/pull/584)
-- [#585: target .NET 8](https://github.com/adamralph/simple-exec/pull/585)
+- [#585: Target .NET 8](https://github.com/adamralph/simple-exec/pull/585)
 - [#600: **[BREAKING]** Cancel child processes by default](https://github.com/adamralph/simple-exec/issues/600)
 
 ## 11.0.0
@@ -38,12 +44,12 @@
 
 - [#351: **[BREAKING]** New API for version 9](https://github.com/adamralph/simple-exec/issues/351)
 - [#352: Echo to standard out instead of standard error](https://github.com/adamralph/simple-exec/issues/352)
+- [#375: **[BREAKING]** Target .NET Standard 2.1 and remove .NET Standard 2.0 target](https://github.com/adamralph/simple-exec/pull/375)
 - [#390: Nullable annotations](https://github.com/adamralph/simple-exec/issues/390)
 
 ### Other
 
 - [#312: **[BREAKING]** Remove NonZeroExitCodeException](https://github.com/adamralph/simple-exec/issues/312)
-- [#375: **[BREAKING]** switch from netstandard2.0 to netstandard2.1](https://github.com/adamralph/simple-exec/pull/375)
 
 ## 8.0.0
 
@@ -163,7 +169,7 @@
 
 ### Enhancements
 
-- [#31: add .NET Standard 2.0 target](https://github.com/adamralph/simple-exec/pull/31)
+- [#31: Target .NET Standard 2.0](https://github.com/adamralph/simple-exec/pull/31)
 
 ## 2.1.0
 
