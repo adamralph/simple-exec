@@ -366,7 +366,9 @@ public static class Command
         using var process = new Process();
         process.StartInfo = startInfo;
 
+#pragma warning disable CA2025 // Do not pass 'IDisposable' instances into unawaited tasks
         var runProcess = process.RunAsync(true, "", cancellationIgnoresProcessTree, cancellationToken);
+#pragma warning restore CA2025
 
         Task<string> readOutput;
         Task<string> readError;

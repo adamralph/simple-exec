@@ -39,6 +39,7 @@
     "SHFMT",
     "simpleexec",
     "simpleexectester",
+    "unawaited",
     "xunit"
   ]
 }
