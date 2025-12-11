@@ -15,4 +15,10 @@ internal static class Tester
 #if NET9_0 && RELEASE
             "../../../../SimpleExecTester/bin/Release/net9.0/SimpleExecTester.dll";
 #endif
+#if NET10_0 && DEBUG
+            "../../../../SimpleExecTester/bin/Debug/net10.0/SimpleExecTester.dll";
+#endif
+#if NET10_0 && RELEASE
+            "../../../../SimpleExecTester/bin/Release/net10.0/SimpleExecTester.dll";
+#endif
 }
