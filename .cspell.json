@@ -17,6 +17,7 @@
     "analyzers",
     "autobuild",
     "codeql",
+    "cooldown",
     "cref",
     "Cresnar",
     "devcontainers",
