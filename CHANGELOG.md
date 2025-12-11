@@ -4,7 +4,7 @@
 
 ### Enhancements
 
-- [#681: Target .NET 9 and remove .NET 6 target](https://github.com/adamralph/simple-exec/pull/681)
+- [#735: Target .NET 10 and remove .NET 6 target](https://github.com/adamralph/simple-exec/issues/735)
 
 ## 12.0.0
 
