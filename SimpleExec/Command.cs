@@ -20,7 +20,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
     /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -72,7 +72,7 @@ public static class Command
     /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
     /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -136,7 +136,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="noEcho">Whether or not to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
     /// <param name="createNoWindow">Whether to run the command in a new window.</param>
@@ -189,7 +189,7 @@ public static class Command
     /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="noEcho">Whether or not to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
     /// <param name="createNoWindow">Whether to run the command in a new window.</param>
