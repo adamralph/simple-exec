@@ -4,7 +4,6 @@
     <Description>Runs external commands.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <MinVerMinimumMajorMinor>9.0</MinVerMinimumMajorMinor>
     <PackageIcon>simple-exec.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
