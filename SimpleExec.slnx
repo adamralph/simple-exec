@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SimpleExec/SimpleExec.csproj" />
+  <Project Path="SimpleExecTester/SimpleExecTester.csproj" />
+  <Project Path="SimpleExecTests/SimpleExecTests.csproj" />
+</Solution>
