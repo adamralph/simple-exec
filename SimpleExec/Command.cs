@@ -428,7 +428,7 @@ public static class Command
 
         var searchFileNames = string.IsNullOrEmpty(extension)
             ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
-            : [name];
+            : [name,];
 
         var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine)
             .FirstOrDefault(File.Exists);

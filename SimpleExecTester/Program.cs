@@ -9,7 +9,7 @@ internal static class Program
         if (args.Contains("unicode"))
         {
             Console.OutputEncoding = Encoding.Unicode;
-            args = [.. args, "Pi (\u03a0)"];
+            args = [.. args, "Pi (\u03a0)",];
         }
 
         Console.Out.WriteLine($"Arg count: {args.Length}");
