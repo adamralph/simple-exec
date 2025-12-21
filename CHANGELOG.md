@@ -5,6 +5,7 @@
 ### Enhancements
 
 - [#735: Target .NET 9 and .NET 10 and remove .NET 6 target](https://github.com/adamralph/simple-exec/issues/735)
+- [#739: Tweak noEcho param docs](https://github.com/adamralph/simple-exec/pull/739)
 
 ## 12.0.0
 
