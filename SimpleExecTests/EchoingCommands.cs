@@ -7,7 +7,7 @@ namespace SimpleExecTests;
 
 public static class EchoingCommands
 {
-    private static readonly CancellationToken ct = TestContext.Current.CancellationToken;
+    private static CancellationToken Ct => TestContext.Current.CancellationToken;
 
     [Fact]
     public static void EchoingACommand()
@@ -16,7 +16,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", cancellationToken: ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", cancellationToken: Ct);
 
         // assert
         Assert.Contains(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -29,7 +29,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",], cancellationToken: ct);
+        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",], cancellationToken: Ct);
 
         // assert
         var lines = Capture.Out.ToString()!.Split('\r', '\n').ToList();
@@ -46,7 +46,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, cancellationToken: ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, cancellationToken: Ct);
 
         // assert
         Assert.DoesNotContain(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -59,7 +59,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix", cancellationToken: ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix", cancellationToken: Ct);
 
         // assert
         var error = Capture.Out.ToString()!;
@@ -75,7 +75,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix", cancellationToken: ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix", cancellationToken: Ct);
 
         // assert
         var error = Capture.Out.ToString()!;
