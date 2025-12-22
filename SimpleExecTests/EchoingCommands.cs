@@ -7,6 +7,8 @@ namespace SimpleExecTests;
 
 public static class EchoingCommands
 {
+    private static readonly CancellationToken ct = TestContext.Current.CancellationToken;
+
     [Fact]
     public static void EchoingACommand()
     {
@@ -14,7 +16,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}");
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", cancellationToken: ct);
 
         // assert
         Assert.Contains(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -27,7 +29,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",]);
+        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",], cancellationToken: ct);
 
         // assert
         var lines = Capture.Out.ToString()!.Split('\r', '\n').ToList();
@@ -44,7 +46,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, cancellationToken: ct);
 
         // assert
         Assert.DoesNotContain(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -57,7 +59,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix");
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix", cancellationToken: ct);
 
         // assert
         var error = Capture.Out.ToString()!;
@@ -73,7 +75,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix");
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix", cancellationToken: ct);
 
         // assert
         var error = Capture.Out.ToString()!;

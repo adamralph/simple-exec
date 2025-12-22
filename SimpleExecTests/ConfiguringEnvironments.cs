@@ -10,7 +10,11 @@ public static class ConfiguringEnvironments
     public static async Task ConfiguringEnvironment()
     {
         // act
-        var (standardOutput, _) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} environment", configureEnvironment: env => env["foo"] = "bar");
+        var (standardOutput, _) = await Command.ReadAsync(
+            "dotnet",
+            $"exec {Tester.Path} environment",
+            configureEnvironment: env => env["foo"] = "bar",
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // assert
         Assert.Contains("foo=bar", standardOutput, StringComparison.Ordinal);
