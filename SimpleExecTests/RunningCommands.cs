@@ -9,7 +9,7 @@ namespace SimpleExecTests;
 
 public static class RunningCommands
 {
-    private static readonly string command = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "hello-world.cmd" : "ls";
+    private static readonly string Command = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "hello-world.cmd" : "ls";
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
 
     public static bool OsPlatformIsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -18,7 +18,7 @@ public static class RunningCommands
     public static void RunningASucceedingCommand()
     {
         // act
-        var exception = Record.Exception(() => Command.Run(command, cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run(Command, cancellationToken: Ct));
 
         // assert
         Assert.Null(exception);
@@ -28,7 +28,7 @@ public static class RunningCommands
     public static void RunningASucceedingCommandWithArgs()
     {
         // act
-        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} hello world", cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Tester.Path} hello world", cancellationToken: Ct));
 
         // assert
         Assert.Null(exception);
@@ -38,7 +38,7 @@ public static class RunningCommands
     public static async Task RunningASucceedingCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync(command, cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync(Command, cancellationToken: Ct));
 
         // assert
         Assert.Null(exception);
@@ -48,7 +48,7 @@ public static class RunningCommands
     public static void RunningAFailingCommand()
     {
         // act
-        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} 1 hello world", cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Tester.Path} 1 hello world", cancellationToken: Ct));
 
         // assert
         Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
@@ -58,7 +58,7 @@ public static class RunningCommands
     public static async Task RunningAFailingCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} 1 hello world", cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("dotnet", $"exec {Tester.Path} 1 hello world", cancellationToken: Ct));
 
         // assert
         Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
@@ -68,7 +68,7 @@ public static class RunningCommands
     public static void RunningACommandInANonExistentWorkDirectory()
     {
         // act
-        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", cancellationToken: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -78,7 +78,7 @@ public static class RunningCommands
     public static async Task RunningACommandAsyncInANonExistentWorkDirectory()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", cancellationToken: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -88,7 +88,7 @@ public static class RunningCommands
     public static void RunningANonExistentCommand()
     {
         // act
-        var exception = Record.Exception(() => Command.Run("simple-exec-tests-non-existent-command", cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("simple-exec-tests-non-existent-command", cancellationToken: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -98,7 +98,7 @@ public static class RunningCommands
     public static async Task RunningANonExistentCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync("simple-exec-tests-non-existent-command", cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("simple-exec-tests-non-existent-command", cancellationToken: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -110,7 +110,7 @@ public static class RunningCommands
     public static void RunningNoCommand(string name)
     {
         // act
-        var exception = Record.Exception(() => Command.Run(name, cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run(name, cancellationToken: Ct));
 
         // assert
         Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);
@@ -122,7 +122,7 @@ public static class RunningCommands
     public static async Task RunningNoCommandAsync(string name)
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync(name, cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync(name, cancellationToken: Ct));
 
         // assert
         Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);
@@ -155,7 +155,7 @@ public static class RunningCommands
             EnvironmentVariableTarget.Process);
 
         // act
-        var exception = Record.Exception(() => Command.Run(name, cancellationToken: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run(name, cancellationToken: Ct));
 
         // assert
         Assert.Null(exception);
@@ -199,7 +199,7 @@ public static class RunningCommands
             EnvironmentVariableTarget.Process);
 
         // act
-        var actual = (await Command.ReadAsync(name, cancellationToken: Ct)).StandardOutput.Trim();
+        var actual = (await SimpleExec.Command.ReadAsync(name, cancellationToken: Ct)).StandardOutput.Trim();
 
         // assert
         Assert.Equal(expected, actual);

@@ -5,9 +5,9 @@ namespace SimpleExec;
 /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
 public class ExitCodeReadException : ExitCodeException
-#pragma warning restore CA1032 // Implement standard exception constructors
+#pragma warning restore CA1032
 {
-    private static readonly string twoNewLines = $"{Environment.NewLine}{Environment.NewLine}";
+    private static readonly string TwoNewLines = $"{Environment.NewLine}{Environment.NewLine}";
 
     /// <summary>
     /// Constructs an instance of a <see cref="ExitCodeReadException"/>.
@@ -15,7 +15,7 @@ public class ExitCodeReadException : ExitCodeException
     /// <param name="exitCode">The exit code of the command.</param>
     /// <param name="standardOutput">The contents of standard output (stdout).</param>
     /// <param name="standardError">The contents of standard error (stderr).</param>
-    public ExitCodeReadException(int exitCode, string standardOutput, string standardError) : base(exitCode) => (this.StandardOutput, this.StandardError) = (standardOutput, standardError);
+    public ExitCodeReadException(int exitCode, string standardOutput, string standardError) : base(exitCode) => (StandardOutput, StandardError) = (standardOutput, standardError);
 
     /// <summary>
     /// Gets the contents of standard output (stdout).
@@ -29,5 +29,5 @@ public class ExitCodeReadException : ExitCodeException
 
     /// <inheritdoc/>
     public override string Message =>
-        $"{base.Message}{twoNewLines}Standard output (stdout):{twoNewLines}{this.StandardOutput}{twoNewLines}Standard error (stderr):{twoNewLines}{this.StandardError}";
+        $"{base.Message}{TwoNewLines}Standard output (stdout):{TwoNewLines}{StandardOutput}{TwoNewLines}Standard error (stderr):{TwoNewLines}{StandardError}";
 }

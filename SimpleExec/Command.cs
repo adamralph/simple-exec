@@ -10,8 +10,8 @@ namespace SimpleExec;
 /// </summary>
 public static class Command
 {
-    private static readonly Action<IDictionary<string, string?>> defaultAction = _ => { };
-    private static readonly string defaultEchoPrefix = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
+    private static readonly Action<IDictionary<string, string?>> DefaultAction = _ => { };
+    private static readonly string DefaultEchoPrefix = Assembly.GetEntryAssembly()?.GetName().Name ?? "SimpleExec";
 
     /// <summary>
     /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -58,9 +58,9 @@ public static class Command
                 [],
                 workingDirectory,
                 false,
-                configureEnvironment ?? defaultAction,
+                configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .Run(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     /// <summary>
     /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -106,9 +106,9 @@ public static class Command
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
                 false,
-                configureEnvironment ?? defaultAction,
+                configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .Run(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .Run(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     private static void Run(
         this System.Diagnostics.ProcessStartInfo startInfo,
@@ -175,9 +175,9 @@ public static class Command
                 [],
                 workingDirectory,
                 false,
-                configureEnvironment ?? defaultAction,
+                configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .RunAsync(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     /// <summary>
     /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -224,9 +224,9 @@ public static class Command
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
                 false,
-                configureEnvironment ?? defaultAction,
+                configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .RunAsync(noEcho, echoPrefix ?? defaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .RunAsync(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     private static async Task RunAsync(
         this System.Diagnostics.ProcessStartInfo startInfo,
@@ -291,7 +291,7 @@ public static class Command
                 [],
                 workingDirectory,
                 true,
-                configureEnvironment ?? defaultAction,
+                configureEnvironment ?? DefaultAction,
                 true,
                 encoding)
             .ReadAsync(
@@ -347,7 +347,7 @@ public static class Command
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
                 true,
-                configureEnvironment ?? defaultAction,
+                configureEnvironment ?? DefaultAction,
                 true,
                 encoding)
             .ReadAsync(
@@ -392,7 +392,7 @@ public static class Command
 #pragma warning disable CA1849 // Call async methods when in an async method
         var output = readOutput.Result;
         var error = readError.Result;
-#pragma warning restore CA1849 // Call async methods when in an async method
+#pragma warning restore CA1849
 
         return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
             ? (output, error)
