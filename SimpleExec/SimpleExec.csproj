@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Runs external commands.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
     <PackageIcon>simple-exec.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/adamralph/simple-exec</PackageProjectUrl>
