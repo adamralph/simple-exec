@@ -7,6 +7,8 @@ Target("build", () => RunAsync("dotnet", "build --configuration Release --nologo
 
 Target("test", dependsOn: ["build",], () => RunAsync("dotnet", "test --configuration Release --no-build"));
 
-Target("default", dependsOn: ["format", "test",]);
+Target("pack", dependsOn: ["build",], () => RunAsync("dotnet", "pack --configuration Release --no-build"));
+
+Target("default", dependsOn: ["format", "test", "pack",]);
 
 await RunTargetsAndExitAsync(args, ex => ex.GetType() == ExitCodeExceptionType);
