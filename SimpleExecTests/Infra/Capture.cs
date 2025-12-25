@@ -2,7 +2,7 @@ namespace SimpleExecTests.Infra;
 
 internal static class Capture
 {
-    private static readonly Lazy<TextWriter> @out = new(() => new StringWriter());
+    private static readonly Lazy<TextWriter> LazyOut = new(() => new StringWriter());
 
-    public static TextWriter Out => @out.Value;
+    public static TextWriter Out => LazyOut.Value;
 }

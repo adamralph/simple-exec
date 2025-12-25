@@ -6,7 +6,7 @@ namespace SimpleExec;
 /// <param name="exitCode">The exit code of the command.</param>
 #pragma warning disable CA1032 // Implement standard exception constructors
 public class ExitCodeException(int exitCode) : Exception
-#pragma warning restore CA1032 // Implement standard exception constructors
+#pragma warning restore CA1032
 {
     /// <summary>
     /// Gets the exit code of the command.
@@ -14,5 +14,5 @@ public class ExitCodeException(int exitCode) : Exception
     public int ExitCode { get; } = exitCode;
 
     /// <inheritdoc/>
-    public override string Message => $"The command exited with code {this.ExitCode}.";
+    public override string Message => $"The command exited with code {ExitCode}.";
 }

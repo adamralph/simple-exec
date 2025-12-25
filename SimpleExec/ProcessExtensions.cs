@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace SimpleExec;
@@ -8,7 +9,7 @@ internal static class ProcessExtensions
 {
     public static void Run(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
     {
-        var cancelled = 0L;
+        var cancelled = new StrongBox<long>(0);
 
         if (!noEcho)
         {
@@ -22,14 +23,14 @@ internal static class ProcessExtensions
             {
                 if (process.TryKill(cancellationIgnoresProcessTree))
                 {
-                    _ = Interlocked.Increment(ref cancelled);
+                    _ = Interlocked.Increment(ref cancelled.Value);
                 }
             },
             useSynchronizationContext: false);
 
         process.WaitForExit();
 
-        if (Interlocked.Read(ref cancelled) == 1)
+        if (Interlocked.Read(ref cancelled.Value) == 1)
         {
             cancellationToken.ThrowIfCancellationRequested();
         }
@@ -102,7 +103,7 @@ internal static class ProcessExtensions
         }
 #pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception)
-#pragma warning restore CA1031 // Do not catch general exception types
+#pragma warning restore CA1031
         {
             return false;
         }
