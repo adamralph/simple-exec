@@ -9,23 +9,23 @@ internal static class ProcessStartInfo
         string args,
         IEnumerable<string> argList,
         string workingDirectory,
-        bool redirectStandardStreams,
         Action<IDictionary<string, string?>> configureEnvironment,
+        Encoding? encoding,
         bool createNoWindow,
-        Encoding? encoding = null)
+        bool redirectStandardStreams)
     {
         var startInfo = new System.Diagnostics.ProcessStartInfo
         {
             FileName = name,
             Arguments = args,
             WorkingDirectory = workingDirectory,
-            UseShellExecute = false,
+            StandardErrorEncoding = encoding,
+            StandardOutputEncoding = encoding,
+            CreateNoWindow = createNoWindow,
             RedirectStandardError = redirectStandardStreams,
             RedirectStandardInput = redirectStandardStreams,
             RedirectStandardOutput = redirectStandardStreams,
-            CreateNoWindow = createNoWindow,
-            StandardErrorEncoding = encoding,
-            StandardOutputEncoding = encoding,
+            UseShellExecute = false,
         };
 
         foreach (var arg in argList)

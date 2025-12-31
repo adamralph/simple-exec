@@ -56,15 +56,27 @@ var (standardOutput3, standardError3) = await ReadAsync("foo", new[] { "arg1", "
 
 ## Other optional arguments
 
+### `Run`/`RunAsync`
+
 ```c#
 string workingDirectory = "",
-IEnumerable<string> secrets = null,
-bool noEcho = false,
-string? echoPrefix = null,
 Action<IDictionary<string, string?>>? configureEnvironment = null,
-bool createNoWindow = false,
-Encoding? encoding = null,
+IEnumerable<string> secrets = null,
 Func<int, bool>? handleExitCode = null,
+string? echoPrefix = null,
+bool noEcho = false,
+bool cancellationIgnoresProcessTree = false,
+bool createNoWindow = false,
+CancellationToken ct = default,
+```
+
+### `ReadAsync`
+
+```c#
+string workingDirectory = "",
+Action<IDictionary<string, string?>>? configureEnvironment = null,
+Func<int, bool>? handleExitCode = null,
+Encoding? encoding = null,
 string? standardInput = null,
 bool cancellationIgnoresProcessTree = false,
 CancellationToken ct = default,

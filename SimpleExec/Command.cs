@@ -21,21 +21,21 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
-    /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
-    /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="handleExitCode">
     /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
     /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
     /// returns <see langword="false"/> otherwise.
     /// </param>
+    /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="cancellationIgnoresProcessTree">
     /// Whether to ignore the process tree when cancelling the command.
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
+    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
     /// <param name="ct">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
     /// <remarks>
@@ -46,13 +46,13 @@ public static class Command
         string name,
         string args = "",
         string workingDirectory = "",
-        IEnumerable<string>? secrets = null,
-        bool noEcho = false,
-        string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
-        bool createNoWindow = false,
+        IEnumerable<string>? secrets = null,
         Func<int, bool>? handleExitCode = null,
+        string? echoPrefix = null,
+        bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
+        bool createNoWindow = false,
         Ct ct = default) =>
         ProcessStartInfo
             .Create(
@@ -60,10 +60,17 @@ public static class Command
                 args,
                 [],
                 workingDirectory,
-                false,
                 configureEnvironment ?? DefaultAction,
-                createNoWindow)
-            .Run(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, ct);
+                null,
+                createNoWindow,
+                false)
+            .Run(
+                secrets ?? [],
+                handleExitCode,
+                echoPrefix ?? DefaultEchoPrefix,
+                noEcho,
+                cancellationIgnoresProcessTree,
+                ct);
 
     /// <summary>
     /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -75,34 +82,34 @@ public static class Command
     /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
-    /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
-    /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="handleExitCode">
     /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
     /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
     /// returns <see langword="false"/> otherwise.
     /// </param>
+    /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="cancellationIgnoresProcessTree">
     /// Whether to ignore the process tree when cancelling the command.
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
+    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
     /// <param name="ct">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
     public static void Run(
         string name,
         IEnumerable<string> args,
         string workingDirectory = "",
-        IEnumerable<string>? secrets = null,
-        bool noEcho = false,
-        string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
-        bool createNoWindow = false,
+        IEnumerable<string>? secrets = null,
         Func<int, bool>? handleExitCode = null,
+        string? echoPrefix = null,
+        bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
+        bool createNoWindow = false,
         Ct ct = default) =>
         ProcessStartInfo
             .Create(
@@ -110,24 +117,31 @@ public static class Command
                 "",
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
-                false,
                 configureEnvironment ?? DefaultAction,
-                createNoWindow)
-            .Run(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, ct);
+                null,
+                createNoWindow,
+                false)
+            .Run(
+                secrets ?? [],
+                handleExitCode,
+                echoPrefix ?? DefaultEchoPrefix,
+                noEcho,
+                cancellationIgnoresProcessTree,
+                ct);
 
     private static void Run(
         this System.Diagnostics.ProcessStartInfo startInfo,
         IEnumerable<string> secrets,
-        bool noEcho,
-        string echoPrefix,
         Func<int, bool>? handleExitCode,
+        string echoPrefix,
+        bool noEcho,
         bool cancellationIgnoresProcessTree,
         Ct ct)
     {
         using var process = new Process();
         process.StartInfo = startInfo;
 
-        process.Run(secrets, noEcho, echoPrefix, cancellationIgnoresProcessTree, ct);
+        process.Run(secrets, echoPrefix, noEcho, cancellationIgnoresProcessTree, ct);
 
         if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
         {
@@ -142,21 +156,21 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
-    /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
-    /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="handleExitCode">
     /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
     /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
     /// returns <see langword="false"/> otherwise.
     /// </param>
+    /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="cancellationIgnoresProcessTree">
     /// Whether to ignore the process tree when cancelling the command.
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
+    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
     /// <param name="ct">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
     /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
@@ -168,13 +182,13 @@ public static class Command
         string name,
         string args = "",
         string workingDirectory = "",
-        IEnumerable<string>? secrets = null,
-        bool noEcho = false,
-        string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
-        bool createNoWindow = false,
+        IEnumerable<string>? secrets = null,
         Func<int, bool>? handleExitCode = null,
+        string? echoPrefix = null,
+        bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
+        bool createNoWindow = false,
         Ct ct = default) =>
         ProcessStartInfo
             .Create(
@@ -182,10 +196,17 @@ public static class Command
                 args,
                 [],
                 workingDirectory,
-                false,
                 configureEnvironment ?? DefaultAction,
-                createNoWindow)
-            .RunAsync(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, ct);
+                null,
+                createNoWindow,
+                false)
+            .RunAsync(
+                secrets ?? [],
+                handleExitCode,
+                echoPrefix ?? DefaultEchoPrefix,
+                noEcho,
+                cancellationIgnoresProcessTree,
+                ct);
 
     /// <summary>
     /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -197,21 +218,21 @@ public static class Command
     /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
-    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
-    /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
-    /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="handleExitCode">
     /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
     /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
     /// returns <see langword="false"/> otherwise.
     /// </param>
+    /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
+    /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="cancellationIgnoresProcessTree">
     /// Whether to ignore the process tree when cancelling the command.
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
+    /// <param name="createNoWindow">Whether to run the command in a new window.</param>
     /// <param name="ct">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
     /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
@@ -219,13 +240,13 @@ public static class Command
         string name,
         IEnumerable<string> args,
         string workingDirectory = "",
-        IEnumerable<string>? secrets = null,
-        bool noEcho = false,
-        string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
-        bool createNoWindow = false,
+        IEnumerable<string>? secrets = null,
         Func<int, bool>? handleExitCode = null,
+        string? echoPrefix = null,
+        bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
+        bool createNoWindow = false,
         Ct ct = default) =>
         ProcessStartInfo
             .Create(
@@ -233,24 +254,31 @@ public static class Command
                 "",
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
-                false,
                 configureEnvironment ?? DefaultAction,
-                createNoWindow)
-            .RunAsync(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, ct);
+                null,
+                createNoWindow,
+                false)
+            .RunAsync(
+                secrets ?? [],
+                handleExitCode,
+                echoPrefix ?? DefaultEchoPrefix,
+                noEcho,
+                cancellationIgnoresProcessTree,
+                ct);
 
     private static async Task RunAsync(
         this System.Diagnostics.ProcessStartInfo startInfo,
         IEnumerable<string> secrets,
-        bool noEcho,
-        string echoPrefix,
         Func<int, bool>? handleExitCode,
+        string echoPrefix,
+        bool noEcho,
         bool cancellationIgnoresProcessTree,
         Ct ct)
     {
         using var process = new Process();
         process.StartInfo = startInfo;
 
-        await process.RunAsync(secrets, noEcho, echoPrefix, cancellationIgnoresProcessTree, ct).ConfigureAwait(false);
+        await process.RunAsync(secrets, echoPrefix, noEcho, cancellationIgnoresProcessTree, ct).ConfigureAwait(false);
 
         if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
         {
@@ -265,12 +293,12 @@ public static class Command
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-    /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard output (stdout).</param>
     /// <param name="handleExitCode">
     /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
     /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
     /// returns <see langword="false"/> otherwise.
     /// </param>
+    /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard output (stdout).</param>
     /// <param name="standardInput">The contents of standard input (stdin).</param>
     /// <param name="cancellationIgnoresProcessTree">
     /// Whether to ignore the process tree when cancelling the command.
@@ -290,8 +318,8 @@ public static class Command
         string args = "",
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
-        Encoding? encoding = null,
         Func<int, bool>? handleExitCode = null,
+        Encoding? encoding = null,
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
         Ct ct = default) =>
@@ -301,10 +329,10 @@ public static class Command
                 args,
                 [],
                 workingDirectory,
-                true,
                 configureEnvironment ?? DefaultAction,
+                encoding,
                 true,
-                encoding)
+                true)
             .ReadAsync(
                 handleExitCode,
                 standardInput,
@@ -321,12 +349,12 @@ public static class Command
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
-    /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard error (stderr).</param>
     /// <param name="handleExitCode">
     /// A delegate which accepts an <see cref="int"/> representing exit code of the command and
     /// returns <see langword="true"/> when it has handled the exit code and default exit code handling should be suppressed, and
     /// returns <see langword="false"/> otherwise.
     /// </param>
+    /// <param name="encoding">The preferred <see cref="Encoding"/> for standard output (stdout) and standard error (stderr).</param>
     /// <param name="standardInput">The contents of standard input (stdin).</param>
     /// <param name="cancellationIgnoresProcessTree">
     /// Whether to ignore the process tree when cancelling the command.
@@ -346,8 +374,8 @@ public static class Command
         IEnumerable<string> args,
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
-        Encoding? encoding = null,
         Func<int, bool>? handleExitCode = null,
+        Encoding? encoding = null,
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
         Ct ct = default) =>
@@ -357,10 +385,10 @@ public static class Command
                 "",
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
-                true,
                 configureEnvironment ?? DefaultAction,
+                encoding,
                 true,
-                encoding)
+                true)
             .ReadAsync(
                 handleExitCode,
                 standardInput,
@@ -378,7 +406,7 @@ public static class Command
         process.StartInfo = startInfo;
 
 #pragma warning disable CA2025 // Do not pass 'IDisposable' instances into unawaited tasks
-        var runProcess = process.RunAsync([], true, "", cancellationIgnoresProcessTree, ct);
+        var runProcess = process.RunAsync([], "", true, cancellationIgnoresProcessTree, ct);
 #pragma warning restore CA2025
 
         Task<string> readOutput;
