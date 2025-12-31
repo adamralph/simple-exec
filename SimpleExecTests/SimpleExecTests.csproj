@@ -10,6 +10,8 @@
   <ItemGroup>
     <PackageReference Include="GitHubActionsTestLogger" Version="3.0.1" />
     <PackageReference Include="Microsoft.Testing.Platform" Version="2.0.2" />
+    <PackageReference Include="PublicApiGenerator" Version="11.5.4" />
+    <PackageReference Include="Verify.XunitV3" Version="31.9.0" />
     <PackageReference Include="xunit.v3.mtp-v2" Version="3.2.1" />
   </ItemGroup>
 
@@ -18,9 +20,17 @@
     <ProjectReference Include="..\SimpleExecTester\SimpleExecTester.csproj" />
   </ItemGroup>
 
+  <ItemGroup Label="Clean up after Verify.Xunit">
+    <Using Remove="VerifyTests" />
+    <Using Remove="Xunit" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Update="hello-world.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="PublicApi.*.verified.txt">
+      <DependentUpon>PublicApi.cs</DependentUpon>
     </None>
   </ItemGroup>
 
