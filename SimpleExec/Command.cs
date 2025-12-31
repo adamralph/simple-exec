@@ -35,7 +35,7 @@ public static class Command
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
+    /// <param name="cancellationToken">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
     /// <remarks>
     /// By default, the resulting command line and the working directory (if specified) are echoed to standard output (stdout).
@@ -52,7 +52,7 @@ public static class Command
         bool createNoWindow = false,
         Func<int, bool>? handleExitCode = null,
         bool cancellationIgnoresProcessTree = false,
-        CancellationToken cancellationToken = default) =>
+        Ct cancellationToken = default) =>
         ProcessStartInfo
             .Create(
                 Resolve(Validate(name)),
@@ -89,7 +89,7 @@ public static class Command
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
+    /// <param name="cancellationToken">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
     public static void Run(
         string name,
@@ -102,7 +102,7 @@ public static class Command
         bool createNoWindow = false,
         Func<int, bool>? handleExitCode = null,
         bool cancellationIgnoresProcessTree = false,
-        CancellationToken cancellationToken = default) =>
+        Ct cancellationToken = default) =>
         ProcessStartInfo
             .Create(
                 Resolve(Validate(name)),
@@ -121,7 +121,7 @@ public static class Command
         string echoPrefix,
         Func<int, bool>? handleExitCode,
         bool cancellationIgnoresProcessTree,
-        CancellationToken cancellationToken)
+        Ct cancellationToken)
     {
         using var process = new Process();
         process.StartInfo = startInfo;
@@ -156,7 +156,7 @@ public static class Command
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
+    /// <param name="cancellationToken">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
     /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
     /// <remarks>
@@ -174,7 +174,7 @@ public static class Command
         bool createNoWindow = false,
         Func<int, bool>? handleExitCode = null,
         bool cancellationIgnoresProcessTree = false,
-        CancellationToken cancellationToken = default) =>
+        Ct cancellationToken = default) =>
         ProcessStartInfo
             .Create(
                 Resolve(Validate(name)),
@@ -211,7 +211,7 @@ public static class Command
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
+    /// <param name="cancellationToken">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
     /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
     public static Task RunAsync(
@@ -225,7 +225,7 @@ public static class Command
         bool createNoWindow = false,
         Func<int, bool>? handleExitCode = null,
         bool cancellationIgnoresProcessTree = false,
-        CancellationToken cancellationToken = default) =>
+        Ct cancellationToken = default) =>
         ProcessStartInfo
             .Create(
                 Resolve(Validate(name)),
@@ -244,7 +244,7 @@ public static class Command
         string echoPrefix,
         Func<int, bool>? handleExitCode,
         bool cancellationIgnoresProcessTree,
-        CancellationToken cancellationToken)
+        Ct cancellationToken)
     {
         using var process = new Process();
         process.StartInfo = startInfo;
@@ -276,7 +276,7 @@ public static class Command
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
+    /// <param name="cancellationToken">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout) and standard error (stderr).
     /// The task result is a <see cref="ValueTuple{T1, T2}"/> representing the contents of standard output (stdout) and standard error (stderr).
@@ -293,7 +293,7 @@ public static class Command
         Func<int, bool>? handleExitCode = null,
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
-        CancellationToken cancellationToken = default) =>
+        Ct cancellationToken = default) =>
         ProcessStartInfo
             .Create(
                 Resolve(Validate(name)),
@@ -332,7 +332,7 @@ public static class Command
     /// If set to <c>true</c>, when the command is cancelled, any child processes created by the command
     /// are left running after the command is cancelled.
     /// </param>
-    /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the command to exit.</param>
+    /// <param name="cancellationToken">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <returns>
     /// A <see cref="Task{TResult}"/> representing the asynchronous running of the command and reading of standard output (stdout) and standard error (stderr).
     /// The task result is a <see cref="ValueTuple{T1, T2}"/> representing the contents of standard output (stdout) and standard error (stderr).
@@ -349,7 +349,7 @@ public static class Command
         Func<int, bool>? handleExitCode = null,
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
-        CancellationToken cancellationToken = default) =>
+        Ct cancellationToken = default) =>
         ProcessStartInfo
             .Create(
                 Resolve(Validate(name)),
@@ -371,7 +371,7 @@ public static class Command
         Func<int, bool>? handleExitCode,
         string? standardInput,
         bool cancellationIgnoresProcessTree,
-        CancellationToken cancellationToken)
+        Ct cancellationToken)
     {
         using var process = new Process();
         process.StartInfo = startInfo;

@@ -10,7 +10,7 @@ public static class EchoingCommands
     private const string SecretLower = "secret";
     private const string SecretUpper = "SECRET";
 
-    private static CancellationToken Ct => TestContext.Current.CancellationToken;
+    private static Ct Ct => TestContext.Current.CancellationToken;
 
     [Fact]
     public static void EchoingACommand()

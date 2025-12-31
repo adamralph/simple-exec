@@ -8,7 +8,7 @@ namespace SimpleExecTests;
 
 public static class ReadingCommands
 {
-    private static CancellationToken Ct => TestContext.Current.CancellationToken;
+    private static Ct Ct => TestContext.Current.CancellationToken;
 
     [Theory]
     [InlineData(false)]

@@ -10,7 +10,7 @@ namespace SimpleExecTests;
 public static class RunningCommands
 {
     private static readonly string Command = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "hello-world.cmd" : "ls";
-    private static CancellationToken Ct => TestContext.Current.CancellationToken;
+    private static Ct Ct => TestContext.Current.CancellationToken;
 
     public static bool OsPlatformIsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
