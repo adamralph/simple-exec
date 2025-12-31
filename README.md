@@ -87,21 +87,21 @@ CancellationToken ct = default,
 If the command has a non-zero exit code, an `ExitCodeException` is thrown with an `int` `ExitCode` property and a message in the form of:
 
 ```c#
-$"The process exited with code {ExitCode}."
+$"The command exited with code {ExitCode}."
 ```
 
-In the case of `ReadAsync`, an `ExitCodeReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `Out` and `Error` properties, representing standard out (stdout) and standard error (stderr), and a message in the form of:
+In the case of `ReadAsync`, an `ExitCodeReadException` is thrown, which inherits from `ExitCodeException`, and has `string` `StandardOutput` and `StandardError` properties, representing standard output (stdout) and standard error (stderr), and a message in the form of:
 
 ```c#
-$@"The process exited with code {ExitCode}.
+$@"The command exited with code {ExitCode}.
 
-Standard Output:
+Standard output:
 
-{Out}
+{StandardOutput}
 
-Standard Error:
+Standard error:
 
-{Error}"
+{StandardError}"
 ```
 
 ### Overriding default exit code handling
