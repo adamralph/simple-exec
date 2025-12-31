@@ -62,7 +62,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path}", secrets: [SecretLower,], noEcho: false, echoPrefix: $"{SecretLower}_{SecretUpper}", ct: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path}", secrets: [SecretLower,], echoPrefix: $"{SecretLower}_{SecretUpper}", noEcho: false, ct: Ct);
 
         // assert
         Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -132,7 +132,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix", ct: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", echoPrefix: $"{TestName()} prefix", noEcho: false, ct: Ct);
 
         // assert
         var error = Capture.Out.ToString()!;
@@ -148,7 +148,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix", ct: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", echoPrefix: $"{TestName()} prefix", noEcho: true, ct: Ct);
 
         // assert
         var error = Capture.Out.ToString()!;
