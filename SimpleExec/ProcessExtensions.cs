@@ -7,13 +7,13 @@ namespace SimpleExec;
 
 internal static class ProcessExtensions
 {
-    public static void Run(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+    public static void Run(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
     {
         var cancelled = new StrongBox<long>(0);
 
         if (!noEcho)
         {
-            Console.Out.Write(process.StartInfo.GetEchoLines(echoPrefix));
+            Console.Out.Write(process.StartInfo.GetEchoLines(secrets, echoPrefix));
         }
 
         _ = process.Start();
@@ -36,7 +36,7 @@ internal static class ProcessExtensions
         }
     }
 
-    public static async Task RunAsync(this Process process, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+    public static async Task RunAsync(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
     {
         using var sync = new SemaphoreSlim(1, 1);
         var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -46,7 +46,7 @@ internal static class ProcessExtensions
 
         if (!noEcho)
         {
-            await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(echoPrefix)).ConfigureAwait(false);
+            await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(secrets, echoPrefix)).ConfigureAwait(false);
         }
 
         _ = process.Start();
@@ -66,7 +66,7 @@ internal static class ProcessExtensions
         await tcs.Task.ConfigureAwait(false);
     }
 
-    private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, string echoPrefix)
+    private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, IEnumerable<string> secrets, string echoPrefix)
     {
         var builder = new StringBuilder();
 
@@ -89,8 +89,11 @@ internal static class ProcessExtensions
             _ = builder.AppendLine(CultureInfo.InvariantCulture, $"{echoPrefix}: {info.FileName}{(string.IsNullOrEmpty(info.Arguments) ? "" : $" {info.Arguments}")}");
         }
 
-        return builder.ToString();
+        return builder.ToString().Redact(secrets);
     }
+
+    private static string Redact(this string value, IEnumerable<string> secrets) =>
+        secrets.Aggregate(value, (current, secret) => current.Replace(secret, "***", StringComparison.OrdinalIgnoreCase));
 
     private static bool TryKill(this Process process, bool ignoreProcessTree)
     {

@@ -20,6 +20,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -44,6 +45,7 @@ public static class Command
         string name,
         string args = "",
         string workingDirectory = "",
+        IEnumerable<string>? secrets = null,
         bool noEcho = false,
         string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -60,7 +62,7 @@ public static class Command
                 false,
                 configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .Run(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .Run(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     /// <summary>
     /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -72,6 +74,7 @@ public static class Command
     /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -92,6 +95,7 @@ public static class Command
         string name,
         IEnumerable<string> args,
         string workingDirectory = "",
+        IEnumerable<string>? secrets = null,
         bool noEcho = false,
         string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -108,10 +112,11 @@ public static class Command
                 false,
                 configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .Run(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .Run(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     private static void Run(
         this System.Diagnostics.ProcessStartInfo startInfo,
+        IEnumerable<string> secrets,
         bool noEcho,
         string echoPrefix,
         Func<int, bool>? handleExitCode,
@@ -121,7 +126,7 @@ public static class Command
         using var process = new Process();
         process.StartInfo = startInfo;
 
-        process.Run(noEcho, echoPrefix, cancellationIgnoresProcessTree, cancellationToken);
+        process.Run(secrets, noEcho, echoPrefix, cancellationIgnoresProcessTree, cancellationToken);
 
         if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
         {
@@ -136,6 +141,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">The arguments to pass to the command.</param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="noEcho">Whether to echo the resulting command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command line and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -161,6 +167,7 @@ public static class Command
         string name,
         string args = "",
         string workingDirectory = "",
+        IEnumerable<string>? secrets = null,
         bool noEcho = false,
         string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -177,7 +184,7 @@ public static class Command
                 false,
                 configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .RunAsync(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .RunAsync(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     /// <summary>
     /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -189,6 +196,7 @@ public static class Command
     /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
+    /// <param name="secrets">A list of secrets that are redacted by replacement with "***" when echoing the resulting command line and the working directory (if specified) to standard output (stdout).</param>
     /// <param name="noEcho">Whether to echo the resulting command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="echoPrefix">The prefix to use when echoing the command name, arguments, and working directory (if specified) to standard output (stdout).</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -210,6 +218,7 @@ public static class Command
         string name,
         IEnumerable<string> args,
         string workingDirectory = "",
+        IEnumerable<string>? secrets = null,
         bool noEcho = false,
         string? echoPrefix = null,
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -226,10 +235,11 @@ public static class Command
                 false,
                 configureEnvironment ?? DefaultAction,
                 createNoWindow)
-            .RunAsync(noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
+            .RunAsync(secrets ?? [], noEcho, echoPrefix ?? DefaultEchoPrefix, handleExitCode, cancellationIgnoresProcessTree, cancellationToken);
 
     private static async Task RunAsync(
         this System.Diagnostics.ProcessStartInfo startInfo,
+        IEnumerable<string> secrets,
         bool noEcho,
         string echoPrefix,
         Func<int, bool>? handleExitCode,
@@ -239,7 +249,7 @@ public static class Command
         using var process = new Process();
         process.StartInfo = startInfo;
 
-        await process.RunAsync(noEcho, echoPrefix, cancellationIgnoresProcessTree, cancellationToken).ConfigureAwait(false);
+        await process.RunAsync(secrets, noEcho, echoPrefix, cancellationIgnoresProcessTree, cancellationToken).ConfigureAwait(false);
 
         if (!(handleExitCode?.Invoke(process.ExitCode) ?? false) && process.ExitCode != 0)
         {
@@ -367,7 +377,7 @@ public static class Command
         process.StartInfo = startInfo;
 
 #pragma warning disable CA2025 // Do not pass 'IDisposable' instances into unawaited tasks
-        var runProcess = process.RunAsync(true, "", cancellationIgnoresProcessTree, cancellationToken);
+        var runProcess = process.RunAsync([], true, "", cancellationIgnoresProcessTree, cancellationToken);
 #pragma warning restore CA2025
 
         Task<string> readOutput;

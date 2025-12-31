@@ -7,6 +7,9 @@ namespace SimpleExecTests;
 
 public static class EchoingCommands
 {
+    private const string SecretLower = "secret";
+    private const string SecretUpper = "SECRET";
+
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
 
     [Fact]
@@ -50,6 +53,76 @@ public static class EchoingCommands
 
         // assert
         Assert.DoesNotContain(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public static void RedactingSecretsFromEchoPrefix()
+    {
+        // arrange
+        Console.SetOut(Capture.Out);
+
+        // act
+        Command.Run("dotnet", $"exec {Tester.Path}", secrets: [SecretLower,], noEcho: false, echoPrefix: $"{SecretLower}_{SecretUpper}", cancellationToken: Ct);
+
+        // assert
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public static void RedactingSecretsFromWorkingDirectory()
+    {
+        // arrange
+        Console.SetOut(Capture.Out);
+
+        // act
+        _ = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path}", workingDirectory: $"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, cancellationToken: Ct));
+
+        // assert
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public static void RedactingSecretsFromFileName()
+    {
+        // arrange
+        Console.SetOut(Capture.Out);
+
+        // act
+        _ = Record.Exception(() => Command.Run($"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, cancellationToken: Ct));
+
+        // assert
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public static void RedactingSecretsFromArguments()
+    {
+        // arrange
+        Console.SetOut(Capture.Out);
+
+        // act
+        Command.Run("dotnet", $"exec {Tester.Path} {SecretLower} {SecretUpper}", secrets: [SecretLower,], noEcho: false, cancellationToken: Ct);
+
+        // assert
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public static void RedactingSecretsFromArgumentsList()
+    {
+        // arrange
+        Console.SetOut(Capture.Out);
+
+        // act
+        Command.Run("dotnet", ["exec", Tester.Path, SecretLower, SecretUpper,], secrets: [SecretLower,], noEcho: false, cancellationToken: Ct);
+
+        // assert
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
     }
 
     [Fact]
