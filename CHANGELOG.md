@@ -1,5 +1,13 @@
 # Changelog
 
+## 13.0.0
+
+### Enhancements
+
+- [#768: **[BREAKING]** Redact secrets when echoing commands](https://github.com/adamralph/simple-exec/pull/768)
+- [#772: **[BREAKING]** Rename CancellationToken parameters to ct](https://github.com/adamralph/simple-exec/pull/772)
+- [#773: **[BREAKING]** Reorder parameters](https://github.com/adamralph/simple-exec/pull/773)
+
 ## 12.1.0
 
 ### Enhancements
@@ -44,7 +52,7 @@
 ### Enhancements
 
 - [#351: **[BREAKING]** New API for version 9](https://github.com/adamralph/simple-exec/issues/351)
-- [#352: Echo to standard out instead of standard error](https://github.com/adamralph/simple-exec/issues/352)
+- [#352: Echo to standard output instead of standard error](https://github.com/adamralph/simple-exec/issues/352)
 - [#375: **[BREAKING]** Target .NET Standard 2.1 and remove .NET Standard 2.0 target](https://github.com/adamralph/simple-exec/pull/375)
 - [#390: Nullable annotations](https://github.com/adamralph/simple-exec/issues/390)
 
