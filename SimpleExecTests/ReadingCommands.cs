@@ -16,7 +16,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""), cancellationToken: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""), ct: Ct);
 
         // assert
         Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
@@ -36,7 +36,7 @@ public static class ReadingCommands
         }
 
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", args, cancellationToken: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", args, ct: Ct);
 
         // assert
         Assert.Contains(largeOutput ? "Arg count: 3" : "Arg count: 2", standardOutput, StringComparison.Ordinal);
@@ -50,7 +50,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandWithInputAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input", cancellationToken: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input", ct: Ct);
 
         // assert
         Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
@@ -64,7 +64,7 @@ public static class ReadingCommands
     public static async Task ReadingAUnicodeCommandAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), cancellationToken: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), ct: Ct);
 
         // assert
         Assert.Contains("Pi (\u03a0)", standardOutput, StringComparison.Ordinal);
@@ -75,7 +75,7 @@ public static class ReadingCommands
     public static async Task ReadingAFailingCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} 1 hello world", cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} 1 hello world", ct: Ct));
 
         // assert
         var exitCodeReadException = Assert.IsType<ExitCodeReadException>(exception);
@@ -88,7 +88,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandAsyncInANonExistentWorkDirectory()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", ct: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -98,7 +98,7 @@ public static class ReadingCommands
     public static async Task ReadingANonExistentCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("simple-exec-tests-non-existent-command", cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("simple-exec-tests-non-existent-command", ct: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -110,7 +110,7 @@ public static class ReadingCommands
     public static async Task ReadingNoCommandAsync(string name)
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync(name, cancellationToken: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync(name, ct: Ct));
 
         // assert
         Assert.Equal(nameof(name), Assert.IsType<ArgumentException>(exception).ParamName);

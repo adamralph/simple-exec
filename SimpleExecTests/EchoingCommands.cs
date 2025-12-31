@@ -19,7 +19,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", cancellationToken: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", ct: Ct);
 
         // assert
         Assert.Contains(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -32,7 +32,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",], cancellationToken: Ct);
+        Command.Run("dotnet", ["exec", Tester.Path, "he llo", "\"world \"today\"",], ct: Ct);
 
         // assert
         var lines = Capture.Out.ToString()!.Split('\r', '\n').ToList();
@@ -49,7 +49,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, cancellationToken: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, ct: Ct);
 
         // assert
         Assert.DoesNotContain(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -62,7 +62,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path}", secrets: [SecretLower,], noEcho: false, echoPrefix: $"{SecretLower}_{SecretUpper}", cancellationToken: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path}", secrets: [SecretLower,], noEcho: false, echoPrefix: $"{SecretLower}_{SecretUpper}", ct: Ct);
 
         // assert
         Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -76,7 +76,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        _ = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path}", workingDirectory: $"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, cancellationToken: Ct));
+        _ = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path}", workingDirectory: $"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, ct: Ct));
 
         // assert
         Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -90,7 +90,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        _ = Record.Exception(() => Command.Run($"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, cancellationToken: Ct));
+        _ = Record.Exception(() => Command.Run($"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, ct: Ct));
 
         // assert
         Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -104,7 +104,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {SecretLower} {SecretUpper}", secrets: [SecretLower,], noEcho: false, cancellationToken: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {SecretLower} {SecretUpper}", secrets: [SecretLower,], noEcho: false, ct: Ct);
 
         // assert
         Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -118,7 +118,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", ["exec", Tester.Path, SecretLower, SecretUpper,], secrets: [SecretLower,], noEcho: false, cancellationToken: Ct);
+        Command.Run("dotnet", ["exec", Tester.Path, SecretLower, SecretUpper,], secrets: [SecretLower,], noEcho: false, ct: Ct);
 
         // assert
         Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
@@ -132,7 +132,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix", cancellationToken: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: false, echoPrefix: $"{TestName()} prefix", ct: Ct);
 
         // assert
         var error = Capture.Out.ToString()!;
@@ -148,7 +148,7 @@ public static class EchoingCommands
         Console.SetOut(Capture.Out);
 
         // act
-        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix", cancellationToken: Ct);
+        Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, echoPrefix: $"{TestName()} prefix", ct: Ct);
 
         // assert
         var error = Capture.Out.ToString()!;

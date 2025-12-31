@@ -14,7 +14,7 @@ public static class ConfiguringEnvironments
             "dotnet",
             $"exec {Tester.Path} environment",
             configureEnvironment: env => env["foo"] = "bar",
-            cancellationToken: TestContext.Current.CancellationToken);
+            ct: TestContext.Current.CancellationToken);
 
         // assert
         Assert.Contains("foo=bar", standardOutput, StringComparison.Ordinal);

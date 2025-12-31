@@ -7,7 +7,7 @@ namespace SimpleExec;
 
 internal static class ProcessExtensions
 {
-    public static void Run(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, Ct cancellationToken)
+    public static void Run(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, Ct ct)
     {
         var cancelled = new StrongBox<long>(0);
 
@@ -18,7 +18,7 @@ internal static class ProcessExtensions
 
         _ = process.Start();
 
-        using var register = cancellationToken.Register(
+        using var register = ct.Register(
             () =>
             {
                 if (process.TryKill(cancellationIgnoresProcessTree))
@@ -32,11 +32,11 @@ internal static class ProcessExtensions
 
         if (Interlocked.Read(ref cancelled.Value) == 1)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            ct.ThrowIfCancellationRequested();
         }
     }
 
-    public static async Task RunAsync(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, Ct cancellationToken)
+    public static async Task RunAsync(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, Ct ct)
     {
         using var sync = new SemaphoreSlim(1, 1);
         var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -51,14 +51,14 @@ internal static class ProcessExtensions
 
         _ = process.Start();
 
-        await using var register = cancellationToken.Register(
+        await using var register = ct.Register(
             () => sync.Run(
                 () => tcs.Task.Status != TaskStatus.RanToCompletion,
                 () =>
                 {
                     if (process.TryKill(cancellationIgnoresProcessTree))
                     {
-                        _ = tcs.TrySetCanceled(cancellationToken);
+                        _ = tcs.TrySetCanceled(ct);
                     }
                 }),
             useSynchronizationContext: false).ConfigureAwait(false);

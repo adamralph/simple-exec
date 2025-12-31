@@ -67,7 +67,7 @@ Encoding? encoding = null,
 Func<int, bool>? handleExitCode = null,
 string? standardInput = null,
 bool cancellationIgnoresProcessTree = false,
-CancellationToken cancellationToken = default,
+CancellationToken ct = default,
 ```
 
 ## Exceptions
