@@ -8,6 +8,7 @@ namespace SimpleExec;
 /// <summary>
 /// Contains methods for running commands and reading standard output (stdout).
 /// </summary>
+#pragma warning disable RS0026 // Do not add multiple overloads with optional parameters
 public static class Command
 {
     private static readonly Action<IDictionary<string, string?>> DefaultAction = _ => { };
