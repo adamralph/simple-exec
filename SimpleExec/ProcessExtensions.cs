@@ -7,7 +7,7 @@ namespace SimpleExec;
 
 internal static class ProcessExtensions
 {
-    public static void Run(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+    public static void Run(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, Ct cancellationToken)
     {
         var cancelled = new StrongBox<long>(0);
 
@@ -36,7 +36,7 @@ internal static class ProcessExtensions
         }
     }
 
-    public static async Task RunAsync(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, CancellationToken cancellationToken)
+    public static async Task RunAsync(this Process process, IEnumerable<string> secrets, bool noEcho, string echoPrefix, bool cancellationIgnoresProcessTree, Ct cancellationToken)
     {
         using var sync = new SemaphoreSlim(1, 1);
         var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
