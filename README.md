@@ -58,6 +58,7 @@ var (standardOutput3, standardError3) = await ReadAsync("foo", new[] { "arg1", "
 
 ```c#
 string workingDirectory = "",
+IEnumerable<string> secrets = null,
 bool noEcho = false,
 string? echoPrefix = null,
 Action<IDictionary<string, string?>>? configureEnvironment = null,
