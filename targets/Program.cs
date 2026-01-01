@@ -3,7 +3,7 @@ using static Targets.Command;
 
 Target("format", () => RunAsync("dotnet", "format --verify-no-changes"));
 
-Target("build", () => RunAsync("dotnet", "build --configuration Release --nologo"));
+Target("build", () => RunAsync("dotnet", "build --configuration Release"));
 
 Target("test", dependsOn: ["build",], () => RunAsync("dotnet", "test --configuration Release --no-build"));
 
