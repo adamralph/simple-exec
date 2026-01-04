@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.1.0
+
+### Enhancements
+
+- [#784: Include SBOM in package](https://github.com/adamralph/simple-exec/pull/784)
+
 ## 13.0.0
 
 ### Enhancements
