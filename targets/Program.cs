@@ -1,9 +1,11 @@
 using static Bullseye.Targets;
 using static Targets.Command;
 
-Target("format", () => RunAsync("dotnet", "format --verify-no-changes"));
+Target("restore", () => RunAsync("dotnet", "restore"));
 
-Target("build", () => RunAsync("dotnet", "build --configuration Release"));
+Target("format", dependsOn: ["restore",], () => RunAsync("dotnet", "format --verify-no-changes --no-restore"));
+
+Target("build", dependsOn: ["restore",], () => RunAsync("dotnet", "build --configuration Release --no-restore"));
 
 Target("test", dependsOn: ["build",], () => RunAsync("dotnet", "test --configuration Release --no-build"));
 
