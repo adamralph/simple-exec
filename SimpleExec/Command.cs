@@ -429,8 +429,8 @@ public static class Command
         await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
 
 #pragma warning disable CA1849 // Call async methods when in an async method
-        var output = readOutput.Result;
-        var error = readError.Result;
+        var output = await readOutput.ConfigureAwait(false);
+        var error = await readError.ConfigureAwait(false);
 #pragma warning restore CA1849
 
         return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
