@@ -429,8 +429,10 @@ public static class Command
         await Task.WhenAll(runProcess, readOutput, readError).ConfigureAwait(false);
 
 #pragma warning disable CA1849 // Call async methods when in an async method
+#pragma warning disable VSTHRD103 // Result synchronously blocks. Use await instead.
         var output = readOutput.Result;
         var error = readError.Result;
+#pragma warning restore VSTHRD103
 #pragma warning restore CA1849
 
         return (handleExitCode?.Invoke(process.ExitCode) ?? false) || process.ExitCode == 0
