@@ -75,7 +75,10 @@ public static class CancellingCommands
         await cts.CancelAsync();
 
         // assert
+#pragma warning disable VSTHRD003 // Avoid awaiting or returning a Task representing work that was not started within your context as that can lead to deadlocks.
         var exception = await Record.ExceptionAsync(() => command);
+#pragma warning restore VSTHRD003
+
         Assert.Equal(ct, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
     }
 }
