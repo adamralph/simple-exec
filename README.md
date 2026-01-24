@@ -26,9 +26,7 @@ Platform support: [.NET 8.0 and later](https://dot.net).
 
 ```c#
 using static SimpleExec.Command;
-```
 
-```c#
 Run("foo", "arg1 arg2");
 ```
 
