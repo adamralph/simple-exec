@@ -1,7 +1,0 @@
-[*.cs]
-
-# CA2007: Consider calling ConfigureAwait on the awaited task
-dotnet_diagnostic.CA2007.severity = none
-
-# VSTHRD111: Add .ConfigureAwait(bool) to your await expression
-dotnet_diagnostic.VSTHRD111.severity = none
