@@ -3,7 +3,7 @@
   <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.2.39" />
 
   <PropertyGroup>
-    <Description>Runs external commands.</Description>
+    <Description>A .NET library for running external commands.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
     <NoWarn>$(NoWarn);RS0016</NoWarn>    <!-- Add public types and members to the declared API -->
