@@ -17,13 +17,11 @@
     }
     public class ExitCodeException : System.Exception
     {
-        public ExitCodeException(int exitCode) { }
         public int ExitCode { get; }
         public override string Message { get; }
     }
-    public class ExitCodeReadException : SimpleExec.ExitCodeException
+    public sealed class ExitCodeReadException : SimpleExec.ExitCodeException
     {
-        public ExitCodeReadException(int exitCode, string standardOutput, string standardError) { }
         public override string Message { get; }
         public string StandardError { get; }
         public string StandardOutput { get; }
