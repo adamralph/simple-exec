@@ -18,14 +18,20 @@
     public class ExitCodeException : System.Exception
     {
         public ExitCodeException(int exitCode) { }
+        public ExitCodeException(int exitCode, System.Exception innerException) { }
+        public ExitCodeException(int exitCode, string message) { }
+        public ExitCodeException(int exitCode, string message, System.Exception innerException) { }
         public int ExitCode { get; }
-        public override string Message { get; }
+        protected static string CreateMessage(int exitCode) { }
     }
     public class ExitCodeReadException : SimpleExec.ExitCodeException
     {
         public ExitCodeReadException(int exitCode, string standardOutput, string standardError) { }
-        public override string Message { get; }
+        public ExitCodeReadException(int exitCode, string standardOutput, string standardError, System.Exception innerException) { }
+        public ExitCodeReadException(int exitCode, string standardOutput, string standardError, string message) { }
+        public ExitCodeReadException(int exitCode, string standardOutput, string standardError, string message, System.Exception innerException) { }
         public string StandardError { get; }
         public string StandardOutput { get; }
+        protected static string CreateMessage(int exitCode, string standardOutput, string standardError) { }
     }
 }
