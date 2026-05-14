@@ -20,6 +20,7 @@ internal static class ProcessStartInfo
             Arguments = args,
             WorkingDirectory = workingDirectory,
             StandardErrorEncoding = encoding,
+            StandardInputEncoding = encoding,
             StandardOutputEncoding = encoding,
             CreateNoWindow = createNoWindow,
             RedirectStandardError = redirectStandardStreams,

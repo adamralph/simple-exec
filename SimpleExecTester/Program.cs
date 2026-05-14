@@ -8,8 +8,9 @@ internal static class Program
     {
         if (args.Contains("unicode"))
         {
+            Console.InputEncoding = Encoding.Unicode;
             Console.OutputEncoding = Encoding.Unicode;
-            args = [.. args, "Pi (\u03a0)",];
+            args = [.. args, "Pi (\u03a0) output",];
         }
 
         Console.Out.WriteLine($"Arg count: {args.Length}");

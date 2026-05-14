@@ -67,8 +67,22 @@ public static class ReadingCommands
         var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), ct: Ct);
 
         // assert
-        Assert.Contains("Pi (\u03a0)", standardOutput, StringComparison.Ordinal);
-        Assert.Contains("Pi (\u03a0)", standardError, StringComparison.Ordinal);
+        Assert.Contains("Pi (\u03a0) output", standardOutput, StringComparison.Ordinal);
+        Assert.Contains("Pi (\u03a0) output", standardError, StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public static async Task ReadingAUnicodeCommandWithInputAsync(bool largeOutput)
+    {
+        // act
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode in" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), standardInput: "Pi (\u03a0) input", ct: Ct);
+
+        // assert
+        Assert.Contains("Pi (\u03a0) input", standardOutput, StringComparison.Ordinal);
+        Assert.Contains("Pi (\u03a0) output", standardOutput, StringComparison.Ordinal);
+        Assert.Contains("Pi (\u03a0) output", standardError, StringComparison.Ordinal);
     }
 
     [Fact]
