@@ -7,6 +7,10 @@
 - [#784: Include SBOM in package](https://github.com/adamralph/simple-exec/pull/784)
 - [#835: Standard exception constructor equivalents](https://github.com/adamralph/simple-exec/pull/835)
 
+### Fixed bugs
+
+- [#856: Specified encoding is not used for standard input](https://github.com/adamralph/simple-exec/issues/856)
+
 ## 13.0.0
 
 ### Enhancements
