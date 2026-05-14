@@ -4,9 +4,9 @@
     "net10.0": {
       "Bullseye": {
         "type": "Direct",
-        "requested": "[6.1.0, )",
-        "resolved": "6.1.0",
-        "contentHash": "fltnAJDe0BEX5eymXGUq+il2rSUA0pHqUonNDRH2TrvRu8SkU17mYG0IVpdmG2ibtfhdjNrv4CuTCxHOwcozCA=="
+        "requested": "[6.2.0-rc.1, )",
+        "resolved": "6.2.0-rc.1",
+        "contentHash": "aE79P2P8cjBbM6naGSjW5j0Sg5Fw10klfMDjlFRwvyyaJtZoDfn5Ws8pKcdO8NNLq9M6GxG8pBrHZO7R/oTK3Q=="
       },
       "Microsoft.VisualStudio.Threading.Analyzers": {
         "type": "Direct",
