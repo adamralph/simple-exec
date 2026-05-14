@@ -20,7 +20,7 @@ public static class CancellingCommands
         var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} sleep", ct: ct));
 
         // assert
-        Assert.Equal(ct, Assert.IsType<OperationCanceledException>(exception).CancellationToken);
+        Assert.Equal(ct, Assert.IsType<OperationCanceledException>(exception, exactMatch: false).CancellationToken);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public static class CancellingCommands
         var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} sleep", ct: ct));
 
         // assert
-        Assert.Equal(ct, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
+        Assert.Equal(ct, Assert.IsType<OperationCanceledException>(exception, exactMatch: false).CancellationToken);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public static class CancellingCommands
         var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} sleep", ct: ct));
 
         // assert
-        Assert.Equal(ct, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
+        Assert.Equal(ct, Assert.IsType<OperationCanceledException>(exception, exactMatch: false).CancellationToken);
     }
 
     [Theory]
@@ -79,6 +79,6 @@ public static class CancellingCommands
         var exception = await Record.ExceptionAsync(() => command);
 #pragma warning restore VSTHRD003
 
-        Assert.Equal(ct, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
+        Assert.Equal(ct, Assert.IsType<OperationCanceledException>(exception, exactMatch: false).CancellationToken);
     }
 }
