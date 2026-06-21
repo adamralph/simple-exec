@@ -43,7 +43,7 @@ public static class Command
     /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
     /// </remarks>
     public static void Run(
-        string name,
+        CommandName name,
         string args = "",
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -53,10 +53,13 @@ public static class Command
         bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
-        Ct ct = default) =>
+        Ct ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
         ProcessStartInfo
             .Create(
-                Resolve(Validate(name)),
+                Resolve(name),
                 args,
                 [],
                 workingDirectory,
@@ -71,6 +74,7 @@ public static class Command
                 noEcho,
                 cancellationIgnoresProcessTree,
                 ct);
+    }
 
     /// <summary>
     /// Runs a command without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -100,7 +104,7 @@ public static class Command
     /// <param name="ct">A <see cref="Ct"/> to observe while waiting for the command to exit.</param>
     /// <exception cref="ExitCodeException">The command exited with non-zero exit code.</exception>
     public static void Run(
-        string name,
+        CommandName name,
         IEnumerable<string> args,
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -110,10 +114,13 @@ public static class Command
         bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
-        Ct ct = default) =>
+        Ct ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
         ProcessStartInfo
             .Create(
-                Resolve(Validate(name)),
+                Resolve(name),
                 "",
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
@@ -128,6 +135,7 @@ public static class Command
                 noEcho,
                 cancellationIgnoresProcessTree,
                 ct);
+    }
 
     private static void Run(
         this System.Diagnostics.ProcessStartInfo startInfo,
@@ -179,7 +187,7 @@ public static class Command
     /// To suppress this behavior, provide the <paramref name="noEcho"/> parameter with a value of <c>true</c>.
     /// </remarks>
     public static Task RunAsync(
-        string name,
+        CommandName name,
         string args = "",
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -189,10 +197,13 @@ public static class Command
         bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
-        Ct ct = default) =>
-        ProcessStartInfo
+        Ct ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        return ProcessStartInfo
             .Create(
-                Resolve(Validate(name)),
+                Resolve(name),
                 args,
                 [],
                 workingDirectory,
@@ -207,6 +218,7 @@ public static class Command
                 noEcho,
                 cancellationIgnoresProcessTree,
                 ct);
+    }
 
     /// <summary>
     /// Runs a command asynchronously without redirecting standard output (stdout) and standard error (stderr) and without writing to standard input (stdin).
@@ -237,7 +249,7 @@ public static class Command
     /// <returns>A <see cref="Task"/> that represents the asynchronous running of the command.</returns>
     /// <exception cref="ExitCodeReadException">The command exited with non-zero exit code.</exception>
     public static Task RunAsync(
-        string name,
+        CommandName name,
         IEnumerable<string> args,
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -247,10 +259,13 @@ public static class Command
         bool noEcho = false,
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
-        Ct ct = default) =>
-        ProcessStartInfo
+        Ct ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        return ProcessStartInfo
             .Create(
-                Resolve(Validate(name)),
+                Resolve(name),
                 "",
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
@@ -265,6 +280,7 @@ public static class Command
                 noEcho,
                 cancellationIgnoresProcessTree,
                 ct);
+    }
 
     private static async Task RunAsync(
         this System.Diagnostics.ProcessStartInfo startInfo,
@@ -314,7 +330,7 @@ public static class Command
     /// The command exited with non-zero exit code. The exception contains the contents of standard output (stdout) and standard error (stderr).
     /// </exception>
     public static Task<(string StandardOutput, string StandardError)> ReadAsync(
-        string name,
+        CommandName name,
         string args = "",
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -322,10 +338,13 @@ public static class Command
         Encoding? encoding = null,
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
-        Ct ct = default) =>
-        ProcessStartInfo
+        Ct ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        return ProcessStartInfo
             .Create(
-                Resolve(Validate(name)),
+                Resolve(name),
                 args,
                 [],
                 workingDirectory,
@@ -338,6 +357,7 @@ public static class Command
                 standardInput,
                 cancellationIgnoresProcessTree,
                 ct);
+    }
 
     /// <summary>
     /// Runs a command and reads standard output (stdout) and standard error (stderr) and optionally writes to standard input (stdin).
@@ -370,7 +390,7 @@ public static class Command
     /// The command exited with non-zero exit code. The exception contains the contents of standard output (stdout) and standard error (stderr).
     /// </exception>
     public static Task<(string StandardOutput, string StandardError)> ReadAsync(
-        string name,
+        CommandName name,
         IEnumerable<string> args,
         string workingDirectory = "",
         Action<IDictionary<string, string?>>? configureEnvironment = null,
@@ -378,10 +398,13 @@ public static class Command
         Encoding? encoding = null,
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
-        Ct ct = default) =>
-        ProcessStartInfo
+        Ct ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        return ProcessStartInfo
             .Create(
-                Resolve(Validate(name)),
+                Resolve(name),
                 "",
                 args ?? throw new ArgumentNullException(nameof(args)),
                 workingDirectory,
@@ -394,6 +417,7 @@ public static class Command
                 standardInput,
                 cancellationIgnoresProcessTree,
                 ct);
+    }
 
     private static async Task<(string StandardOutput, string StandardError)> ReadAsync(
         this System.Diagnostics.ProcessStartInfo startInfo,
@@ -440,19 +464,14 @@ public static class Command
             : throw new ExitCodeReadException(process.ExitCode, output, error);
     }
 
-    private static string Validate(string name) =>
-        string.IsNullOrWhiteSpace(name)
-            ? throw new ArgumentException("The command name is missing.", nameof(name))
-            : name;
-
-    private static string Resolve(string name)
+    private static CommandName Resolve(CommandName name)
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Path.IsPathRooted(name))
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Path.IsPathRooted(name.Name))
         {
             return name;
         }
 
-        var extension = Path.GetExtension(name);
+        var extension = Path.GetExtension(name.Name);
         if (!string.IsNullOrEmpty(extension) && extension != ".cmd" && extension != ".bat")
         {
             return name;
@@ -468,13 +487,13 @@ public static class Command
                 string.Equals(ext, "cmd", StringComparison.OrdinalIgnoreCase));
 
         var searchFileNames = string.IsNullOrEmpty(extension)
-            ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name, ex)).ToList()
-            : [name,];
+            ? windowsExecutableExtensions.Select(ex => Path.ChangeExtension(name.Name, ex)).ToList()
+            : [name.Name,];
 
         var path = GetSearchDirectories().SelectMany(_ => searchFileNames, Path.Combine)
             .FirstOrDefault(File.Exists);
 
-        return path == null || Path.GetExtension(path) == ".exe" ? name : path;
+        return path == null || Path.GetExtension(path) == ".exe" ? name : new CommandName(path);
     }
 
     // see https://github.com/dotnet/runtime/blob/14304eb31eea134db58870a6d87312231b1e02b6/src/libraries/System.Diagnostics.Process/src/System/Diagnostics/Process.Unix.cs#L703-L726
@@ -503,4 +522,50 @@ public static class Command
             yield return directory;
         }
     }
+}
+
+/// <summary>
+/// The name of a command.
+/// </summary>
+public record CommandName
+{
+    /// <summary>
+    /// Constructs an instance of <see cref="CommandName"/>.
+    /// </summary>
+    /// <param name="name">The name of the command</param>
+    /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentException"><paramref name="name"/> is empty or whitespace.</exception>
+    public CommandName(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Value cannot be empty or whitespace.", nameof(name));
+        }
+
+        Name = name;
+    }
+
+    /// <summary>
+    /// The name of the command.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    /// Implicitly converts <paramref name="name"/> to an instance of <see cref="CommandName"/>.
+    /// </summary>
+    /// <param name="name">The name of the command.</param>
+    /// <returns>An instance of <see cref="CommandName"/>.</returns>
+    public static implicit operator CommandName(string name) => new(name);
+
+    /// <summary>
+    /// Creates an instance of <see cref="CommandName"/> from <paramref name="name"/>.
+    /// </summary>
+    /// <param name="name">The name of the command.</param>
+    /// <returns>An instance of <see cref="CommandName"/>.</returns>
+    public static CommandName FromString(string name) => name;
+
+    /// <inheritdoc/>
+    public override string ToString() => Name;
 }

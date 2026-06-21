@@ -19,6 +19,7 @@ public static class RunningCommands
     {
         // act
         var exception = Record.Exception(() => SimpleExec.Command.Run(Command, ct: Ct));
+        SimpleExec.Command.Run();
 
         // assert
         Assert.Null(exception);

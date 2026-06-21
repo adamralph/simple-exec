@@ -5,7 +5,7 @@ namespace SimpleExec;
 internal static class ProcessStartInfo
 {
     public static System.Diagnostics.ProcessStartInfo Create(
-        string name,
+        CommandName name,
         string args,
         IEnumerable<string> argList,
         string workingDirectory,
@@ -16,7 +16,7 @@ internal static class ProcessStartInfo
     {
         var startInfo = new System.Diagnostics.ProcessStartInfo
         {
-            FileName = name,
+            FileName = name.Name,
             Arguments = args,
             WorkingDirectory = workingDirectory,
             StandardErrorEncoding = encoding,
