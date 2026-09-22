@@ -1,5 +1,6 @@
 using SimpleExec;
 using PublicApiGenerator;
+using SimpleExecTests.Infra;
 using Xunit;
 
 namespace SimpleExecTests;
@@ -13,6 +14,6 @@ public static class PublicApi
 
         var publicApi = typeof(Command).Assembly.GeneratePublicApi(options);
 
-        _ = await Verify(publicApi);
+        await publicApi.Verify();
     }
 }
