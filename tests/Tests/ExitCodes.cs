@@ -1,8 +1,8 @@
 using SimpleExec;
-using SimpleExecTests.Infra;
+using Tests.Infra;
 using Xunit;
 
-namespace SimpleExecTests;
+namespace Tests;
 
 public static class ExitCodes
 {
@@ -15,7 +15,7 @@ public static class ExitCodes
     public static void RunningACommand(int exitCode, bool shouldThrow)
     {
         // act
-        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1, ct: Ct));
+        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Cli.Path} {exitCode}", handleExitCode: code => code == 1, ct: Ct));
 
         // assert
         if (shouldThrow)
@@ -35,7 +35,7 @@ public static class ExitCodes
     public static async Task RunningACommandAsync(int exitCode, bool shouldThrow)
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1, ct: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Cli.Path} {exitCode}", handleExitCode: code => code == 1, ct: Ct));
 
         // assert
         if (shouldThrow)
@@ -55,7 +55,7 @@ public static class ExitCodes
     public static async Task ReadingACommandAsync(int exitCode, bool shouldThrow)
     {
         // act
-        var exception = await Record.ExceptionAsync(async () => _ = await Command.ReadAsync("dotnet", $"exec {Tester.Path} {exitCode}", handleExitCode: code => code == 1, ct: Ct));
+        var exception = await Record.ExceptionAsync(async () => _ = await Command.ReadAsync("dotnet", $"exec {Cli.Path} {exitCode}", handleExitCode: code => code == 1, ct: Ct));
 
         // assert
         if (shouldThrow)

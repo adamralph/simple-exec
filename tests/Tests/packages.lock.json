@@ -153,10 +153,10 @@
           "xunit.v3.runner.common": "[4.0.1]"
         }
       },
-      "simpleexec": {
+      "Fixtures.Cli": {
         "type": "Project"
       },
-      "simpleexectester": {
+      "simpleexec": {
         "type": "Project"
       }
     },
@@ -312,10 +312,10 @@
           "xunit.v3.runner.common": "[4.0.1]"
         }
       },
-      "simpleexec": {
+      "Fixtures.Cli": {
         "type": "Project"
       },
-      "simpleexectester": {
+      "simpleexec": {
         "type": "Project"
       }
     },
@@ -471,10 +471,10 @@
           "xunit.v3.runner.common": "[4.0.1]"
         }
       },
-      "simpleexec": {
+      "Fixtures.Cli": {
         "type": "Project"
       },
-      "simpleexectester": {
+      "simpleexec": {
         "type": "Project"
       }
     }

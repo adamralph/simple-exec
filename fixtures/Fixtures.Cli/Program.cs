@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace SimpleExecTester;
+namespace Fixtures.Cli;
 
 internal static class Program
 {

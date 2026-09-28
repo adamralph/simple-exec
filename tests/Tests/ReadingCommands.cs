@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using System.Text;
 using SimpleExec;
-using SimpleExecTests.Infra;
+using Tests.Infra;
 using Xunit;
 
-namespace SimpleExecTests;
+namespace Tests;
 
 public static class ReadingCommands
 {
@@ -16,7 +16,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world" + (largeOutput ? " large" : ""), ct: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Cli.Path} hello world" + (largeOutput ? " large" : ""), ct: Ct);
 
         // assert
         Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
@@ -29,7 +29,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandAsyncWithAnArgList(bool largeOutput)
     {
         // arrange
-        var args = new List<string> { "exec", Tester.Path, "he llo", "world", };
+        var args = new List<string> { "exec", Cli.Path, "he llo", "world", };
         if (largeOutput)
         {
             args.Add("large");
@@ -50,7 +50,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandWithInputAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input", ct: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Cli.Path} hello world in" + (largeOutput ? " large" : ""), standardInput: "this is input", ct: Ct);
 
         // assert
         Assert.Contains("hello world", standardOutput, StringComparison.Ordinal);
@@ -64,7 +64,7 @@ public static class ReadingCommands
     public static async Task ReadingAUnicodeCommandAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), ct: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Cli.Path} hello world unicode" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), ct: Ct);
 
         // assert
         Assert.Contains("Pi (\u03a0) output", standardOutput, StringComparison.Ordinal);
@@ -77,7 +77,7 @@ public static class ReadingCommands
     public static async Task ReadingAUnicodeCommandWithInputAsync(bool largeOutput)
     {
         // act
-        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Tester.Path} hello world unicode in" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), standardInput: "Pi (\u03a0) input", ct: Ct);
+        var (standardOutput, standardError) = await Command.ReadAsync("dotnet", $"exec {Cli.Path} hello world unicode in" + (largeOutput ? " large" : ""), encoding: new UnicodeEncoding(), standardInput: "Pi (\u03a0) input", ct: Ct);
 
         // assert
         Assert.Contains("Pi (\u03a0) input", standardOutput, StringComparison.Ordinal);
@@ -89,7 +89,7 @@ public static class ReadingCommands
     public static async Task ReadingAFailingCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} 1 hello world", ct: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Cli.Path} 1 hello world", ct: Ct));
 
         // assert
         var exitCodeReadException = Assert.IsType<ExitCodeReadException>(exception);
@@ -102,7 +102,7 @@ public static class ReadingCommands
     public static async Task ReadingACommandAsyncInANonExistentWorkDirectory()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", ct: Ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Cli.Path}", "non-existent-working-directory", ct: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);

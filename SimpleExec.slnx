@@ -1,6 +1,12 @@
 <Solution>
-  <Project Path="SimpleExec/SimpleExec.csproj" />
-  <Project Path="SimpleExecTester/SimpleExecTester.csproj" />
-  <Project Path="SimpleExecTests/SimpleExecTests.csproj" />
+  <Folder Name="/fixtures/">
+    <Project Path="fixtures/Fixtures.Cli/Fixtures.Cli.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/SimpleExec/SimpleExec.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Tests/Tests.csproj" />
+  </Folder>
   <Project Path="targets/Targets.csproj" />
 </Solution>

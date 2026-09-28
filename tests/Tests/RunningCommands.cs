@@ -2,10 +2,10 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using SimpleExec;
-using SimpleExecTests.Infra;
+using Tests.Infra;
 using Xunit;
 
-namespace SimpleExecTests;
+namespace Tests;
 
 public static class RunningCommands
 {
@@ -28,7 +28,7 @@ public static class RunningCommands
     public static void RunningASucceedingCommandWithArgs()
     {
         // act
-        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Tester.Path} hello world", ct: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Cli.Path} hello world", ct: Ct));
 
         // assert
         Assert.Null(exception);
@@ -48,7 +48,7 @@ public static class RunningCommands
     public static void RunningAFailingCommand()
     {
         // act
-        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Tester.Path} 1 hello world", ct: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Cli.Path} 1 hello world", ct: Ct));
 
         // assert
         Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
@@ -58,7 +58,7 @@ public static class RunningCommands
     public static async Task RunningAFailingCommandAsync()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("dotnet", $"exec {Tester.Path} 1 hello world", ct: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("dotnet", $"exec {Cli.Path} 1 hello world", ct: Ct));
 
         // assert
         Assert.Equal(1, Assert.IsType<ExitCodeException>(exception).ExitCode);
@@ -68,7 +68,7 @@ public static class RunningCommands
     public static void RunningACommandInANonExistentWorkDirectory()
     {
         // act
-        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", ct: Ct));
+        var exception = Record.Exception(() => SimpleExec.Command.Run("dotnet", $"exec {Cli.Path}", "non-existent-working-directory", ct: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -78,7 +78,7 @@ public static class RunningCommands
     public static async Task RunningACommandAsyncInANonExistentWorkDirectory()
     {
         // act
-        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("dotnet", $"exec {Tester.Path}", "non-existent-working-directory", ct: Ct));
+        var exception = await Record.ExceptionAsync(() => SimpleExec.Command.RunAsync("dotnet", $"exec {Cli.Path}", "non-existent-working-directory", ct: Ct));
 
         // assert
         _ = Assert.IsType<Win32Exception>(exception);
@@ -134,7 +134,7 @@ public static class RunningCommands
         // arrange
         var directory = Path.Combine(
             Path.GetTempPath(),
-            "SimpleExecTests",
+            "Tests",
             DateTimeOffset.UtcNow.UtcTicks.ToString(CultureInfo.InvariantCulture),
             "RunningCommandsInPathOnWindows");
 
@@ -170,7 +170,7 @@ public static class RunningCommands
         // arrange
         var directory = Path.Combine(
             Path.GetTempPath(),
-            "SimpleExecTests",
+            "Tests",
             DateTimeOffset.UtcNow.UtcTicks.ToString(CultureInfo.InvariantCulture),
             "RunningCommandsInPathOnWindows");
 
