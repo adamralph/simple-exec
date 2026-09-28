@@ -22,7 +22,7 @@ public static class EchoingCommands
         Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", ct: Ct);
 
         // assert
-        Assert.Contains(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.Contains(TestName(), Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public static class EchoingCommands
         Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", noEcho: true, ct: Ct);
 
         // assert
-        Assert.DoesNotContain(TestName(), Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(TestName(), Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -65,8 +65,8 @@ public static class EchoingCommands
         Command.Run("dotnet", $"exec {Tester.Path}", secrets: [SecretLower,], echoPrefix: $"{SecretLower}_{SecretUpper}", noEcho: false, ct: Ct);
 
         // assert
-        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
-        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString(), StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public static class EchoingCommands
         _ = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path}", workingDirectory: $"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, ct: Ct));
 
         // assert
-        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
-        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString(), StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -93,8 +93,8 @@ public static class EchoingCommands
         _ = Record.Exception(() => Command.Run($"{SecretLower}_{SecretUpper}", secrets: [SecretLower,], noEcho: false, ct: Ct));
 
         // assert
-        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
-        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString(), StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -107,8 +107,8 @@ public static class EchoingCommands
         Command.Run("dotnet", $"exec {Tester.Path} {SecretLower} {SecretUpper}", secrets: [SecretLower,], noEcho: false, ct: Ct);
 
         // assert
-        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
-        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString(), StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -121,8 +121,8 @@ public static class EchoingCommands
         Command.Run("dotnet", ["exec", Tester.Path, SecretLower, SecretUpper,], secrets: [SecretLower,], noEcho: false, ct: Ct);
 
         // assert
-        Assert.DoesNotContain(SecretLower, Capture.Out.ToString()!, StringComparison.Ordinal);
-        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString()!, StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretLower, Capture.Out.ToString(), StringComparison.Ordinal);
+        Assert.DoesNotContain(SecretUpper, Capture.Out.ToString(), StringComparison.Ordinal);
     }
 
     [Fact]
@@ -135,7 +135,7 @@ public static class EchoingCommands
         Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", echoPrefix: $"{TestName()} prefix", noEcho: false, ct: Ct);
 
         // assert
-        var error = Capture.Out.ToString()!;
+        var error = Capture.Out.ToString();
 
         Assert.Contains(TestName(), error, StringComparison.Ordinal);
         Assert.Contains($"{TestName()} prefix:", error, StringComparison.Ordinal);
@@ -151,7 +151,7 @@ public static class EchoingCommands
         Command.Run("dotnet", $"exec {Tester.Path} {TestName()}", echoPrefix: $"{TestName()} prefix", noEcho: true, ct: Ct);
 
         // assert
-        var error = Capture.Out.ToString()!;
+        var error = Capture.Out.ToString();
 
         Assert.DoesNotContain(TestName(), error, StringComparison.Ordinal);
         Assert.DoesNotContain($"{TestName()} prefix:", error, StringComparison.Ordinal);

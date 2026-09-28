@@ -1,5 +1,5 @@
-using SimpleExec;
 using PublicApiGenerator;
+using SimpleExec;
 using SimpleExecTests.Infra;
 using Xunit;
 
