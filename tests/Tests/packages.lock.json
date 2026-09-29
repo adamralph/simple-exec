@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "dependencies": {
     "net10.0": {
       "GitHubActionsTestLogger": {
@@ -153,7 +153,7 @@
           "xunit.v3.runner.common": "[4.0.1]"
         }
       },
-      "Fixtures.Cli": {
+      "fixtures.cli": {
         "type": "Project"
       },
       "simpleexec": {
@@ -312,7 +312,7 @@
           "xunit.v3.runner.common": "[4.0.1]"
         }
       },
-      "Fixtures.Cli": {
+      "fixtures.cli": {
         "type": "Project"
       },
       "simpleexec": {
@@ -471,7 +471,7 @@
           "xunit.v3.runner.common": "[4.0.1]"
         }
       },
-      "Fixtures.Cli": {
+      "fixtures.cli": {
         "type": "Project"
       },
       "simpleexec": {
