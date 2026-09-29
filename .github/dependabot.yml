@@ -12,14 +12,3 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 7
-  - package-ecosystem: "nuget"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    cooldown:
-      default-days: 7
-    groups:
-      xunit:
-        patterns:
-          - "xunit"
-          - "xunit.*"
