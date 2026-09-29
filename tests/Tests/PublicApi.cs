@@ -1,9 +1,9 @@
 using PublicApiGenerator;
 using SimpleExec;
-using SimpleExecTests.Infra;
+using Tests.Infra;
 using Xunit;
 
-namespace SimpleExecTests;
+namespace Tests;
 
 public static class PublicApi
 {

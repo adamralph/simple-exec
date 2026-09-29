@@ -1,8 +1,8 @@
 using SimpleExec;
-using SimpleExecTests.Infra;
+using Tests.Infra;
 using Xunit;
 
-namespace SimpleExecTests;
+namespace Tests;
 
 public static class ConfiguringEnvironments
 {
@@ -12,7 +12,7 @@ public static class ConfiguringEnvironments
         // act
         var (standardOutput, _) = await Command.ReadAsync(
             "dotnet",
-            $"exec {Tester.Path} environment",
+            $"exec {Cli.Path} environment",
             configureEnvironment: env => env["foo"] = "bar",
             ct: TestContext.Current.CancellationToken);
 

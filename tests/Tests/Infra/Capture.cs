@@ -1,4 +1,4 @@
-namespace SimpleExecTests.Infra;
+namespace Tests.Infra;
 
 internal static class Capture
 {

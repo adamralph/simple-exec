@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleExec\SimpleExec.csproj" />
-    <ProjectReference Include="..\SimpleExecTester\SimpleExecTester.csproj" />
+    <ProjectReference Include="../../src/SimpleExec/SimpleExec.csproj" />
+    <ProjectReference Include="../../fixtures/Fixtures.Cli/Fixtures.Cli.csproj" />
   </ItemGroup>
 
   <ItemGroup>

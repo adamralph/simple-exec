@@ -1,8 +1,8 @@
 using SimpleExec;
-using SimpleExecTests.Infra;
+using Tests.Infra;
 using Xunit;
 
-namespace SimpleExecTests;
+namespace Tests;
 
 public static class CancellingCommands
 {
@@ -17,7 +17,7 @@ public static class CancellingCommands
         cts.Cancel();
 
         // act
-        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Tester.Path} sleep", ct: ct));
+        var exception = Record.Exception(() => Command.Run("dotnet", $"exec {Cli.Path} sleep", ct: ct));
 
         // assert
         Assert.Equal(ct, Assert.IsType<OperationCanceledException>(exception).CancellationToken);
@@ -34,7 +34,7 @@ public static class CancellingCommands
         await cts.CancelAsync();
 
         // act
-        var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Tester.Path} sleep", ct: ct));
+        var exception = await Record.ExceptionAsync(() => Command.RunAsync("dotnet", $"exec {Cli.Path} sleep", ct: ct));
 
         // assert
         Assert.Equal(ct, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
@@ -51,7 +51,7 @@ public static class CancellingCommands
         await cts.CancelAsync();
 
         // act
-        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Tester.Path} sleep", ct: ct));
+        var exception = await Record.ExceptionAsync(() => Command.ReadAsync("dotnet", $"exec {Cli.Path} sleep", ct: ct));
 
         // assert
         Assert.Equal(ct, Assert.IsType<TaskCanceledException>(exception).CancellationToken);
@@ -69,7 +69,7 @@ public static class CancellingCommands
         var ct = cts.Token;
 
         var command = Command.RunAsync(
-            "dotnet", $"exec {Tester.Path} sleep", createNoWindow: createNoWindow, ct: ct);
+            "dotnet", $"exec {Cli.Path} sleep", createNoWindow: createNoWindow, ct: ct);
 
         // act
         await cts.CancelAsync();
