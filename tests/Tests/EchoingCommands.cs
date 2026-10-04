@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using SimpleExec;
-using Tests.Infra;
+using Tests.Fixtures;
 using Xunit;
 
 namespace Tests;
@@ -158,4 +158,11 @@ public static class EchoingCommands
     }
 
     private static string TestName([CallerMemberName] string _ = "") => _;
+
+    private static class Capture
+    {
+        private static readonly Lazy<TextWriter> LazyOut = new(() => new StringWriter());
+
+        public static TextWriter Out => LazyOut.Value;
+    }
 }

@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="PublicApiGenerator" />
+    <ProjectReference Include="../../fixtures/Fixtures.Cli/Fixtures.Cli.csproj" />
+    <ProjectReference Include="../../fixtures/Fixtures.Xunit/Fixtures.Xunit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../fixtures/Fixtures.Cli/Fixtures.Cli.csproj" />
+    <PackageReference Include="PublicApiGenerator" />
   </ItemGroup>
 
   <ItemGroup>

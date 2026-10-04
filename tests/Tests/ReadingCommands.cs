@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Text;
 using SimpleExec;
-using Tests.Infra;
+using Tests.Fixtures;
 using Xunit;
 
 namespace Tests;

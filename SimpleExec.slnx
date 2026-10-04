@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/fixtures/">
     <Project Path="fixtures/Fixtures.Cli/Fixtures.Cli.csproj" />
+    <Project Path="fixtures/Fixtures.Xunit/Fixtures.Xunit.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/SimpleExec/SimpleExec.csproj" />
