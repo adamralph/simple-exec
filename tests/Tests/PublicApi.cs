@@ -14,6 +14,6 @@ public static class PublicApi
 
         var publicApi = typeof(Command).Assembly.GeneratePublicApi(options);
 
-        await Assert.Expected(publicApi);
+        await Assert.ExpectedAsync(publicApi);
     }
 }

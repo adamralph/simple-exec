@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="../../fixtures/Fixtures.Cli/Fixtures.Cli.csproj" />
     <ProjectReference Include="../../fixtures/Fixtures.Xunit/Fixtures.Xunit.csproj" />
+    <ProjectReference Include="../../src/SimpleExec/SimpleExec.csproj" />
   </ItemGroup>
 
   <ItemGroup>
