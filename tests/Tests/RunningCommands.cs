@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using SimpleExec;
-using Tests.Infra;
+using Tests.Fixtures;
 using Xunit;
 
 namespace Tests;

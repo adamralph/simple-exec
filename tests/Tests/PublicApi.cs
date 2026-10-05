@@ -1,6 +1,6 @@
+using Fixtures.Xunit;
 using PublicApiGenerator;
 using SimpleExec;
-using Tests.Infra;
 using Xunit;
 
 namespace Tests;
