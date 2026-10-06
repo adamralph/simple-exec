@@ -14,9 +14,6 @@
     <None Update="hello-world.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="PublicApi.*.expected.txt">
-      <DependentUpon>PublicApi.cs</DependentUpon>
-    </None>
   </ItemGroup>
 
 </Project>
