@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using SimpleExec.Internal;
 
 namespace SimpleExec;
 
@@ -54,7 +55,7 @@ public static class Command
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
         Ct ct = default) =>
-        ProcessStartInfo
+        ProcessStartInfoExtensions
             .Create(
                 Resolve(Validate(name)),
                 args,
@@ -79,7 +80,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">
     /// The arguments to pass to the command.
-    /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
+    /// As with <see cref="ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -111,7 +112,7 @@ public static class Command
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
         Ct ct = default) =>
-        ProcessStartInfo
+        ProcessStartInfoExtensions
             .Create(
                 Resolve(Validate(name)),
                 "",
@@ -130,7 +131,7 @@ public static class Command
                 ct);
 
     private static void Run(
-        this System.Diagnostics.ProcessStartInfo startInfo,
+        this ProcessStartInfo startInfo,
         IEnumerable<string> secrets,
         Func<int, bool>? handleExitCode,
         string echoPrefix,
@@ -190,7 +191,7 @@ public static class Command
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
         Ct ct = default) =>
-        ProcessStartInfo
+        ProcessStartInfoExtensions
             .Create(
                 Resolve(Validate(name)),
                 args,
@@ -215,7 +216,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">
     /// The arguments to pass to the command.
-    /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
+    /// As with <see cref="ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -248,7 +249,7 @@ public static class Command
         bool cancellationIgnoresProcessTree = false,
         bool createNoWindow = false,
         Ct ct = default) =>
-        ProcessStartInfo
+        ProcessStartInfoExtensions
             .Create(
                 Resolve(Validate(name)),
                 "",
@@ -267,7 +268,7 @@ public static class Command
                 ct);
 
     private static async Task RunAsync(
-        this System.Diagnostics.ProcessStartInfo startInfo,
+        this ProcessStartInfo startInfo,
         IEnumerable<string> secrets,
         Func<int, bool>? handleExitCode,
         string echoPrefix,
@@ -323,7 +324,7 @@ public static class Command
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
         Ct ct = default) =>
-        ProcessStartInfo
+        ProcessStartInfoExtensions
             .Create(
                 Resolve(Validate(name)),
                 args,
@@ -345,7 +346,7 @@ public static class Command
     /// <param name="name">The name of the command. This can be a path to an executable file.</param>
     /// <param name="args">
     /// The arguments to pass to the command.
-    /// As with <see cref="System.Diagnostics.ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
+    /// As with <see cref="ProcessStartInfo.ArgumentList"/>, the strings don't need to be escaped.
     /// </param>
     /// <param name="workingDirectory">The working directory in which to run the command.</param>
     /// <param name="configureEnvironment">An action which configures environment variables for the command.</param>
@@ -379,7 +380,7 @@ public static class Command
         string? standardInput = null,
         bool cancellationIgnoresProcessTree = false,
         Ct ct = default) =>
-        ProcessStartInfo
+        ProcessStartInfoExtensions
             .Create(
                 Resolve(Validate(name)),
                 "",
@@ -396,7 +397,7 @@ public static class Command
                 ct);
 
     private static async Task<(string StandardOutput, string StandardError)> ReadAsync(
-        this System.Diagnostics.ProcessStartInfo startInfo,
+        this ProcessStartInfo startInfo,
         Func<int, bool>? handleExitCode,
         string? standardInput,
         bool cancellationIgnoresProcessTree,
