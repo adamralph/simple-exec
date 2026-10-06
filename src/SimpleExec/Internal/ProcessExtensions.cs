@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace SimpleExec;
+namespace SimpleExec.Internal;
 
 internal static class ProcessExtensions
 {
@@ -76,7 +76,7 @@ internal static class ProcessExtensions
         await tcs.Task.ConfigureAwait(false);
     }
 
-    private static string GetEchoLines(this System.Diagnostics.ProcessStartInfo info, IEnumerable<string> secrets, string echoPrefix)
+    private static string GetEchoLines(this ProcessStartInfo info, IEnumerable<string> secrets, string echoPrefix)
     {
         var builder = new StringBuilder();
 

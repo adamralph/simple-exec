@@ -1,10 +1,11 @@
+using System.Diagnostics;
 using System.Text;
 
-namespace SimpleExec;
+namespace SimpleExec.Internal;
 
-internal static class ProcessStartInfo
+internal static class ProcessStartInfoExtensions
 {
-    public static System.Diagnostics.ProcessStartInfo Create(
+    public static ProcessStartInfo Create(
         string name,
         string args,
         IEnumerable<string> argList,
@@ -14,7 +15,7 @@ internal static class ProcessStartInfo
         bool createNoWindow,
         bool redirectStandardStreams)
     {
-        var startInfo = new System.Diagnostics.ProcessStartInfo
+        var startInfo = new ProcessStartInfo
         {
             FileName = name,
             Arguments = args,
