@@ -127,4 +127,4 @@ var misMatchedFilesOrDirectoriesDetected = exitCode & 4;
 
 ---
 
-<sup>[Run](https://thenounproject.com/term/target/975371) by [Gregor Cresnar](https://thenounproject.com/grega.cresnar/) from [the Noun Project](https://thenounproject.com/).</sup>
+<sup>[run](https://thenounproject.com/icon/run-975371/) by [Gregor Cresnar](https://thenounproject.com/creator/grega.cresnar) from [the Noun Project](https://thenounproject.com/).</sup>
