@@ -1,6 +1,5 @@
 using Fixtures.Xunit;
 using PublicApiGenerator;
-using SimpleExec;
 using Xunit;
 
 namespace Tests;
@@ -12,7 +11,7 @@ public static class PublicApi
     {
         var options = new ApiGeneratorOptions { IncludeAssemblyAttributes = false };
 
-        var publicApi = typeof(Command).Assembly.GeneratePublicApi(options);
+        var publicApi = typeof(SimpleExec.Command).Assembly.GeneratePublicApi(options);
 
         await Assert.ExpectedAsync(publicApi);
     }
