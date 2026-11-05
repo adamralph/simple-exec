@@ -1,6 +1,6 @@
 # SimpleExec
 
-![SimpleExec](assets/icon.svg)
+![SimpleExec](https://raw.githubusercontent.com/adamralph/simple-exec/main/assets/icon.svg)
 
 _[![NuGet version](https://img.shields.io/nuget/v/SimpleExec.svg?style=flat)](https://www.nuget.org/packages/SimpleExec)_
 
