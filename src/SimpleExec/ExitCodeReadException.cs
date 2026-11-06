@@ -4,7 +4,7 @@ namespace SimpleExec;
 /// The command being read exited with an unexpected exit code.
 /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
-public class ExitCodeReadException : ExitCodeException
+public sealed class ExitCodeReadException : ExitCodeException
 #pragma warning restore CA1032
 {
     private static readonly string TwoNewLines = $"{Environment.NewLine}{Environment.NewLine}";
@@ -89,6 +89,6 @@ public class ExitCodeReadException : ExitCodeException
     /// <param name="standardOutput">The contents of standard output (stdout).</param>
     /// <param name="standardError">The contents of standard error (stderr).</param>
     /// <returns>The message that describes the error</returns>
-    protected static string CreateMessage(int exitCode, string standardOutput, string standardError) =>
+    private static string CreateMessage(int exitCode, string standardOutput, string standardError) =>
         $"{CreateMessage(exitCode)}{TwoNewLines}Standard output (stdout):{TwoNewLines}{standardOutput}{TwoNewLines}Standard error (stderr):{TwoNewLines}{standardError}";
 }

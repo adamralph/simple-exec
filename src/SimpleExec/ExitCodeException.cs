@@ -4,6 +4,7 @@ namespace SimpleExec;
 /// The command exited with an unexpected exit code.
 /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
+// unsealed
 public class ExitCodeException : Exception
 #pragma warning restore CA1032
 {

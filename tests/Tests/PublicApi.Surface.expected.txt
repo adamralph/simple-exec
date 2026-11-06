@@ -1,4 +1,4 @@
-﻿namespace SimpleExec
+namespace SimpleExec
 {
     public static class Command
     {
@@ -24,7 +24,7 @@
         public int ExitCode { get; }
         protected static string CreateMessage(int exitCode) { }
     }
-    public class ExitCodeReadException : SimpleExec.ExitCodeException
+    public sealed class ExitCodeReadException : SimpleExec.ExitCodeException
     {
         public ExitCodeReadException(int exitCode, string standardOutput, string standardError) { }
         public ExitCodeReadException(int exitCode, string standardOutput, string standardError, System.Exception innerException) { }
@@ -32,6 +32,5 @@
         public ExitCodeReadException(int exitCode, string standardOutput, string standardError, string message, System.Exception innerException) { }
         public string StandardError { get; }
         public string StandardOutput { get; }
-        protected static string CreateMessage(int exitCode, string standardOutput, string standardError) { }
     }
 }
