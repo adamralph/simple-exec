@@ -56,7 +56,11 @@ internal static class ProcessExtensions
 
         if (!noEcho)
         {
+#if NET10_0
             await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(secrets, echoPrefix)).ConfigureAwait(false);
+#else
+            await Console.Out.WriteAsync(process.StartInfo.GetEchoLines(secrets, echoPrefix), ct).ConfigureAwait(false);
+#endif
         }
 
         _ = process.Start();
