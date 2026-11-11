@@ -1,5 +1,11 @@
 # Changelog
 
+## 14.0.0
+
+### Enhancements
+
+- [#935: **[BREAKING]** Target .NET 11 and remove .NET 8 and .NET 9 targets](https://github.com/adamralph/simple-exec/pull/935)
+
 ## 13.1.0
 
 ### Enhancements
