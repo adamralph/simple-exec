@@ -6,6 +6,10 @@
 
 - [#935: **[BREAKING]** Target .NET 11 and remove .NET 8 and .NET 9 targets](https://github.com/adamralph/simple-exec/pull/935)
 
+### Other
+
+- [#937: **[BREAKING]** seal classes](https://github.com/adamralph/simple-exec/pull/937)
+
 ## 13.1.0
 
 ### Enhancements
